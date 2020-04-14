@@ -1,0 +1,37 @@
+{
+  "release": {
+    "version": "0.8.0",
+    "release-candidate-version": "rc1"
+  },
+  "repositories": [
+    {
+      "name": "yunikorn-core",
+      "alias": "core",
+      "description": "scheduler core library",
+      "hash": "f24e3a2826f33b9836aa79980c2a3d02708099ab",
+      "repository": "https://github.com/apache/incubator-yunikorn-core",
+      "branch": "branch-0.8"
+    }, {
+      "name": "yunikorn-k8shim",
+      "alias": "k8shim",
+      "description": "the scheduler shim for K8s",
+      "hash": "773115f55734b4986d743245fd446ca36541698c",
+      "repository": "https://github.com/apache/incubator-yunikorn-k8shim",
+      "branch": "branch-0.8"
+    }, {
+      "name": "yunikorn-scheduler-interface",
+      "alias": "scheduler-interface",
+      "description": "the common scheduler interface that defines common messages and protocls",
+      "hash": "149aaa3d8e489c02d7f4e7a9769acc19c444cbcf",
+      "repository": "https://github.com/apache/incubator-yunikorn-scheduler-interface",
+      "branch": "branch-0.8"
+    }, {
+      "name": "yunikorn-web",
+      "alias": "web",
+      "description": "the scheduler web UI",
+      "hash": "b6f71cb45348e21bba0491cbd3630fb6c1c88025",
+      "repository": "https://github.com/apache/incubator-yunikorn-web",
+      "branch": "branch-0.8"
+    }
+  ]
+}
