@@ -17,7 +17,7 @@
 #
 -->
 
-# Apache YuniKorn (Incubating)
+Apache YuniKorn (Incubating)
 ----
 Apache YuniKorn (incubating) is a light-weighted, universal resource scheduler for container orchestrator systems.
 It was created to achieve fine-grained resource sharing for various workloads efficiently on a large scale, multi-tenant,
