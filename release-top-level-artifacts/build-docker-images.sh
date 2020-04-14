@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -13,8 +15,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-#!/bin/bash
 
 DOCKER_REPOSITORY_NAME="yunikorn"
 DOCKER_IMAGE_VERSION="latest"
@@ -65,13 +65,13 @@ echo "build options"
 echo "  - repository: ${DOCKER_REPOSITORY_NAME}"
 echo "  - version: ${DOCKER_IMAGE_VERSION}"
 
-CURRENT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-cd ${CURRENT_DIR}/k8shim && \
-  make image REGISTRY=${DOCKER_REPOSITORY_NAME} \
-  VERSION=${DOCKER_IMAGE_VERSION} && \
-  cd -
+CURRENT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+cd "${CURRENT_DIR}"/k8shim && \
+  make image REGISTRY="${DOCKER_REPOSITORY_NAME}" \
+  VERSION="${DOCKER_IMAGE_VERSION}" && \
+  cd - || exit
 
-cd ${CURRENT_DIR}/web && \
-  make image TAG=${DOCKER_REPOSITORY_NAME}/yunikorn-web \
-  VERSION=${DOCKER_IMAGE_VERSION} && \
-  cd -
+cd "${CURRENT_DIR}"/web && \
+  make image TAG="${DOCKER_REPOSITORY_NAME}"/yunikorn-web \
+  VERSION="${DOCKER_IMAGE_VERSION}" && \
+  cd - || exit
