@@ -81,6 +81,34 @@ def dowload_sourcecode(base_path, repo_meta):
         b=repo_meta["branch"])
     repo.git.checkout(repo_meta["hash"])
 
+    # avoid pulling dependencies from github,
+    # add replace to go mod files to make sure it builds locally
+    update_dep_ref(repo_meta["name"], os.path.join(base_path, repo_meta["alias"]))
+
+def update_dep_ref_k8shim(local_repo_path):
+    print("updating dependency for k8shim")
+    # K8shim is depdending on yunikorn-core and scheduler-interface
+    mod_file = os.path.join(local_repo_path, "go.mod")
+    with open(mod_file, "a") as file_object:
+        file_object.write("\n")
+        file_object.write("replace github.com/apache/incubator-yunikorn-core => ../core \n")
+        file_object.write("replace github.com/apache/incubator-yunikorn-scheduler-interface => ../scheduler-interface \n")
+
+def update_dep_ref_core(local_repo_path):
+    print("updating dependency for core")
+    mod_file = os.path.join(local_repo_path, "go.mod")
+    with open(mod_file, "a") as file_object:
+        file_object.write("\n")
+        file_object.write("replace github.com/apache/incubator-yunikorn-scheduler-interface => ../scheduler-interface \n")
+
+def update_dep_ref(repo_name, local_repo_path):
+    switcher={
+        "yunikorn-k8shim":update_dep_ref_k8shim,
+        "yunikorn-core":update_dep_ref_core,
+    }
+    if switcher.get(repo_name) is not None:
+        switcher.get(repo_name)(local_repo_path)
+
 def main():
     build_release()
 
