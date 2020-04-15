@@ -33,3 +33,5 @@ Reference:
 - Run script `tools/build-release.json` to generate source code tarball
 - Sign the release
 - Upload tarball for voting
+
+See full document at this [doc](docs/release-procedure.md)
