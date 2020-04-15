@@ -3,13 +3,13 @@ YuniKorn Release Procedure
 
 This project provides the instructions and tools needed to generate Apache YuniKorn (Incubating) release artifacts. This obeys ASF [release policy](http://www.apache.org/legal/release-policy.html), and [Podling Release Policy](https://incubator.apache.org/policy/incubation.html#releases).
 
-* [Create a Release](#Create a Release)
-* [Sign a Release](#Sign a release)
- * [Generate a Key](##Generate a Key)
- * [Upload the Key to a Public Key Server](##Upload the Key to a Public Key Server)
- * [Create Signature](##Create Signature)
- * [Verify a Signature](##Verify a Signature)
-* [Start Voting Thread](##Start Voting Thread)
+* [Create a Release](#Create-a-Release)
+* [Sign a Release](#Sign-a-release)
+ * [Generate a Key](##Generate-a-Key)
+ * [Upload the Key to a Public Key Server](##Upload-the-Key-to-a-Public-Key-Server)
+ * [Create Signature](##Create-Signature)
+ * [Verify a Signature](##Verify-a-Signature)
+* [Start Voting Thread](##Start-Voting-Thread)
 
 # Create a Release
 
