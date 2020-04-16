@@ -9,7 +9,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
 * [Upload the Key to a Public Key Server](#Upload-the-Key-to-a-Public-Key-Server)
 * [Create Signature](#Create-Signature)
 * [Verify a Signature](#Verify-a-Signature)
-* [Start Voting Thread](##Start-Voting-Thread)
+* [Start Voting Thread](#Start-Voting-Thread)
 
 # Create a Release
 
