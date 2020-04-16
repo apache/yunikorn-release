@@ -5,10 +5,10 @@ This project provides the instructions and tools needed to generate Apache YuniK
 
 * [Create a Release](#Create-a-Release)
 * [Sign a Release](#Sign-a-release)
- * [Generate a Key](##Generate-a-Key)
- * [Upload the Key to a Public Key Server](##Upload-the-Key-to-a-Public-Key-Server)
- * [Create Signature](##Create-Signature)
- * [Verify a Signature](##Verify-a-Signature)
+* [Generate a Key](#Generate-a-Key)
+* [Upload the Key to a Public Key Server](#Upload-the-Key-to-a-Public-Key-Server)
+* [Create Signature](#Create-Signature)
+* [Verify a Signature](#Verify-a-Signature)
 * [Start Voting Thread](##Start-Voting-Thread)
 
 # Create a Release
@@ -24,7 +24,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
 If you haven't signed any releases before, please read the doc:
 - [generate signing key](https://infra.apache.org/openpgp.html#generate-key)
 
-## Generate a Key
+# Generate a Key
 Generate a new PGP key (skip this step if you already have a key):
 
 ```shell script
@@ -34,7 +34,7 @@ gpg --gen-key
 # Email address: your apache email address
 ```
 
-## Upload the Key to a Public Key Server
+# Upload the Key to a Public Key Server
 
 ```shell script
 gpg --export --armor
@@ -42,7 +42,7 @@ gpg --export --armor
 
 then upload to https://pgp.mit.edu/.
 
-## Create Signature
+# Create Signature
 
 ```shell script
 gpg --armor --output apache-yunikorn-incubating-0.8.0-rc1.asc --detach-sig apache-yunikorn-incubating-0.8.0-rc1.tar.gz
@@ -50,7 +50,7 @@ gpg --armor --output apache-yunikorn-incubating-0.8.0-rc1.asc --detach-sig apach
 
 this will create the signature in file `apache-yunikorn-incubating-0.8.0-rc1.asc`
 
-## Verify a Signature
+# Verify a Signature
 
 ```shell script
 gpg --verify apache-yunikorn-incubating-0.8.0-rc1.asc apache-yunikorn-incubating-0.8.0-rc1.tar.gz
@@ -58,7 +58,13 @@ gpg --verify apache-yunikorn-incubating-0.8.0-rc1.asc apache-yunikorn-incubating
 
 # Upload Release Tarball
 
-Make sure your public SSH key is uploaded to https://id.apache.org/. Access sftp server: people.apache.org. Upload the tarball along with the signature to the user home directory.
+Make sure your public SSH key is uploaded to https://id.apache.org/. Access sftp server: people.apache.org. Upload the tarball along with the signature to the following dir under user home directory.
+
+```
+/home/${USER}/public_html/${RELEASE_DIR}/
+```
+
+use URL, e.g http://people.apache.org/~wwei/apache-yunikorn-incubating-0.8.0-rc1/ to access the files.
 
 # Start Voting Thread
 

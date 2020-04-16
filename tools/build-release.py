@@ -74,12 +74,12 @@ def dowload_sourcecode(base_path, repo_meta):
     print(" - repository: %s " % repo_meta["repository"])
     print(" - description: %s " % repo_meta["description"])
     print(" - branch: %s " % repo_meta["branch"])
-    print(" - hash: %s " % repo_meta["hash"])
+    print(" - tag: %s " % repo_meta["tag"])
     repo = git.Repo.clone_from(
         url=repo_meta["repository"],
         to_path=os.path.join(base_path, repo_meta["alias"]),
         b=repo_meta["branch"])
-    repo.git.checkout(repo_meta["hash"])
+    repo.git.checkout(repo_meta["tag"])
 
     # avoid pulling dependencies from github,
     # add replace to go mod files to make sure it builds locally
