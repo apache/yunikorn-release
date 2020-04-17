@@ -50,12 +50,11 @@ def build_release():
     for repo_meta in repo_list:
         dowload_sourcecode(release_base, repo_meta)
 
-    # download helm chart templates
-    # TODO add as symbolink
-    print("creating helm chart templates")
+    # add helm chart templates
+    print("adding helm chart templates")
     charts_src = os.path.join(release_base, "k8shim", "helm-charts")
     charts_dest = os.path.join(release_base, "helm-charts")
-    shutil.copytree(charts_src, charts_dest)
+    os.symlink(charts_src, charts_dest)
 
     # generate tarball
     tarball_name = release_package_name + ".tar.gz"
