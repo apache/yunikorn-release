@@ -18,6 +18,7 @@ import json
 import os
 import shutil
 import git
+import tarfile
 
 def build_release():
     tools_dir = os.path.dirname(os.path.realpath(__file__))
@@ -45,14 +46,30 @@ def build_release():
     # setup artifacts in the relase base dir
     setup_base_dir(release_top_path, release_base)
 
+    # download source code from github repo
     for repo_meta in repo_list:
         dowload_sourcecode(release_base, repo_meta)
 
     # download helm chart templates
+    # TODO add as symbolink
     print("creating helm chart templates")
     charts_src = os.path.join(release_base, "k8shim", "helm-charts")
     charts_dest = os.path.join(release_base, "helm-charts")
     shutil.copytree(charts_src, charts_dest)
+
+    # generate tarball
+    tarball_name = release_package_name + ".tar.gz"
+    tarball_path = os.path.join(staging_dir, tarball_name)
+    print("creating tarball %s" % tarball_path)
+    with tarfile.open(tarball_path, "w:gz") as tar:
+        tar.add(release_base, arcname=release_package_name, filter=exclude_files)
+
+def exclude_files(tarinfo):
+    file_name = os.path.basename(tarinfo.name)
+    exclude = [".git", ".github", ".gitignore", ".asf.yaml", ".golangci.yml"]
+    if file_name in exclude:
+        return None
+    return tarinfo
 
 def setup_base_dir(release_top_path, base_path):
     print("setting up base dir for release artifacts, path: %s" % base_path)

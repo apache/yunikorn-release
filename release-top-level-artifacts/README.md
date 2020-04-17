@@ -48,7 +48,10 @@ There are a few prerequisites:
 1. A existing K8s cluster is up and running.
 2. Helm chart client is installed.
 
-then simply run command:
+Once you've built your own docker images, you will need to replace
+the docker image name in the helm chart templates, open
+`helm-charts/yunikorn/values.yaml` and replace the docker image addresses
+with ones you built. Then simply run command:
 
 ```shell script
 helm install ./yunikorn
