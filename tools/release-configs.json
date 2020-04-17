@@ -10,28 +10,24 @@
       "description": "scheduler core library",
       "tag": "v0.8.0-incubating-rc1",
       "repository": "https://github.com/apache/incubator-yunikorn-core",
-      "branch": "branch-0.8"
     }, {
       "name": "yunikorn-k8shim",
       "alias": "k8shim",
       "description": "the scheduler shim for K8s",
       "tag": "v0.8.0-incubating-rc1",
       "repository": "https://github.com/apache/incubator-yunikorn-k8shim",
-      "branch": "branch-0.8"
     }, {
       "name": "yunikorn-scheduler-interface",
       "alias": "scheduler-interface",
       "description": "the common scheduler interface that defines common messages and protocls",
       "tag": "v0.8.0-incubating-rc1",
       "repository": "https://github.com/apache/incubator-yunikorn-scheduler-interface",
-      "branch": "branch-0.8"
     }, {
       "name": "yunikorn-web",
       "alias": "web",
       "description": "the scheduler web UI",
       "tag": "v0.8.0-incubating-rc1",
       "repository": "https://github.com/apache/incubator-yunikorn-web",
-      "branch": "branch-0.8"
     }
   ]
 }
