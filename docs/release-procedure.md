@@ -42,10 +42,22 @@ gpg --export --armor
 
 then upload to https://pgp.mit.edu/.
 
+You will also need to upload public key files to apache server, https://people.apache.org/keys/.
+
+```shell script
+gpg --fingerprint
+```
+
+then copy the fingerprint to https://id.apache.org/.
+
 # Create Signature
 
 ```shell script
+// gpg signature
 gpg --armor --output apache-yunikorn-incubating-0.8.0-rc1.asc --detach-sig apache-yunikorn-incubating-0.8.0-rc1.tar.gz
+
+# checksum
+shasum -a 512 apache-yunikorn-incubating-0.8.0-rc1.tar.gz > apache-yunikorn-incubating-0.8.0-rc1.tar.gz.sha512
 ```
 
 this will create the signature in file `apache-yunikorn-incubating-0.8.0-rc1.asc`
