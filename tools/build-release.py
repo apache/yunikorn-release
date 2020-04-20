@@ -52,9 +52,8 @@ def build_release():
 
     # add helm chart templates
     print("adding helm chart templates")
-    charts_src = os.path.join(release_base, "k8shim", "helm-charts")
-    charts_dest = os.path.join(release_base, "helm-charts")
-    os.symlink(charts_src, charts_dest)
+    os.chdir(release_base)
+    os.symlink("k8shim/helm-charts", "helm-charts")
 
     # generate tarball
     tarball_name = release_package_name + ".tar.gz"
