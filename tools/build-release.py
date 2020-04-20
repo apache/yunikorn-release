@@ -64,8 +64,9 @@ def build_release():
 
 def exclude_files(tarinfo):
     file_name = os.path.basename(tarinfo.name)
-    exclude = [".git", ".github", ".gitignore", ".asf.yaml", ".golangci.yml"]
+    exclude = [".git", ".github", ".gitignore", ".asf.yaml", ".golangci.yml", ".helmignore"]
     if file_name in exclude:
+        print("execulude file from tarball %s" % tarinfo.name)
         return None
     return tarinfo
 
