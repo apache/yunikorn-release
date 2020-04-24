@@ -29,8 +29,7 @@ def build_release():
         data = json.load(configs)
 
     release_meta = data["release"]
-    release_package_name = "apache-yunikorn-incubating-{0}-{1}".format(
-        release_meta["version"],release_meta["release-candidate-version"])
+    release_package_name = "apache-yunikorn-{0}-incubating-src".format(release_meta["version"])
     repo_list = data["repositories"]
 
     print("release meta info:")

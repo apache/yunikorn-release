@@ -54,10 +54,10 @@ then copy the fingerprint to https://id.apache.org/.
 
 ```shell script
 // gpg signature
-gpg --armor --output apache-yunikorn-incubating-0.8.0-rc1.asc --detach-sig apache-yunikorn-incubating-0.8.0-rc1.tar.gz
+gpg --armor --output apache-yunikorn-0.8.0-incubating-src.tar.gz.asc --detach-sig apache-yunikorn-0.8.0-incubating-src.tar.gz
 
 # checksum
-shasum -a 512 apache-yunikorn-incubating-0.8.0-rc1.tar.gz > apache-yunikorn-incubating-0.8.0-rc1.tar.gz.sha512
+shasum -a 512 apache-yunikorn-0.8.0-incubating-src.tar.gz > apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512
 ```
 
 this will create the signature in file `apache-yunikorn-incubating-0.8.0-rc1.asc`
