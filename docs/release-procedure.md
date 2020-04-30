@@ -9,6 +9,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
 * [Upload the Key to a Public Key Server](#Upload-the-Key-to-a-Public-Key-Server)
 * [Create Signature](#Create-Signature)
 * [Verify a Signature](#Verify-a-Signature)
+* [Upload Release Artifacts](#Upload-Release-Tarball)
 * [Start Voting Thread](#Start-Voting-Thread)
 
 # Create a Release
@@ -68,15 +69,12 @@ this will create the signature in file `apache-yunikorn-incubating-0.8.0-rc1.asc
 gpg --verify apache-yunikorn-incubating-0.8.0-rc1.asc apache-yunikorn-incubating-0.8.0-rc1.tar.gz
 ```
 
-# Upload Release Tarball
+# Upload Release Artifacts
 
-Make sure your public SSH key is uploaded to https://id.apache.org/. Access sftp server: people.apache.org. Upload the tarball along with the signature to the following dir under user home directory.
-
-```
-/home/${USER}/public_html/${RELEASE_DIR}/
-```
-
-use URL, e.g http://people.apache.org/~wwei/apache-yunikorn-incubating-0.8.0-rc1/ to access the files.
+Make sure your public SSH key is uploaded to https://id.apache.org/. The keys need to be appended to
+https://dist.apache.org/repos/dist/dev/incubator/yunikorn/KEYS. Other artifacts need to be uploaded to
+https://dist.apache.org/repos/dist/dev/incubator/yunikorn/. Note, you will need to install subversion to
+access this repo (use your apache ID). You can use a SVN client, e.g svnX, for convenience.
 
 # Start Voting Thread
 
