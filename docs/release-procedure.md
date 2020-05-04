@@ -86,7 +86,8 @@ Both voting need to acquire at least three +1 votes are required and more +1 vot
 
 # Publish the Release
 
-Once the voting is passed, move the release artifacts to https://dist.apache.org/repos/dist/release/incubator/yunikorn/. Once moved to this space, the content will be automatically sync'd to https://downloads.apache.org/incubator/yunikorn/ which can be used as the final location for release files.
+Once the voting is passed, move the release artifacts to https://dist.apache.org/repos/dist/release/incubator/yunikorn/. Once moved to this space, the content will be automatically sync'd to https://downloads.apache.org/incubator/yunikorn/ which can be used as the final location for release files. Read more for
+[location of files on main server](https://infra.apache.org/mirrors#location).
 
 Publish an announcement blog to https://blogs.apache.org/yunikorn/, update the web-site with corresponding
 release notes, download links.
