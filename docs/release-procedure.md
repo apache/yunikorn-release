@@ -11,6 +11,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
 * [Verify a Signature](#Verify-a-Signature)
 * [Upload Release Artifacts](#Upload-Release-Tarball)
 * [Start Voting Thread](#Start-Voting-Thread)
+* [Publish the Release](#Publish-the-Release)
 
 # Create a Release
 
@@ -82,3 +83,10 @@ According to [podling release doc](https://incubator.apache.org/policy/incubatio
 - start a voting thread on `dev@yunikorn.apache.org`. (72 hours)
 - send a summary of that vote to the Incubator’s general list and request IPMC to vote. (72 hours)
 Both voting need to acquire at least three +1 votes are required and more +1 votes than -1 votes.
+
+# Publish the Release
+
+Once the voting is passed, move the release artifacts to https://dist.apache.org/repos/dist/release/incubator/yunikorn/. Once moved to this space, the content will be automatically sync'd to https://downloads.apache.org/incubator/yunikorn/ which can be used as the final location for release files.
+
+Publish an announcement blog to https://blogs.apache.org/yunikorn/, update the web-site with corresponding
+release notes, download links.
