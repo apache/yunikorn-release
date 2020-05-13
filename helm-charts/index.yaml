@@ -1,0 +1,14 @@
+# TODO: update this file after releasing the chart
+apiVersion: v1
+entries:
+  yunikorn:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created:
+    description: YuniKorn scheduler for Kubernetes
+    digest:
+    name: yunikorn
+    urls:
+    -
+    version: 0.8.0
+generated: "2020-05-12T15:46:03.087061+02:00"
