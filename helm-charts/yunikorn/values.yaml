@@ -4,15 +4,15 @@
 replicaCount: 1
 
 serviceAccount: yunikorn-admin
-
+# TODO: change the images to apache ones, when they will be available
 image:
   repository: yunikorn/yunikorn-scheduler-k8s
-  tag: latest
+  tag: 0.8.0
   pullPolicy: Always
 
 web_image:
   repository: yunikorn/yunikorn-web
-  tag: latest
+  tag: 0.8.0
   pullPolicy: Always
 
 curl_image:
