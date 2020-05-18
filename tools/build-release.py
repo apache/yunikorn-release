@@ -81,7 +81,7 @@ def setup_base_dir(release_top_path, base_path):
         org = os.path.join(release_top_path, file)
         dest = os.path.join(base_path, file)
         print("copying files: %s ===> %s" % (org, dest))
-        shutil.copyfile(org, dest)
+        shutil.copy2(org, dest)
 
 def dowload_sourcecode(base_path, repo_meta):
     print("downloading source code")
