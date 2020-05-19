@@ -60,12 +60,13 @@ def build_release():
     print("creating tarball %s" % tarball_path)
     with tarfile.open(tarball_path, "w:gz") as tar:
         tar.add(release_base, arcname=release_package_name, filter=exclude_files)
+        tar.addfile(tarfile.TarInfo("LICENSE"), open(os.path.join(release_top_path, "LICENSE")))
 
 def exclude_files(tarinfo):
     file_name = os.path.basename(tarinfo.name)
-    exclude = [".git", ".github", ".gitignore", ".asf.yaml", ".golangci.yml", ".helmignore"]
+    exclude = [".git", ".github", ".gitignore", ".asf.yaml", ".golangci.yml", ".helmignore", "LICENSE"]
     if file_name in exclude:
-        print("execulude file from tarball %s" % tarinfo.name)
+        print("exclude file from tarball %s" % tarinfo.name)
         return None
     return tarinfo
 
