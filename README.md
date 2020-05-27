@@ -35,3 +35,4 @@ Reference:
 - Upload tarball for voting
 
 See full document at this [doc](docs/release-procedure.md)
+
