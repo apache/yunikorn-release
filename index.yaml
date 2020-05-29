@@ -28,4 +28,13 @@ entries:
       urls:
         - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.8.0/yunikorn-0.8.0.tgz
       version: 0.8.0
+    - apiVersion: v1
+      appVersion: latest
+      created: "2020-05-29T19:34:36.688298+02:00"
+      description: YuniKorn scheduler for Kubernetes
+      digest: cd442deae983fcfc2e621847c8a2f19a7291849b00e7a07d351c3aafd5ee88d3
+      name: yunikorn
+      urls:
+        - https://kingamarton.github.io/incubator-yunikorn-release/helm-charts/temp/yunikorn-latest.tgz
+      version: latest
 generated: "2020-05-29T15:03:28.455383+02:00"
