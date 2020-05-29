@@ -1,3 +1,4 @@
+#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -13,27 +14,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 apiVersion: v1
-kind: Service
-metadata:
-  name: yunikorn-service
-  labels:
-    app: yunikorn
-    chart: {{ include "yunikorn.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http1
-      protocol: TCP
-      name: yunikorn-core
-    - port: {{ .Values.service.port_web }}
-      targetPort: http2
-      protocol: TCP
-      name: yunikorn-service
-  selector:
-    app: yunikorn
-    release: {{ .Release.Name }}
+entries:
+  yunikorn:
+    - apiVersion: v1
+      appVersion: 0.8.0
+      created: "2020-05-29T15:03:28.456387+02:00"
+      description: YuniKorn scheduler for Kubernetes
+      digest: e52980825b3c9f0e714aa2154c8354477813ea78db481a5b0b31bea8beb24a7d
+      name: yunikorn
+      urls:
+        - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.8.0/yunikorn-0.8.0.tgz
+      version: 0.8.0
+generated: "2020-05-29T15:03:28.455383+02:00"
