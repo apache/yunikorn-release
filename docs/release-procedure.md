@@ -99,8 +99,9 @@ After the voting passed and the RC is accepted, release the helm chart
 - Create a release branch for the target release in this release repo
 - Package the charts: 
 ```shell script
-helm package helm-charts/yunikorn --destination .
+helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} helm-charts/yunikorn --destination .
 ```
+Fore more information please check [Helm documentation](https://helm.sh/docs/topics/provenance/)
 - upload the packaged chart to the release in this repository
 - update the [index.yaml](https://github.com/apache/incubator-yunikorn-release/blob/gh-pages/index.yaml) file in the gh-pages branch with the new release
 
