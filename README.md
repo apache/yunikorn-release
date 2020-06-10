@@ -33,5 +33,6 @@ Reference:
 - Run script `tools/build-release.json` to generate source code tarball
 - Sign the release
 - Upload tarball for voting
+- After the voting passed, release helm charts
 
 See full document at this [doc](docs/release-procedure.md)

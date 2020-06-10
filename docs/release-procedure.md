@@ -12,6 +12,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
 * [Upload Release Artifacts](#Upload-Release-Tarball)
 * [Start Voting Thread](#Start-Voting-Thread)
 * [Publish the Release](#Publish-the-Release)
+* [Release Helm Charts](#Release-Helm-Charts)
 
 # Create a Release
 
@@ -91,3 +92,16 @@ Once the voting is passed, move the release artifacts to https://dist.apache.org
 
 Publish an announcement blog to https://blogs.apache.org/yunikorn/, update the web-site with corresponding
 release notes, download links.
+
+# Release Helm Charts
+
+After the voting passed and the RC is accepted, release the helm chart
+- Create a release branch for the target release in this release repo
+- Package the charts: 
+```shell script
+helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} helm-charts/yunikorn --destination .
+```
+Fore more information please check [Helm documentation](https://helm.sh/docs/topics/provenance/)
+- upload the packaged chart to the release in this repository
+- update the [index.yaml](https://github.com/apache/incubator-yunikorn-release/blob/gh-pages/index.yaml) file in the gh-pages branch with the new release
+
