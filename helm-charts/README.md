@@ -27,35 +27,19 @@ shim layer and adopt to different ResourceManager implementation including Apach
 
 ## Feature highlights
 
-### Main scheduling features:
-
-- Features to support both batch jobs and long-running/stateful services
+- Features to support both batch jobs and long-running/stateful services.
 - Hierarchy queues with min/max resource quotas.
 - Resource fairness between queues, users and apps.
 - Cross-queue preemption based on fairness.
-- Customized resource types (like GPU) scheduling support.
-- Rich placement constraints support.
 - Automatically map incoming container requests to queues by policies. 
 - Node partition: partition cluster to sub-clusters with dedicated quota/ACL management.
+- Fully compatible with K8s predicates, events, PV/PVC and admin commands.
+- Supports to work with [Cluster AutoScaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) to drive cluster scales up and down. 
 
-### Integration with K8s:
+## Deployment model
+YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/yunikorn) on an existing K8s cluster. It can be deployed with or without the admission controller. When the admission controller is enabled, YuniKorn will be the primary scheduler that takes over the resource scheduling (the admission controller runs a mutation webhook that automatically mutates pod spec's schedulerName to yunikorn); when it is disabled, user needs to manually change the schedulerName to `yunikorn` in order to get apps scheduled by YuniKorn.
 
-The `k8shim` provides the integration for K8s scheduling and supported features include: 
-
-- _Predicates:_ All kinds of predicates such as node-selector, pod affinity/anti-affinity, taint/tolerant, etc.
-- _Persistent volumes:_ We have verified hostpath, EBS, NFS, etc. 
-- _K8s namespace awareness:_ YuniKorn support hierarchical of queues, does it mean you need to give up K8s namespace? Answer is no, with simple config, YuniKorn is able to 
- support automatically map K8s namespaces to YuniKorn queues. All K8s-namespace-related ResourceQuota, permissions will be still valid.
-- _Metrics:_ Prometheus, Grafana integration.
-- _Cluster AutoScaler_: YuniKorn can nicely work with Cluster AutoScaler (https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) to drive cluster scales up and down.
-- _K8s Events_: YuniKorn also integrated with K8s events, so lots of information can be retrieved by using `kubectl describe pod`.
-
-#### Deployment model
-Yunikorn can be deployed as a K8s custom scheduler, and take over all POD scheduling. 
-An enhancement is open to improve coexistence behaviour of the YuniKorn scheduler with other Kubernetes schedulers,
-like the default scheduler, in the cluster: [Co-existing with other K8s schedulers](https://issues.apache.org/jira/browse/YUNIKORN-16). 
- 
-#### Verified K8s versions 
+## Supported K8s versions 
 
 | K8s Version   | Support?  |
 | ------------- |:-------------:|
@@ -91,7 +75,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `resources.requests.memory`       | Memory resource requests                                       | `1Gi`  
 | `resources.limits.cpu`            | CPU resource limit                                             | `4`  
 | `resources.limits.memory`         | Memory resource limit                                          | `2Gi` 
-| `embedAdmissionController`        | Flag for enabling/disabling admission controller               | `true` 
+| `embedAdmissionController`        | Flag for enabling/disabling the admission controller           | `true` 
 
-
+These parameters can be passed in via helm's `--set` option, such as `--set embedAdmissionController=false`.
 
