@@ -94,9 +94,4 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `embedAdmissionController`        | Flag for enabling/disabling admission controller               | `true` 
 
 
- 
-
- 
-
-
 
