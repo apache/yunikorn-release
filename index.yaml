@@ -24,6 +24,16 @@ entries:
       created: "2020-05-29T15:03:28.456387+02:00"
       description: YuniKorn scheduler for Kubernetes
       digest: e52980825b3c9f0e714aa2154c8354477813ea78db481a5b0b31bea8beb24a7d
+      home: http://yunikorn.apache.org
+      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/assets/themes/yunikorn/img/yunikorn_classic_logo.png
+      maintainers:
+        - email: dev@yunikorn.apache.org
+        - name: Developers mailing list
+      sources:
+        - https://github.com/apache/incubator-yunikorn-core
+        - https://github.com/apache/incubator-yunikorn-k8shim
+        - https://github.com/apache/incubator-yunikorn-scheduler-interface
+        - https://github.com/apache/incubator-yunikorn-web
       name: yunikorn
       urls:
         - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.8.0/yunikorn-0.8.0.tgz
@@ -33,6 +43,16 @@ entries:
       created: "2020-05-29T19:34:36.688298+02:00"
       description: YuniKorn scheduler for Kubernetes
       digest: cd442deae983fcfc2e621847c8a2f19a7291849b00e7a07d351c3aafd5ee88d3
+      home: http://yunikorn.apache.org
+      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/assets/themes/yunikorn/img/yunikorn_classic_logo.png
+      maintainers:
+        - email: dev@yunikorn.apache.org
+        - name: Developers mailing list
+      sources:
+        - https://github.com/apache/incubator-yunikorn-core
+        - https://github.com/apache/incubator-yunikorn-k8shim
+        - https://github.com/apache/incubator-yunikorn-scheduler-interface
+        - https://github.com/apache/incubator-yunikorn-web
       name: yunikorn
       urls:
         - https://github.com/apache/incubator-yunikorn-release/releases/download/latest/yunikorn-latest.tgz
