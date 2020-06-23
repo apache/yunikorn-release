@@ -19,6 +19,8 @@
 
 replicaCount: 1
 
+imagePullSecrets:
+
 serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
