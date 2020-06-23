@@ -37,6 +37,12 @@ spec:
         component: yunikorn-scheduler
         release: {{ .Release.Name }}
     spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
       serviceAccountName: {{ .Values.serviceAccount }}
       containers:
         - name: yunikorn-scheduler-k8s
