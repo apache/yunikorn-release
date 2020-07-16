@@ -57,6 +57,12 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: ADMISSION_CONTROLLER_IMAGE_REGISTRY
+              value: "{{ .Values.admission_controller_image.repository }}"
+            - name: ADMISSION_CONTROLLER_IMAGE_TAG
+              value: "{{ .Values.admission_controller_image.tag }}"
+            - name: ADMISSION_CONTROLLER_IMAGE_PULL_POLICY
+              value: "{{ .Values.admission_controller_image.pullPolicy }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}

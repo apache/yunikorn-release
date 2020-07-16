@@ -24,12 +24,17 @@ imagePullSecrets:
 serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
-  tag: scheduler-0.8.0
+  tag: scheduler-latest
+  pullPolicy: Always
+
+admission_controller_image:
+  repository: apache/yunikorn
+  tag: admission-latest
   pullPolicy: Always
 
 web_image:
   repository: apache/yunikorn
-  tag: web-0.8.0
+  tag: web-latest
   pullPolicy: Always
 
 curl_image:
