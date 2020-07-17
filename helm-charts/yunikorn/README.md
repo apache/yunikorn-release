@@ -50,7 +50,7 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 | 1.16.x | To be verified |
 | 1.17.x | To be verified |
 
-## Istalling the chart
+## Installing the chart
 ```
 helm repo add yunikorn  https://apache.github.io/incubator-yunikorn-release
 helm repo update 
@@ -69,6 +69,9 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `web_image.repository`            | web app image repository                                       | `apache/yunikorn` 
 | `web_image.tag`                   | web app image tag                                              | `web-latest` 
 | `web_image.pullPolicy`            | web app image pull policy                                      | `Always`  
+| `admission_controller_image.repository`| admission controller image repository                     | `apache/yunikorn` 
+| `admission_controller_image.tag`       | admission controller image tag                            | `admission-latest` 
+| `admission_controller_image.pullPolicy`| admission controller image pull policy                    | `Always`  
 | `service.port`                    | Port of the scheduler service                                  | `9080` 
 | `service.port_web`                | Port of the web application service                            | `9889`  
 | `resources.requests.cpu`          | CPU resource requests                                          | `200m`  
