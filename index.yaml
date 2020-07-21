@@ -39,10 +39,10 @@ entries:
         - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.8.0/yunikorn-0.8.0.tgz
       version: 0.8.0
     - apiVersion: v1
-      appVersion: 0.9.0
-      created: "2020-06-24T14:12:46.578917+02:00"
+      appVersion: latest
+      created: "2020-07-17T12:19:19.969474+02:00"
       description: YuniKorn scheduler for Kubernetes
-      digest: 454559502851d6042072703f8b4808ee2ee2733b74d833f79f9807191ecb6772
+      digest: 8631b0b67370be14352e295bddffe8bb3801193d406345badbc2f2f9aee88a50
       home: http://yunikorn.apache.org
       icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/assets/themes/yunikorn/img/yunikorn_classic_logo.png
       maintainers:
