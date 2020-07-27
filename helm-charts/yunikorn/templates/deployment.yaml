@@ -64,7 +64,7 @@ spec:
             - name: ADMISSION_CONTROLLER_IMAGE_PULL_POLICY
               value: "{{ .Values.admission_controller_image.pullPolicy }}"
             - name: ADMISSION_CONTROLLER_IMAGE_PULL_SECRETS
-              value: "{{ .Values.ImagePullSecrets }}"
+              value: "{{ index .Values.ImagePullSecrets 0 }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
@@ -83,7 +83,7 @@ spec:
               preStop:
                 exec:
                   command: ["/bin/sh", "/admission_util.sh", "delete"]
-          {{ end }}
+          {{ end }}r
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
           imagePullPolicy: {{ .Values.web_image.pullPolicy }}
