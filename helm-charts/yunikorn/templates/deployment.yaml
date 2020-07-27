@@ -83,7 +83,7 @@ spec:
               preStop:
                 exec:
                   command: ["/bin/sh", "/admission_util.sh", "delete"]
-          {{ end }}r
+          {{ end }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
           imagePullPolicy: {{ .Values.web_image.pullPolicy }}
