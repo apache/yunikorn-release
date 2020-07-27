@@ -63,10 +63,8 @@ spec:
               value: "{{ .Values.admission_controller_image.tag }}"
             - name: ADMISSION_CONTROLLER_IMAGE_PULL_POLICY
               value: "{{ .Values.admission_controller_image.pullPolicy }}"
-            {{- if .Values.imagePullSecrets }}
             - name: ADMISSION_CONTROLLER_IMAGE_PULL_SECRETS
-              value: "{{ index .Values.ImagePullSecrets 0 }}"
-            {{- end }}
+              value: "{{ .Values.ImagePullSecrets }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
