@@ -17,44 +17,72 @@
 #
 -->
 
-Apache YuniKorn (Incubating)
-----
-Apache YuniKorn (Incubating) is a light-weighted, universal resource scheduler for container orchestrator systems.
+# Apache YuniKorn (Incubating)
+Apache YuniKorn (Incubating) is a light-weight, universal resource scheduler for container orchestrator systems.
 It was created to achieve fine-grained resource sharing for various workloads efficiently on a large scale, multi-tenant,
 and cloud-native environment. YuniKorn brings a unified, cross-platform scheduling experience for mixed workloads consists
 of stateless batch workloads and stateful services.
 
-## Build
+## Build pre-requisites
+These instructions provided are tailored to the source release.
+Details on how to set up a full development environment can be found in [Building YuniKorn](https://yunikorn.apache.org/docs/next/developer_guide/build).
 
-Run the script `build-docker-images.sh` to build docker images.
+General requirement for building YuniKorn images from this release:
+* Make
+* Docker 
+
+### Yunikorn Scheduler
+The scheduler and shim are build as one set of artifacts and have one requirement:
+* Go 1.11 or later
+
+### Yunikorn web UI
+The project requires a number of external tools to be installed before the build and development.
+A build requires the following tools to be installed:
+* Node.js 10.16.2
+* Angular CLI 8.3.19
+* yarn 1.21
+
+NOTE: the scheduler can be used without a web UI build or deployed.
+
+## Building
+Run the `make` command to build docker images.
 
 ```shell script
-# specify the docker repo
-./build-docker-images.sh -r <REPO_NAME> -v <VERSION>
-
-# for example, the following command will
-# build 3 docker images like below:
-#  foo/yunikorn-scheduler-k8s:0.8.0
-#  foo/yunikorn-scheduler-admission-controller:0.8.0
-#  foo/yunikorn-web:0.8.0
-./build-docker-images.sh -r foo -v 0.8.0
+make
 ```
+The command will generate the following three docker images in the local docker repository:
+* apache/yunikorn:scheduler-0.9.0
+* apache/yunikorn:admission-0.9.0
+* apache/yunikorn:web-0.9.0 
 
-## Run YuniKorn on an existing K8s cluster
-
-The simplest way to run YuniKorn is to use our helm charts,
-you can find the templates in the release package `helm-charts`.
+## Deploying YuniKorn 
+The simplest way to run YuniKorn is to use the provided helm charts, you can find the templates in the release 
+package `helm-charts`.
 There are a few prerequisites:
-1. A existing K8s cluster is up and running.
+1. An existing K8s cluster is up and running.
 2. Helm chart client is installed.
 
-Once you've built your own docker images, you will need to replace
-the docker image name in the helm chart templates, open
-`helm-charts/yunikorn/values.yaml` and replace the docker image addresses
-with ones you built. Then simply run command:
-
+If you have a cluster, and the helm client you can simply run:
 ```shell script
 helm install ./yunikorn
 ```
 
-For more instructions, please refer to [User Guide](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/user-guide.md#quick-start).
+## Customising the build
+The `make` command will pass on the following two variables:
+* VERSION
+* REGISTRY
+These variables can be used to generate customised build: 
+```shell script
+VERSION="0.9.1" REGISTRY="internal" make
+```
+
+The values defined in the helm charts assume a default build without changes to the `VERSION` or `REGISTRY`. 
+Once you have built your own docker images, you will need to replace the docker image name in the helm chart templates.
+Open `helm-charts/yunikorn/values.yaml` and replace the docker image information with ones you built.
+
+For more instructions, please refer to [User Guide](https://yunikorn.apache.org/docs/next/).
+
+## Deploying a convenience build
+Apache YuniKorn (incubating) provides a convenience release with pre-build docker images and helm charts.
+These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are 
+located in the [User Guide](https://yunikorn.apache.org/docs/next/).
