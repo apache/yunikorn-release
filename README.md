@@ -28,11 +28,12 @@ Reference:
 
 - Create a release branch for the target release in all git repos, such as `branch-0.8`
 - Stabilize the release branch
-- Create a tag and prepare to generate release candidate 1, e.g `release-0.8-rc1`
+- Create a tag and prepare to generate the release, e.g `v0.8.0`
 - Configure `tools/release-configs.json`
-- Run script `tools/build-release.json` to generate source code tarball
+- Run script `tools/build-release.py` to generate source code tarball
 - Sign the release
-- Upload tarball for voting
-- After the voting passed, release helm charts
+- Upload tarball, signature and checksum
+- Start a voting thread for the project followed by an incubator voting thread 
+- Publish the release
 
 See full document at this [doc](docs/release-procedure.md)
