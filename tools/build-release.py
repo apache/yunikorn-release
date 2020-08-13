@@ -42,7 +42,6 @@ def build_release():
 
     print("release meta info:")
     print(" - main version: %s" % version)
-    print(" - release candidate: %s" % release_meta["release-candidate-version"])
     print(" - release package name: %s" % release_package_name)
 
     staging_dir = os.path.join(os.path.dirname(tools_dir), "staging")
@@ -97,6 +96,8 @@ def setup_base_dir(release_top_path, helm_path, base_path, version):
         shutil.copy2(org, dest)
     # set the base Makefile version info
     replace(os.path.join(base_path, "Makefile"), 'latest', version)
+    # update the version tags in the README
+    replace(os.path.join(base_path, "README.md"), '-latest', '-' + version)
     # copy the helm charts
     copy_helm_charts(helm_path, base_path, version)
 
