@@ -42,7 +42,6 @@ def build_release():
 
     print("release meta info:")
     print(" - main version: %s" % version)
-    print(" - release candidate: %s" % release_meta["release-candidate-version"])
     print(" - release package name: %s" % release_package_name)
 
     staging_dir = os.path.join(os.path.dirname(tools_dir), "staging")

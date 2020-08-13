@@ -36,11 +36,8 @@ The scheduler and shim are build as one set of artifacts and have one requiremen
 * Go 1.11 or later
 
 ### Yunikorn web UI
-The project requires a number of external tools to be installed before the build and development.
-A build requires the following tools to be installed:
-* Node.js 10.16.2
-* Angular CLI 8.3.19
-* yarn 1.21
+The YuniKorn web UI uses a two stage docker build with predefined images.
+All dependencies are included in the image.
 
 NOTE: the scheduler can be used without a web UI build or deployed.
 
@@ -62,9 +59,9 @@ There are a few prerequisites:
 1. An existing K8s cluster is up and running.
 2. Helm chart client is installed.
 
-If you have a cluster, and the helm client you can simply run:
+If you have a cluster, and the helm client you can simply run helm from the root directory:
 ```shell script
-helm install ./yunikorn
+helm install yunikorn ./helm-charts/yunikorn
 ```
 
 ## Customising the build
@@ -80,9 +77,37 @@ The values defined in the helm charts assume a default build without changes to 
 Once you have built your own docker images, you will need to replace the docker image name in the helm chart templates.
 Open `helm-charts/yunikorn/values.yaml` and replace the docker image information with ones you built.
 
-For more instructions, please refer to [User Guide](https://yunikorn.apache.org/docs/next/).
+For more instructions, please refer to [User Guide](https://yunikorn.apache.org/docs/).
 
 ## Deploying a convenience build
 Apache YuniKorn (incubating) provides a convenience release with pre-build docker images and helm charts.
 These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are 
-located in the [User Guide](https://yunikorn.apache.org/docs/next/).
+located in the [User Guide](https://yunikorn.apache.org/docs/).
+
+
+## Testing the build
+Running the unit tests is supported via the make command.
+It will run the tests for all parts of YuniKorn in order:
+```shell script
+make test
+```
+
+### Yunikorn Scheduler
+The scheduler tests runs in two parts: the core, and the k8shim.
+There are no tests for the scheduler-interface.
+
+Unit testing for the scheduler has no additional pre-requisites.
+
+### Yunikorn web UI
+The project requires a number of external tools to be installed for test and development.
+A non image build requires the following tools to be installed:
+* Node.js 10.16.2
+* Angular CLI 8.3.19
+* yarn 1.21
+
+Running unit tests adds the following requirements:
+* Karma
+* Protractor
+* json-server
+
+Please check the [documentation](https://yunikorn.apache.org/docs/) for further details.
