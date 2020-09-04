@@ -106,12 +106,12 @@ Once the voting is passed, move the release artefacts to https://dist.apache.org
 Once moved to this space, the content will be automatically synced to https://downloads.apache.org/incubator/yunikorn/ which can be used as the final location for release files.
 Read more for [location of files on main server](https://infra.apache.org/mirrors#location).
 
-Publish an announcement blog to https://blogs.apache.org/yunikorn/, update the web-site with corresponding
-release notes, download links.
+## Release Docker images
+
+Push the latest docker images to docker hub using the release as tag. Make sure the docker image is built on the specific SHA.
 
 ## Release Helm Charts
 
-After the voting passed and the RC is accepted, release the helm chart
 - Create a release branch for the target release in this release repo
 - Package the charts: 
 ```shell script
@@ -121,3 +121,14 @@ Fore more information please check [Helm documentation](https://helm.sh/docs/top
 - upload the packaged chart to the release in this repository
 - update the [index.yaml](https://github.com/apache/incubator-yunikorn-release/blob/gh-pages/index.yaml) file in the gh-pages branch with the new release
 
+## Update the website
+
+- Create a new documentation version on YuniKorn website based on the latest content in [docs](https://github.com/apache/incubator-yunikorn-site/tree/master/docs) directory. Refer to [this](https://github.com/apache/incubator-yunikorn-site/tree/master#release-a-new-version) guide to create the new documentation. 
+- Update the [download page](http://yunikorn.apache.org/community/download) of the website.
+- Publish release announcement in the [apache Blog](https://blogs.apache.org/yunikorn/) and the [YuniKorn website](http://yunikorn.apache.org).
+Update the website's release notes and download links.
+The release notes should be versioned, check the [latest release](http://yunikorn.apache.org/docs/get_started/release_notes/) page.
+
+## Verify the release
+
+After the whole procedure verify the documents and the released artifacts.
