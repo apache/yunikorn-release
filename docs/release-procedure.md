@@ -108,7 +108,7 @@ Read more for [location of files on main server](https://infra.apache.org/mirror
 
 ## Release Docker images
 
-Push the latest docker images to docker hub.
+Push the latest docker images to docker hub using the release as tag. Make sure the docker image is built on the specific SHA.
 
 ## Release Helm Charts
 
@@ -123,10 +123,11 @@ Fore more information please check [Helm documentation](https://helm.sh/docs/top
 
 ## Update the website
 
-- Create a new version of the [YuniKorn website](https://github.com/apache/incubator-yunikorn-site/tree/master).
+- Create a new documentation version on YuniKorn website based on the latest content in [docs](https://github.com/apache/incubator-yunikorn-site/tree/master/docs) directory. Refer to [this](https://github.com/apache/incubator-yunikorn-site/tree/master#release-a-new-version) guide to create the new documentation. 
 - Update the [download page](http://yunikorn.apache.org/community/download) of the website.
-- Publish release announcement in the [apache Blog](https://blogs.apache.org/yunikorn/) and the the [YuniKorn website](http://yunikorn.apache.org).
+- Publish release announcement in the [apache Blog](https://blogs.apache.org/yunikorn/) and the [YuniKorn website](http://yunikorn.apache.org).
 Update the website's release notes and download links.
+The release notes should be versioned, check the [latest release](http://yunikorn.apache.org/docs/get_started/release_notes/) page.
 
 ## Verify the release
 
