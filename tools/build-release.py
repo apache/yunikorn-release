@@ -15,10 +15,14 @@
 # limitations under the License.
 
 import distutils.dir_util
+import getopt
+import hashlib
 import json
 import os
 import re
 import shutil
+import subprocess
+import sys
 import tarfile
 from os import fdopen, remove
 from shutil import move, copymode
@@ -27,9 +31,8 @@ from tempfile import mkstemp
 import git
 
 
-def build_release():
+def build_release(email_address):
     tools_dir = os.path.dirname(os.path.realpath(__file__))
-
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
     with open(config_file) as configs:
@@ -69,6 +72,9 @@ def build_release():
     with tarfile.open(tarball_path, "w:gz") as tar:
         tar.add(os.path.join(release_base, "LICENSE"), arcname=release_package_name + "/LICENSE")
         tar.add(release_base, arcname=release_package_name, filter=exclude_files)
+    write_checksum(tarball_path, tarball_name)
+    if email_address:
+        call_gpg(tarball_path, email_address)
 
 
 def exclude_files(tarinfo):
@@ -84,7 +90,8 @@ def exclude_files(tarinfo):
 def setup_base_dir(release_top_path, helm_path, base_path, version):
     print("setting up base dir for release artifacts, path: %s" % base_path)
     if os.path.exists(base_path):
-        raise Exception("staging dir %s already exist, please remove it and retry" % base_path)
+        print("\nstaging dir already exist:\n%s\nplease remove it and retry\n" % base_path)
+        sys.exit(1)
 
     # setup base dir
     os.makedirs(base_path)
@@ -104,7 +111,7 @@ def setup_base_dir(release_top_path, helm_path, base_path, version):
 
 # copy the helm charts into the base path and replace the version to the one defined in config
 def copy_helm_charts(helm_path, base_path, version):
-    print("helm patch: %s, base path: %s", helm_path, base_path)
+    print("helm patch: %s, base path: %s" % (helm_path, base_path))
     release_helm_path = os.path.join(base_path, "helm-charts")
     distutils.dir_util.copy_tree(helm_path, release_helm_path)
     # rename the version in the helm charts to the actual version
@@ -221,9 +228,62 @@ def update_sha(release_base, repo_list, sha):
             switcher.get(repo_name)(repo_name, os.path.join(release_base, repo_meta["alias"]), sha)
 
 
-def main():
-    build_release()
+def write_checksum(tarball_file, tarball_name):
+    print("generating sha512 checksum file for tar")
+    h = hashlib.sha512()
+    # read the file and generate the sha
+    with open(tarball_file, 'rb') as file:
+        while True:
+            data = file.read(65536)
+            if not data:
+                break
+            h.update(data)
+    sha = h.hexdigest()
+    # write out the checksum
+    sha_file = open(tarball_file + ".sha512", "w")
+    sha_file.write(sha)
+    sha_file.write("  " + tarball_name)
+    sha_file.write("\n")
+    sha_file.close()
+    print("sha512 checksum: %s" % sha)
+
+
+def call_gpg(tarball_file, email_address):
+    print("Signing file using email: %s" % email_address)
+    subprocess.call(['gpg',
+                     '--local-user',
+                     email_address,
+                     '--armor',
+                     '--output',
+                     tarball_file + ".asc",
+                     '--detach-sig',
+                     tarball_file])
+
+
+def usage(script):
+    print("%s [--sign=<email>]" % script)
+    sys.exit(2)
+
+
+def main(argv):
+    script = sys.argv[0]
+    email_address = ''
+    try:
+        opts, args = getopt.getopt(argv[1:], "", ["sign="])
+    except getopt.GetoptError:
+        usage(script)
+
+    if args:
+        usage(script)
+
+    for opt, arg in opts:
+        if opt == "--sign":
+            if not arg:
+                usage(script)
+        email_address = arg
+
+    build_release(email_address)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
