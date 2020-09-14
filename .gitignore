@@ -1,3 +1,9 @@
 .idea
 .DS_Store
-_output/
+docs/*
+tools/*
+release-top-level-artifacts/*
+helm-charts/*
+helm-charts/**
+staging/*
+staging/**
