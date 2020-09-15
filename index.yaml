@@ -25,7 +25,7 @@ entries:
       description: YuniKorn scheduler for Kubernetes
       digest: 04ef789a4d6f4d0152b1d5f02d58cae8d688b6f419f0208d96f65fbd74380608
       home: http://yunikorn.apache.org
-      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/assets/themes/yunikorn/img/yunikorn_classic_logo.png
+      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/static/img/logo/yunikorn_classic_logo.png
       maintainers:
         - email: dev@yunikorn.apache.org
         - name: Developers mailing list
@@ -44,7 +44,7 @@ entries:
       description: YuniKorn scheduler for Kubernetes
       digest: 5cf73494819514451f64983e34664825cf10b1b2309b1a07290b0595b8fb0f5f
       home: http://yunikorn.apache.org
-      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/assets/themes/yunikorn/img/yunikorn_classic_logo.png
+      icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/static/img/logo/yunikorn_classic_logo.png
       maintainers:
         - email: dev@yunikorn.apache.org
         - name: Developers mailing list
