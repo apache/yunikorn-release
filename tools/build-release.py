@@ -24,13 +24,12 @@ import shutil
 import subprocess
 import sys
 import tarfile
-from os import fdopen, remove
-from shutil import move, copymode
 from tempfile import mkstemp
 
 import git
 
 
+# Main build routine
 def build_release(email_address):
     tools_dir = os.path.dirname(os.path.realpath(__file__))
     # load configs
@@ -65,7 +64,10 @@ def build_release(email_address):
     # must be run after all repos have been checked out
     update_sha(release_base, repo_list, sha)
 
-    # generate tarball
+    # build the helm package
+    call_helm(staging_dir, release_base, version, email_address)
+
+    # generate source code tarball
     tarball_name = release_package_name + ".tar.gz"
     tarball_path = os.path.join(staging_dir, tarball_name)
     print("creating tarball %s" % tarball_path)
@@ -77,6 +79,7 @@ def build_release(email_address):
         call_gpg(tarball_path, email_address)
 
 
+# Function passed in as a filter to the tar command to keep tar as clean as possible
 def exclude_files(tarinfo):
     file_name = os.path.basename(tarinfo.name)
     exclude = [".git", ".github", ".gitignore", ".travis.yml", ".asf.yaml", ".golangci.yml", ".helmignore", "LICENSE",
@@ -87,6 +90,7 @@ def exclude_files(tarinfo):
     return tarinfo
 
 
+# Setup base for the source code tar ball with release repo files
 def setup_base_dir(release_top_path, helm_path, base_path, version):
     print("setting up base dir for release artifacts, path: %s" % base_path)
     if os.path.exists(base_path):
@@ -127,17 +131,17 @@ def copy_helm_charts(helm_path, base_path, version):
 def replace(file_path, pattern, subst):
     # Create temp file
     fh, abs_path = mkstemp()
-    with fdopen(fh, 'w') as new_file:
+    with os.fdopen(fh, 'w') as new_file:
         with open(file_path) as old_file:
             for line in old_file:
                 new_line = re.sub(pattern, subst, line)
                 new_file.write(new_line)
     # Copy the file permissions from the old file to the new file
-    copymode(file_path, abs_path)
+    shutil.copymode(file_path, abs_path)
     # Remove original file
-    remove(file_path)
+    os.remove(file_path)
     # Move new file
-    move(abs_path, file_path)
+    shutil.move(abs_path, file_path)
 
 
 def download_sourcecode(base_path, repo_meta):
@@ -228,6 +232,7 @@ def update_sha(release_base, repo_list, sha):
             switcher.get(repo_name)(repo_name, os.path.join(release_base, repo_meta["alias"]), sha)
 
 
+# Write the checksum for the source code tarball to file
 def write_checksum(tarball_file, tarball_name):
     print("generating sha512 checksum file for tar")
     h = hashlib.sha512()
@@ -248,9 +253,14 @@ def write_checksum(tarball_file, tarball_name):
     print("sha512 checksum: %s" % sha)
 
 
+# Sign the source archive if an email is provided
 def call_gpg(tarball_file, email_address):
-    print("Signing file using email: %s" % email_address)
-    subprocess.call(['gpg',
+    cmd = shutil.which("gpg")
+    if not cmd:
+        print("gpg not found on the path, not signing package")
+        return
+    print("Signing source code file using email: %s" % email_address)
+    subprocess.call([cmd,
                      '--local-user',
                      email_address,
                      '--armor',
@@ -260,6 +270,41 @@ def call_gpg(tarball_file, email_address):
                      tarball_file])
 
 
+# Package the helm chart and sign if an email is provided
+def call_helm(staging_dir, base_path, version, email_address):
+    cmd = shutil.which("helm")
+    if not cmd:
+        print("helm not found on the path, not creating package")
+        return
+    release_helm_path = os.path.join(base_path, "helm-charts/yunikorn")
+    command = [cmd, 'package']
+    if email_address:
+        secring = os.path.expanduser('~/.gnupg/secring.gpg')
+        if os.path.isfile(secring):
+            print("Packaging helm chart, signed with: %s" % email_address)
+            command.extend(['--sign', '--key', email_address, '--keyring', secring])
+        else:
+            print("Packing helm chart (unsigned)\nFile with pre gpg2 keys not found, expecting: %s" % secring)
+            email_address = None
+    else:
+        print("Packaging helm chart (unsigned)")
+    command.extend([release_helm_path, '--destination', staging_dir])
+    subprocess.call(command)
+    if not email_address:
+        helm_package = "yunikorn-" + version + ".tgz"
+        helm_pack_path = os.path.join(staging_dir, helm_package)
+        h = hashlib.sha256()
+        # read the file and generate the sha
+        with open(helm_pack_path, 'rb') as file:
+            while True:
+                data = file.read(65536)
+                if not data:
+                    break
+                h.update(data)
+        print("Helm package digest: %s  %s\n" % (h.hexdigest(), helm_package))
+
+
+# Print the usage info
 def usage(script):
     print("%s [--sign=<email>]" % script)
     sys.exit(2)
