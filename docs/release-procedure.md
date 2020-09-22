@@ -49,8 +49,11 @@ Simplified release procedure:
 7. Voting and releasing the candidate
 
 ## Tag and update release for version
-A release needs to be tagged in git before proceeding. This triggers required updates in the go mod files for the branch.
+Branching and tagging can, and in most cases will, require changes in the go mod files.
+Branching is part of the release preparation and often has happened some time before the release process starts. 
+A release needs to be tagged in git before starting the release process.
 As an example check [YUNIKORN-358](https://issues.apache.org/jira/browse/YUNIKORN-358).
+Release candidates and final release use the same tag which gets moved if a new release candidate is generated. 
 
 The tagging is multi step process, all actions are done on the branch that will be released, like `branch-0.8`:
 1. Tag the web and scheduler interface with the release tag.
@@ -63,12 +66,12 @@ Add the tag and commit the changes.
 In the release artifacts a [CHANGELOG](../release-top-level-artifacts/CHANGELOG) is added for each release.
 The CHANGELOG should contain the list of jiras fixed in the release.
 Follow these steps to generate the list:
-* Go to the [releases page in jira](https://issues.apache.org/jira/projects/YUNIKORN?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=released-unreleased)
-* Click on the version that is about to be released, i.e. `0.8`
-* Click on the `Release Notes` link on the top of the page
-* Click the button `Configure Release Notes`
-* Select the style `Text` and click `create`
-* Scroll to the bottom of the page and copy the content of the text area and update the [CHANGELOG](../release-top-level-artifacts/CHANGELOG) file.
+- Go to the [releases page in jira](https://issues.apache.org/jira/projects/YUNIKORN?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=released-unreleased)
+- Click on the version that is about to be released, i.e. `0.8`
+- Click on the `Release Notes` link on the top of the page
+- Click the button `Configure Release Notes`
+- Select the style `Text` and click `create`
+- Scroll to the bottom of the page and copy the content of the text area and update the [CHANGELOG](../release-top-level-artifacts/CHANGELOG) file.
 
 ## Run the release tool
 A tool has been written to handle most of the release tasks.
@@ -117,9 +120,9 @@ shasum -a 512 -c apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512
 
 ## Upload Release Candidate Artefacts
 The release artefacts consist of three parts:
-* source tarball
-* signature file
-* checksum file
+- source tarball
+- signature file
+- checksum file
 The three artefacts need to be uploaded to: `https://dist.apache.org/repos/dist/dev/incubator/yunikorn/` 
 
 Create a release directory based on the version, i.e. `0.8.0`, add the three files to directory.
@@ -157,14 +160,32 @@ VERSION=0.8.0; DOCKER_USERNAME=<name>; DOCKER_PASSWORD=<password>; make push
 Publish an announcement email to the `dev@yunikorn.apache.org` email list. 
 
 ### Release Helm Charts
-- Create a release branch for the target release in this release repo
-- Package the charts: 
+This step is part of the release tool if the release tool is used the packaging can be skipped.
+
+If the release tool is **not** used the `Chart.yaml` and the `values.yaml` must be updated manually.
+The other option is to run the helm script against the generated source directory as the tool does: 
 ```shell script
-helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} helm-charts/yunikorn --destination .
+helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} staging/<release-dir>/helm-charts/yunikorn --destination staging/ 
 ```
-Fore more information please check [Helm documentation](https://helm.sh/docs/topics/provenance/)
-- upload the packaged chart to the release in this repository
-- update the [index.yaml](https://github.com/apache/incubator-yunikorn-release/blob/gh-pages/index.yaml) file in the gh-pages branch with the new release
+Signing the helm package requires a legacy PGP keyring. The PGP v2 keyring must be converted to the legacy format.
+For more information please check [Helm documentation](https://helm.sh/docs/topics/provenance/).
+Helm charts should be signed on release.
+Contrary to the source code tar ball signing, signing the helm charts requires manual entry of the key password. 
+
+The helm package will generate two files:
+- helm package: example `yunikorn-0.8.0.tgz`
+- provenance or signature file: example `yunikorn-0.8.0.tgz.prov`
+Both files should be attached to the [release in GIT](#Create-the GIT-releases) for the release repository.
+
+Last step is to update the [index.yaml](https://github.com/apache/incubator-yunikorn-release/blob/gh-pages/index.yaml) file in the `gh-pages` branch with the new release.
+The `digest` mentioned in the index.yaml file is the digest that gets printed by the tool (unsigned package) or stored in the provenance file.
+It can be generated manually using:
+```shell script
+shasum -a 256 yunikorn-0.8.0.tgz
+```
+
+Note: do not use the `helm repo index` command to update the `index.yaml` file. The command does not handle the enhanced information stored in the `index.yaml` file nicely.
+Update the file manually.
 
 ### Update the website
 - Create a new documentation version on YuniKorn website based on the latest content in [docs](https://github.com/apache/incubator-yunikorn-site/tree/master/docs) directory. Refer to [this](https://github.com/apache/incubator-yunikorn-site/tree/master#release-a-new-version) guide to create the new documentation. 
@@ -178,10 +199,11 @@ The signature and checksum links must point to the release location.
 ### Create the GIT releases
 In the GIT repositories finish the release process by creating a release based on the git tag that was added.
 Repeat these steps for all five repositories (core, k8shim, web, scheduler-interface and release):
-* Go to the `tags` page
-* click the `...` behind the tag that you want to release, select `Create Release` from the drop down
-* update the name and note
-* click `Publish Release` to finish the steps
+- Go to the `tags` page
+- click the `...` at the right-hand side of the page that you want to release, select `Create Release` from the drop down
+- update the name and note
+- add the packaged helm chart files (incubator-yunikorn-release repository only)
+- click `Publish Release` to finish the steps
 
 ## Verify the release
 After the whole procedure verify the documentation on the website and that the released artifacts can be downloaded.

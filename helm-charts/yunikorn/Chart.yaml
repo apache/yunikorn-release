@@ -15,7 +15,7 @@
 # limitations under the License.
 
 apiVersion: v1
-appVersion: "0.8.0"
+appVersion: "latest"
 description: YuniKorn scheduler for Kubernetes
 name: yunikorn
-version: 0.8.0
+version: latest
