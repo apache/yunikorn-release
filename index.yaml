@@ -28,7 +28,7 @@ entries:
       icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/static/img/logo/yunikorn_classic_logo.png
       maintainers:
         - email: dev@yunikorn.apache.org
-        - name: Developers mailing list
+          name: Developers mailing list
       sources:
         - https://github.com/apache/incubator-yunikorn-core
         - https://github.com/apache/incubator-yunikorn-k8shim
@@ -47,7 +47,7 @@ entries:
       icon: https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/static/img/logo/yunikorn_classic_logo.png
       maintainers:
         - email: dev@yunikorn.apache.org
-        - name: Developers mailing list
+          name: Developers mailing list
       sources:
         - https://github.com/apache/incubator-yunikorn-core
         - https://github.com/apache/incubator-yunikorn-k8shim
