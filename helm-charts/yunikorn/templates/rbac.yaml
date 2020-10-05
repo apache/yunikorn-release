@@ -17,7 +17,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: yunikorn-admin
+  name: {{ .Values.serviceAccount }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
@@ -32,7 +32,7 @@ metadata:
     "helm.sh/hook-weight": "1"
 subjects:
   - kind: ServiceAccount
-    name: yunikorn-admin
+    name: {{ .Values.serviceAccount }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
