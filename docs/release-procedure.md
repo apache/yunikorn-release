@@ -61,6 +61,7 @@ The tagging is multi step process, all actions are done on the branch that will 
 Add the tag and commit the changes.
 3. Update the `go.mod` file in the shim using `go get github.com/apache/incubator-yunikorn-scheduler-interface` and  
 `go get github.com/apache/incubator-yunikorn-core`. Add the tag and commit the changes.
+4. Create a new branch in the yunikorn-release repo, set the correct chart version in [Chart.yaml](../helm-charts/yunikorn/Chart.yaml), and then create the tag.
 
 ## Update the CHANGELOG
 In the release artifacts a [CHANGELOG](../release-top-level-artifacts/CHANGELOG) is added for each release.
