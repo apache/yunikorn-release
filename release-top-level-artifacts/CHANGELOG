@@ -15,6 +15,202 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 0.10
+
+** Sub-task
+    * [YUNIKORN-24] - Fix the UT compatibility issue with GO 1.13.x in K8shim repo
+    * [YUNIKORN-170] - Create YuniKorn App CRD
+    * [YUNIKORN-204] - Implement basic controller logic
+    * [YUNIKORN-256] - remove error as a return from SendEvent
+    * [YUNIKORN-265] - Include CRD registration into Helm charts
+    * [YUNIKORN-268] - When deleting a deployment the application is not deleted from the shim cache
+    * [YUNIKORN-294] - Add e2e test to verify app CRD
+    * [YUNIKORN-297] - move doc images to relative URLs
+    * [YUNIKORN-313] - Create release notes for 0.9.0
+    * [YUNIKORN-314] - App CRD definition should support root.default format
+    * [YUNIKORN-319] - Simplify the README doc in github repos
+    * [YUNIKORN-324] - Add rest API to retrieve cluster resource utilization
+    * [YUNIKORN-326] - Add rest API to retrieve cluster nodes resource utilization
+    * [YUNIKORN-330] - Update Download page when the new release is available
+    * [YUNIKORN-331] - Reduce the verbosity of the logs when predicate fails
+    * [YUNIKORN-333] - Reduce the number events published to K8s event system when predicate fails
+    * [YUNIKORN-346] - Register the CRD programatically if it is turned on
+    * [YUNIKORN-349] - Remove installCRD option during helm install for e2e test
+    * [YUNIKORN-353] - Disable version alert for older versions
+    * [YUNIKORN-357] - Show error message when APIs are not available
+    * [YUNIKORN-369] - Set default go version to 1.15
+    * [YUNIKORN-374] - Use compatible GRPC version in core
+    * [YUNIKORN-375] - Use compatible Prometheus client library in the core repo
+    * [YUNIKORN-376] - Update K8s dependency to 1.16 in k8shim repo
+    * [YUNIKORN-377] - Re-generate app CRD APIs and client libraries
+    * [YUNIKORN-382] - Update kubectl in dockerfile to comply with the support policy
+    * [YUNIKORN-386] - Pass applicationID for spark pods
+    * [YUNIKORN-392] - Generate v0.9.0 doc on the website
+    * [YUNIKORN-393] - Push latest 0.9.0 docker images to docker hub
+    * [YUNIKORN-395] - Clean up the old docs in core/shim/web/scheduler-interface repos
+    * [YUNIKORN-400] - Add doc about the helm chart install options
+    * [YUNIKORN-401] - Create 0.9.0 helm chart release
+    * [YUNIKORN-402] - Make sure when there is no allocation in an app, the app state is "Waiting".
+    * [YUNIKORN-409] - Fix the text in the help dialog
+    * [YUNIKORN-414] - Add "partitions" REST API to fetch list of partitions
+    * [YUNIKORN-420] - Add TaskGroup field in app-CRD
+    * [YUNIKORN-421] - Define app gang scheduling info in API package
+    * [YUNIKORN-428] - Reduce the warning logs in resources.go
+    * [YUNIKORN-429] - Set default logging level to INFO
+    * [YUNIKORN-439] - Parse taskGroup info from pod annotation
+    * [YUNIKORN-444] - Add tracer implementation for scheduling process  in the core
+    * [YUNIKORN-448] - Create a docker image to simulate app that requires gang scheduling
+    * [YUNIKORN-450] - Better representation of memory and vcores in yunikorn web
+    * [YUNIKORN-451] - Fix application CRD definition
+    * [YUNIKORN-453] - Add taskGroup info to apps/tasks
+    * [YUNIKORN-456] - Add ENV var to disable the reservation
+    * [YUNIKORN-458] - Retrieve app taskGroups from pod spec
+    * [YUNIKORN-459] - Implement the placeholder cleanup in PlaceholderManager
+    * [YUNIKORN-460] - Handle app reservation timeout
+    * [YUNIKORN-469] - Implement recycling service in PlaceholderManager that cleans up orphan placeholders
+    * [YUNIKORN-476] - Implement container swapping logic in the scheduler core
+    * [YUNIKORN-478] - Handle app completion at the shim side
+    * [YUNIKORN-484] - Handle the app completion in the core side
+    * [YUNIKORN-497] - handle placeholder pod recovery
+    * [YUNIKORN-500] - Make sure placeholder/taskGroupName are passed back to the core
+    * [YUNIKORN-501] - Include node-selector and tolerations in the placeholder's pod spec
+    * [YUNIKORN-505] - Improve UT coverage on core side after YUNIKORN-476
+    * [YUNIKORN-506] - Dependency update after YUNIKORN-476
+    * [YUNIKORN-509] - Simplify the gangDeploy.sh
+    * [YUNIKORN-510] - Remove the sleep in placeholder manager stop function
+    * [YUNIKORN-512] - Remove some useless log messages
+    * [YUNIKORN-518] - Placeholder manager failed to init during scheduler recovery
+    * [YUNIKORN-519] - Cleanup placeholders when the app is Completed
+    * [YUNIKORN-520] - Gang scheduling waits indefinitely for placeholder pod allocation even where is no quota left in the queue
+    * [YUNIKORN-521] - Placeholder pods are not cleaned up even when the job is deleted
+    * [YUNIKORN-528] - Nil pointer exception while getting both termination and delete pod event
+    * [YUNIKORN-530] - scheduler-core repo: migrate to github action
+    * [YUNIKORN-531] - K8shim repo: migrate to github action
+    * [YUNIKORN-532] - Allow app ID re-use if the app has finished
+    * [YUNIKORN-534] - Fix for mixed content blocker issue in Yunikorn UI
+    * [YUNIKORN-538] - Scheduler is unable to recovery from a restart
+    * [YUNIKORN-547] - Move TerminationType out of the AllocationRelease message
+    * [YUNIKORN-555] - Rename scheduling parameter placeholderTimeout to placeholderTimeoutInSeconds
+    * [YUNIKORN-559] - Placeholder pods must be running as a non-root user
+    * [YUNIKORN-562] - Support add labels/annotations to taskGroup
+    * [YUNIKORN-565] - Remove the WARN log when placeholderTimeout is not defined in taskGroups
+    * [YUNIKORN-574] - Wait for placeholder cleanup
+    * [YUNIKORN-575] - Skip creating placeholders for the completed apps post restart
+    * [YUNIKORN-579] - Handle release allocation/ask events under Failing state
+
+
+
+** Bug
+    * [YUNIKORN-26] - Pass application end state to the core
+    * [YUNIKORN-103] - Web UI shows the applications as Runnnig, even if they are in Pending state
+    * [YUNIKORN-114] - Clone the shallow clone version of protobuf repo
+    * [YUNIKORN-202] - race detected in TestBasicSchedulerAutoAllocation
+    * [YUNIKORN-230] - Incorrect application state returned for "ws/v1/apps" REST call
+    * [YUNIKORN-248] - Remove VolumesPlugin from the core
+    * [YUNIKORN-269] - Editing yunikorn configmaps fails with host "yunikorn-service.yunikorn.svc" resolution error
+    * [YUNIKORN-285] - Lint check doesn't work on branch-0.9
+    * [YUNIKORN-335] - Invalid config validation and config schema checks for unsupported config properties
+    * [YUNIKORN-352] - when child queue capacity greater than parent, the configmap update is rejected but not notified to end user
+    * [YUNIKORN-381] - Improve Get Involved docs page in YuniKorn website
+    * [YUNIKORN-389] - Intermittent build failure on shim with Go 1.12
+    * [YUNIKORN-390] - SIGSEGV if parent queue does not exist for tag rule
+    * [YUNIKORN-398] - Document namespace based tags
+    * [YUNIKORN-399] - website publishing fails due to docusaurus build failure
+    * [YUNIKORN-404] - Config update breaks when there is upper case queue names
+    * [YUNIKORN-412] - Change logo url in index.yaml
+    * [YUNIKORN-424] - Fix nonstandard title grammar for the markdown file
+    * [YUNIKORN-433] - Extend configwatcher expiration time in case of a new update
+    * [YUNIKORN-434] - Scheduler crashes when the queueName in pod spec doesn't contain DOT
+    * [YUNIKORN-435] - Admission-Controller pod goes into pending state because of default serviceAccount
+    * [YUNIKORN-436] - serviceAccount is hardcoded in rbac.yaml
+    * [YUNIKORN-438] - Move informers synch call to the beginning of scheduler start
+    * [YUNIKORN-447] - Remove wrong error message from admission_controller.go
+    * [YUNIKORN-464] - Fix the dead image links in perf doc
+    * [YUNIKORN-465] - scheduler health check REST API
+    * [YUNIKORN-466] - Node capacity update does not update root queue or partition
+    * [YUNIKORN-467] - e2e tests in shim test against k8s 1.18
+    * [YUNIKORN-475] - Move shim build to core without cache
+    * [YUNIKORN-477] - Include K8s 1.18 to e2e test matrix
+    * [YUNIKORN-480] - root queue max resource gets reset on config load
+    * [YUNIKORN-481] - deadlock when removing allocation ask
+    * [YUNIKORN-485] - docker file using go based image
+    * [YUNIKORN-494] - Rename the AllocationRelease Request and Response in core
+    * [YUNIKORN-496] - Connection errors on 9080 port in the e2e test
+    * [YUNIKORN-499] - UT failed because of data race in TestApplicationScheduling
+    * [YUNIKORN-513] - ApplicationState remains in Accepted after recovery
+    * [YUNIKORN-514] - Intermittent issues in e2e tests after YUNIKORN-317
+    * [YUNIKORN-524] - auto-push for web content fails
+    * [YUNIKORN-525] - Update Application states doc
+    * [YUNIKORN-535] - Go mod file cleanup
+    * [YUNIKORN-537] - log spam in CalculateAbsUsedCapacity
+    * [YUNIKORN-539] - helm v3.5.2 can't install yunikorn
+    * [YUNIKORN-542] - Application Submission time is not in nano seconds
+    * [YUNIKORN-548] - Allow AppID reuse after the app is completed
+    * [YUNIKORN-550] - taskgroup cpu and memory resources are not scaled correctly
+    * [YUNIKORN-551] - node removal races for lock during scheduling
+    * [YUNIKORN-557] - change log level for ambiguous sync failure message
+    * [YUNIKORN-567] - Queue resources are not cleaned up after placeholder cleanup
+    * [YUNIKORN-572] - terminated app move causes deadlock
+    * [YUNIKORN-577] - Correctly handle ask releases on TIMEOUT
+    * [YUNIKORN-578] - support dynamic queues with namespace tagged quota and task group
+    * [YUNIKORN-584] - App recovery is skipped when applicationID is not set in pods' label
+
+
+
+** New Feature
+    * [YUNIKORN-2] - Support Gang Scheduling
+    * [YUNIKORN-201] - [Umbrella] Application tracking API and CRD - phase 1
+    * [YUNIKORN-320] - [Umbrella] YuniKorn web UI refurbishment
+    * [YUNIKORN-365] - upgrade go to 1.15
+    * [YUNIKORN-366] - Add rest API to update queue configuration
+    * [YUNIKORN-373] - [umbrella] Upgrade Kubernetes dependency to 1.16
+    * [YUNIKORN-378] - Update MiniKube to Minikube as per naming pattern
+    * [YUNIKORN-419] - Add helm packaging to the release tool
+    * [YUNIKORN-483] - Handle app completion
+    * [YUNIKORN-529] - Migrate CI/CD to github actions
+
+** Improvement
+    * [YUNIKORN-77] - De-dup event queue methods inside yunikorn-core, and improve logs
+    * [YUNIKORN-177] - SchedulerName doesn't need to be configurable
+    * [YUNIKORN-227] - Include ask tags exposed via REST API
+    * [YUNIKORN-273] - Expose an API to dump yunikorn configuration for debugging purpose
+    * [YUNIKORN-283] - Support query params to filter the apps using queue name/namespace for v1/apps endpoint
+    * [YUNIKORN-302] - flaky reservation tests caused by timing issue
+    * [YUNIKORN-310] - [Umbrella] YuniKorn web-site improvements
+    * [YUNIKORN-315] - use resources.DAOString in handler instead of trim
+    * [YUNIKORN-317] - Cache/Scheduler modules need to be combined to a single module
+    * [YUNIKORN-380] - Deploying YUNIKORN 0.9 RC2 on Minikube 1.3.1 results in port conflict
+    * [YUNIKORN-397] - Makefile should use go version from go.mod
+    * [YUNIKORN-426] - Refactor Spark deployment demo to remove some hardcode
+    * [YUNIKORN-449] - Add predicates.MatchNodeSelectorPred to reservation list
+    * [YUNIKORN-461] - Remove allocations map from the partition
+    * [YUNIKORN-479] - Gap in 'Deploy to kubernetes' documentation in website
+    * [YUNIKORN-511] - Support to run e2e tests on local macbook
+    * [YUNIKORN-527] - Update shim side dependency for master and branch-0.10
+    * [YUNIKORN-546] - Update roadmap doc
+    * [YUNIKORN-549] - Scheduler recovery failure occasionally while recovering a large number of applications
+    * [YUNIKORN-564] - Improve the upscaling performance for StateAware policy
+
+** Test
+    * [YUNIKORN-344] - Add tests for queue quota management
+    * [YUNIKORN-356] - Add e2e tests for state aware app scheduling
+    * [YUNIKORN-411] - Refactor test code configs
+    * [YUNIKORN-427] - Add e2e tests and supporting libs for predicates
+
+
+** Task
+    * [YUNIKORN-246] - Travis CI: Build the docker image locally and use those images for e2e tests
+    * [YUNIKORN-296] - cleanup documents from all but release repo
+    * [YUNIKORN-308] - Document the behavior of queue quota incase of hierarchical queues
+    * [YUNIKORN-309] - Document the behavior of yunikorn queue quota when k8s resource quota is also turned on
+    * [YUNIKORN-318] -  Admission controller deployment is not using the imagepullsecrets provided by helm charts
+    * [YUNIKORN-342] - Data race in QueueInfo#addChildQueue
+    * [YUNIKORN-368] - Pass namespace's parentQueue annotation to application tag
+    * [YUNIKORN-432] - Fix broken links in get_involved.md
+    * [YUNIKORN-437] - Adherence to new distribution guidelines
+    * [YUNIKORN-445] - Panic in Resource.String() with nil resource
+    * [YUNIKORN-446] - Place Yunikorn logo under https://apache.org/logos/#
+    * [YUNIKORN-454] - Update web UI port documentation in the yunikorn website master version
+    * [YUNIKORN-507] - Add git version pre-requisite in the build guide
+    * [YUNIKORN-523] - fix corrupt logo (svg format)
+    * [YUNIKORN-536] - Add resource requests/limits for the admission-controller
