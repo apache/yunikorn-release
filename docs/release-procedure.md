@@ -145,6 +145,10 @@ Once the voting is passed, move the release artefacts from the staging area to t
 Once moved to this space, the content will be automatically synced to `https://downloads.apache.org/incubator/yunikorn/` which must be used as the final location for release files.
 Read more for [location of files on main server](https://infra.apache.org/mirrors#location).
 
+This will temporarily provide us with two releases in the release area.
+This is needed to allow the start the mirror sync process and allow for the download page to be updated.
+Cleanup of the older release is handled after the website has been updated in the [cleanup](#Cleanup). 
+
 ### Release Docker images
 The standard build process should be used to build the image.
 Run a `make image` in the `web`, and `k8shim` repositories to generate the three images required (web, scheduler and admission-controller):
@@ -194,8 +198,27 @@ Update the file manually.
 - Update the [download page](https://github.com/apache/incubator-yunikorn-site/tree/master/src/pages/community/download.md) of the website.
 
 The release announcement are linked to the release details on the download page.
-The download links on the page must use the mirror resolution link for the source tar ball only.
-The signature and checksum links must point to the release location.
+
+Links for the releases have to follow these rules:
+* The first download link on the page **must** use the mirror resolution link for the source tar ball only.
+* The signature and checksum links **must** point to the release location.
+* The non-current releases **must** use the archive links: `https://archive.apache.org/dist/incubator/yunikorn/` for the tar ball, the signature and the checksum.
+
+A limited set of three (3) or four (4) releases should be maintained in the table for direct access.
+Older releases not mentioned in the table can still be accessed via the archive link on the bottom of the page and do not need to be referenced.
+
+### Cleanup
+NOTE: this step should be performed after the website updates have been made as the download links change.
+
+There should only be one release, the latest, in the release area.
+Any release that has been in the release area will be automatically copied to the archive. 
+Older releases should be downloaded from the archive directly, not from the release area.
+
+The releases need to clean up in two locations:
+* Remove the newly released version from the _dev_ area by removing the old release candidate directory.
+  For the location see [release candidate location](#Upload-Release-Candidate-Artefacts)
+* Remove the non-current release from the _release_ area by removing the old release directory.
+  For the location see [release location](#Publish-the-Release)
 
 ### Create the GIT releases
 In the GIT repositories finish the release process by creating a release based on the git tag that was added.
