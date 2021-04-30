@@ -93,14 +93,15 @@ like the default scheduler, in the cluster: [Co-existing with other K8s schedule
  
 #### Verified K8s versions 
 
-| K8s Version   | Support?  |
-| ------------- |:-------------:|
-| 1.12.x (or earlier) | X |
-| 1.13.x | √ |
-| 1.14.x | √ |
-| 1.15.x | √ |
-| 1.16.x | To be verified |
-| 1.17.x | To be verified |
+| K8s Version   | Supported from version | Support ended |
+| ------------- |:-------------:| :-------------:|
+| 1.12.x (or earlier) | - | - |
+| 1.13.x | 0.8.0 | 0.10.0 |
+| 1.14.x | 0.8.0 | 0.10.0 |
+| 1.15.x | 0.8.0 | 0.10.0 |
+| 1.16.x | 0.10.0 | ? |
+| 1.17.x | 0.10.0 | ? |
+| 1.18.x | 0.10.0 | ? |
 
 ### Web UI
 
