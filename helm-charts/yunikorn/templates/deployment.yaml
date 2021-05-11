@@ -69,6 +69,8 @@ spec:
               value: "{{ .Values.admission_controller_image.pullPolicy }}"
             - name: ADMISSION_CONTROLLER_IMAGE_PULL_SECRETS
               value: "{{ .Values.ImagePullSecrets }}"
+            - name: USER_LABEL_KEY
+              value: "{{ .Values.UserLabelKey }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
