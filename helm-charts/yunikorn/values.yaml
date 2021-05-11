@@ -21,6 +21,8 @@ replicaCount: 1
 
 imagePullSecrets:
 
+userLabelKey: "yunikorn.apache.org/username"
+
 serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
