@@ -84,21 +84,21 @@ spec:
                         additionalProperties:
                           type: string
                       tolerations:
-                         type: array
-                         items:
-                           type: object
-                           properties:
-                             effect:
-                               type: string
-                           key:
-                             type: string
-                           operator:
-                             type: string
-                           value:
-                             type: string
-                           tolerationSeconds:
-                             format: int64
-                             type: integer             
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            effect:
+                              type: string
+                            key:
+                              type: string
+                            operator:
+                              type: string
+                            value:
+                              type: string
+                            tolerationSeconds:
+                              format: int64
+                              type: integer             
             status:
               type: object
               properties:
@@ -114,3 +114,4 @@ spec:
       subresources:
     # status enables the status subresource.
         status: {}
+
