@@ -43,10 +43,10 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 
 | K8s Version   | Support?  |
 | ------------- |:-------------:|
-| 1.15.x (or earlier) | X |
-| 1.16.x | √ |
+| 1.16.x (or earlier) | X |
 | 1.17.x | √ |
 | 1.18.x | √ |
+| 1.19.x | √ |
 
 ## Installing the chart
 ```
