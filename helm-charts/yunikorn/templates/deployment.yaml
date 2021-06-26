@@ -86,9 +86,6 @@ spec:
               postStart:
                 exec:
                   command: ["/bin/sh", "/admission_util.sh", "create"]
-              preStop:
-                exec:
-                  command: ["/bin/sh", "/admission_util.sh", "delete"]
           {{ end }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
