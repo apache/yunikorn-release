@@ -71,6 +71,8 @@ spec:
               value: "{{ .Values.ImagePullSecrets }}"
             - name: USER_LABEL_KEY
               value: "{{ .Values.UserLabelKey }}"
+            - name: OPERATOR_PLUGINS
+              value: "{{ .Values.operatorPlugins }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
