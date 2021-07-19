@@ -23,6 +23,8 @@ imagePullSecrets:
 
 userLabelKey: "yunikorn.apache.org/username"
 
+operatorPlugins: "general"
+
 serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
