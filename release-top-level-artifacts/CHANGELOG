@@ -15,6 +15,130 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+
+Release Notes - Apache YuniKorn - Version 0.11
+
+** Sub-task
+    * [YUNIKORN-383] - Improve code coverage for application_events.go
+    * [YUNIKORN-415] - Add "queues" REST API to fetch list of queues
+    * [YUNIKORN-416] - Add "applications" REST API to fetch list of applications
+    * [YUNIKORN-417] - Add "nodes" REST API to fetch list of nodes
+    * [YUNIKORN-418] - Add "config" REST API
+    * [YUNIKORN-487] - Remove protobuf v2 syntax from interface spec
+    * [YUNIKORN-488] - update protobuf and protoc versions
+    * [YUNIKORN-489] - remove unused message definitions
+    * [YUNIKORN-490] - generate the SchedulerAPI and callback interface from the SI
+    * [YUNIKORN-515] - Documentation changes for all Redesigned API's
+    * [YUNIKORN-545] - JSON based API error responses
+    * [YUNIKORN-556] - Expose pod level events when an app is failed in scheduling
+    * [YUNIKORN-566] - Gang scheduling Design doc
+    * [YUNIKORN-569] - Display pod namespace/name for the allocations on the apps/nodes page
+    * [YUNIKORN-571] - Add a label to the placeholder pods the selector
+    * [YUNIKORN-573] - Make sure all timer go routines are stopped after removing an app
+    * [YUNIKORN-580] - Check if the placeholders and real resources are the same
+    * [YUNIKORN-582] - Consider a fallback mechanism to schedule the app in case of gang failure instead of marking the app as failed
+    * [YUNIKORN-585] - Create a Failing app state in shim side
+    * [YUNIKORN-586] - Enhance placeholder cleanup on timeout
+    * [YUNIKORN-598] - Remove applicationID from allocations list
+    * [YUNIKORN-606] - Pull-request-template for yunikorn-web
+    * [YUNIKORN-607] - Pull-request-template for yunikorn-core
+    * [YUNIKORN-608] - Pull-request-template for yunikorn-k8shim
+    * [YUNIKORN-609] - Pull-request-template for yunikorn-scheduler-interface
+    * [YUNIKORN-615] - Remove nodeID and partition from allocation list for nodes
+    * [YUNIKORN-617] - Update the copyright years in NOTICE file
+    * [YUNIKORN-626] - The dashboard view has lags or stops responding after window resizing
+    * [YUNIKORN-627] - The container history graph does not go down when pods are gone
+    * [YUNIKORN-628] - Publish a pod event to indicate the task is being gang scheduling
+    * [YUNIKORN-632] - Add apache headers to generated files
+    * [YUNIKORN-634] - Update the website for v0.10
+    * [YUNIKORN-636] - Shim side changes of YUNIKORN-490
+    * [YUNIKORN-637] - Core side changes of YUNIKORN-490
+    * [YUNIKORN-639] - enhanced StateAware gang scheduling
+    * [YUNIKORN-643] - Improve the spark-k8s-operator app mgmt plugin to better handling Spark CRDs
+    * [YUNIKORN-646] - Add metrics implementation: "allocating_latency_seconds"
+    * [YUNIKORN-650] - Retrieve user identity from predefined labels
+    * [YUNIKORN-651] - Add document to explain how to define user identity
+    * [YUNIKORN-652] - Update ACL doc after the user identity related changes
+    * [YUNIKORN-658] - default user should not be nobody
+    * [YUNIKORN-667] - Update user label key using helm-charts
+    * [YUNIKORN-670] - Update the e2e test coverage matrix
+    * [YUNIKORN-671] - Verify scheduler helm chart on K8s 1.19
+    * [YUNIKORN-672] - Verify predicates functions for K8s 1.19
+    * [YUNIKORN-674] - Admission controller could not be started on K8s 1.19
+    * [YUNIKORN-678] - Refactoring REST API re-design changes in handlers.go, handlers_test.go
+    * [YUNIKORN-679] - Add gangSchedulingStyle scheduling parameter
+    * [YUNIKORN-680] - Adopt redesigned "Partition" API
+    * [YUNIKORN-681] - Adopt redesigned "Queues" API
+    * [YUNIKORN-682] - Adopt redesigned "applications" API
+    * [YUNIKORN-683] - Adopt redesigned "nodes" API
+    * [YUNIKORN-688] - Create gangSchedulingStyle field for AddApplicationRequest
+    * [YUNIKORN-692] - Update supported K8s version matrix
+    * [YUNIKORN-695] - Code refactoring and reformatting in webapp
+    * [YUNIKORN-713] - Align YuniKorn core's scheduler metrics with queue metrics for total applications accepted
+    * [YUNIKORN-714] - Refactor YuniKorn core's scheduler metrics for application submission
+    * [YUNIKORN-724] - Cleaned-up placeholder allocations are still reported by Yunikorn
+    * [YUNIKORN-728] - Document Soft/Hard scheduling styles
+    * [YUNIKORN-730] - Create 0.11.0 helm chart release
+    * [YUNIKORN-731] - Create 0.11.0 release notes
+    * [YUNIKORN-732] - Create the docs release for v0.11
+    * [YUNIKORN-733] - Update shim and core dependencies on master branch
+    * [YUNIKORN-734] - Tag release 0.11.0 and update go mod files
+    * [YUNIKORN-735] - CLONE - Update the copyright years in NOTICE file
+    * [YUNIKORN-737] - [Helm chart] Update supported K8s versions
+    * [YUNIKORN-739] - Update the website for v0.11
+    * [YUNIKORN-740] - Update the CHANGELOG and generate the release
+    * [YUNIKORN-756] - Set default scheduling policy to Hard for gang scheduling
+
+
+
+** Bug
+    * [YUNIKORN-334] - Configmap updates are not consumed and updated for queues
+    * [YUNIKORN-405] - Extend Config update API with checksum validation
+    * [YUNIKORN-590] - GetPlaceholderTimeoutParam: undefined param is not an error
+    * [YUNIKORN-591] - move TaskGroupInstanceCountMap to its own file
+    * [YUNIKORN-600] - Placeholder manager needs to initialize the orphan pods map
+    * [YUNIKORN-631] - implement documented max resource behaviour
+    * [YUNIKORN-645] - metrics endpoint doesn't export any metrics
+    * [YUNIKORN-659] - update coding guidelines for imports
+    * [YUNIKORN-673] - Data race in kubeclient_mock
+    * [YUNIKORN-675] - Pod status update could fail due to conflicts
+    * [YUNIKORN-676] - App pending in one queue seems to block app scheduling on the other queue
+    * [YUNIKORN-677] - Potential resource leak when complete and allocate pod happens simultaneously
+    * [YUNIKORN-691] - move to different UUID library
+    * [YUNIKORN-696] - Helm chart does not support upgrade
+    * [YUNIKORN-699] - replace the UUID library in the shim repo
+    * [YUNIKORN-741] - Regression: occupied resources miscalculated sometimes for yunikorn pods
+
+
+** New Feature
+    * [YUNIKORN-553] - [Umbrella] Gang scheduling enhancements
+    * [YUNIKORN-605] - [Umbrella] Add a pull-request-template for YuniKorn repos
+    * [YUNIKORN-669] - [Umbrella] Kubernetes 1.19 support
+
+
+** Improvement
+    * [YUNIKORN-276] - Remove superseded messages from SI
+    * [YUNIKORN-413] - [Umbrella] Re-designing Yunikorn REST API's version 1
+    * [YUNIKORN-568] - [Umbrella] UI usability enhancements
+    * [YUNIKORN-622] - Replace deprecated apiVersion v1beta1
+    * [YUNIKORN-644] - Message is wrong when use rest api to edit config.
+    * [YUNIKORN-649] - [Umbrella] Improvements for user identity retrieval and ACLs
+    * [YUNIKORN-653] - Include node sorting policy in cluster REST API
+    * [YUNIKORN-655] - Add release manager to the release notes
+    * [YUNIKORN-657] - Expose reason of application failure to pods
+    * [YUNIKORN-660] - Remove old releases from release area
+    * [YUNIKORN-663] - Improve log messages in node.go
+    * [YUNIKORN-684] - Add why-yunikorn in the website home page
+    * [YUNIKORN-685] - Remove the overlapping content between the roadmap and the release notes
+    * [YUNIKORN-687] - Create a convenient link for community zoom meetings
+    * [YUNIKORN-694] - Small optimization for the website home page
+    * [YUNIKORN-727] - Run Spark example RBACs are missing NS in required loc
+
+
+
+** Task
+    * [YUNIKORN-348] - Document how to update documentation after move to docusaurus
+    * [YUNIKORN-486] - clean up scheduler interface
+    * [YUNIKORN-640] - Update index.md for gh-pages in release repo
+    * [YUNIKORN-662] - Remove landmark directories from web and shim
+    * [YUNIKORN-729] - [Umbrella] YuniKorn 0.11.0 release related efforts
