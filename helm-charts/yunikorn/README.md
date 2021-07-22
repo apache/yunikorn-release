@@ -52,7 +52,7 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 ```
 helm repo add yunikorn  https://apache.github.io/incubator-yunikorn-release
 helm repo update 
-helm install yunikorn/yunikorn
+helm install yunikorn yunikorn/yunikorn
 ```
 ## Configuration
 The following table lists the configurable parameters of the YuniKorn chart and their default values.
