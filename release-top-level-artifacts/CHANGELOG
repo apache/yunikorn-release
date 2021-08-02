@@ -108,6 +108,9 @@ Release Notes - Apache YuniKorn - Version 0.11
     * [YUNIKORN-696] - Helm chart does not support upgrade
     * [YUNIKORN-699] - replace the UUID library in the shim repo
     * [YUNIKORN-741] - Regression: occupied resources miscalculated sometimes for yunikorn pods
+    * [YUNIKORN-767] - Add license to mock_plugin_test.go
+    * [YUNIKORN-768] - License header missing on test file
+    * [YUNIKORN-773] - cleanup polyfills.ts comments
 
 
 ** New Feature
@@ -133,6 +136,7 @@ Release Notes - Apache YuniKorn - Version 0.11
     * [YUNIKORN-687] - Create a convenient link for community zoom meetings
     * [YUNIKORN-694] - Small optimization for the website home page
     * [YUNIKORN-727] - Run Spark example RBACs are missing NS in required loc
+    * [YUNIKORN-763] - Backport YUNIKORN-746
 
 
 
