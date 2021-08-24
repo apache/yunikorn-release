@@ -93,6 +93,6 @@ entries:
         - https://github.com/apache/incubator-yunikorn-web
       name: yunikorn
       urls:
-        - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.10.0/yunikorn-0.11.0.tgz
+        - https://github.com/apache/incubator-yunikorn-release/releases/download/v0.11.0/yunikorn-0.11.0.tgz
       version: 0.11.0
 generated: "2021-04-09T02:55:41.550038+08:00"
