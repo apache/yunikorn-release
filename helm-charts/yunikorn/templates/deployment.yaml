@@ -97,8 +97,9 @@ spec:
             httpGet:
               path: /ws/v1/scheduler/healthcheck
               port: {{ .Values.service.port }}
-            initialDelaySeconds: 20
-            periodSeconds: 600
+            initialDelaySeconds: {{ .Values.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.liveness.failureThreshold }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
           imagePullPolicy: {{ .Values.web_image.pullPolicy }}

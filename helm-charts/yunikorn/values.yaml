@@ -51,6 +51,11 @@ service:
   port: 9080
   port_web: 9889
 
+liveness:
+  periodSeconds: 600
+  failureThreshold: 1
+  initialDelaySeconds: 20
+
 resources:
   requests:
     cpu: 200m
