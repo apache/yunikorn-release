@@ -65,14 +65,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.serviceAccountName
-            - name: ADMISSION_CONTROLLER_IMAGE_REGISTRY
-              value: "{{ .Values.admission_controller_image.repository }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_TAG
-              value: "{{ .Values.admission_controller_image.tag }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_PULL_POLICY
-              value: "{{ .Values.admission_controller_image.pullPolicy }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_PULL_SECRETS
-              value: "{{ .Values.ImagePullSecrets }}"
             - name: USER_LABEL_KEY
               value: "{{ .Values.UserLabelKey }}"
             - name: OPERATOR_PLUGINS
@@ -87,12 +79,6 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/yunikorn/
-          {{ if .Values.embedAdmissionController }}
-          lifecycle:
-              postStart:
-                exec:
-                  command: ["/bin/sh", "/admission_util.sh", "create"]
-          {{ end }}
           livenessProbe:
             httpGet:
               path: /ws/v1/scheduler/healthcheck
