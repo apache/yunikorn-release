@@ -38,7 +38,7 @@ admission_controller_image:
   serviceAccountName: yunikorn-admin
   policyGroup: queues
   enableConfigHotRefresh: "true"
-  schedulerServiceName: yunikorn-service
+  schedulerServiceName: yunikorn-service.yunikorn.svc
 
 web_image:
   repository: apache/yunikorn
