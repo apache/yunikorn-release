@@ -1,0 +1,78 @@
+common:
+  kubeconfigfile: $HOME/.kube/config
+  schedulername: yunikorn
+  maxwaitseconds: 600
+  queue: root.default
+  namespace: default
+  outputrootpath: /tmp
+  podtemplatespec:
+    objectmeta:
+      annotations:
+        kubernetes.docker.network.type: HOST
+#  nodeselector: 'partition=blink-ut'
+  podspec:
+    hostnetwork: true
+    containers:
+      - name: curl-test
+        image: curlimages/curl
+        command: ['sh', '-c', 'sleep 3600']
+        imagepullpolicy: IfNotPresent
+#    nodeselector:
+#      partition: blink-ut
+    tolerations:
+      - key: "partition"
+        operator: "Equal"
+        value: "blink-ut"
+        effect: "NoSchedule"
+
+scenarios:
+  throughput:
+    schedulerNames:
+#      - yunikorn
+      - default-scheduler
+    showNumOfLastTasks: 0
+    cleanUpDelayMs: 0
+    cases:
+      - description: simple-case
+        requestConfigs:
+          - numPods: 50
+            repeat: 1
+            requestResources:
+              cpu: 100m
+              memory: 500Mi
+            limitResources:
+              cpu: 200m
+              memory: 1000Mi
+      - description: simple-case-2
+        requestConfigs:
+          - numPods: 50
+            repeat: 2
+            requestResources:
+              cpu: 100m
+              memory: 500Mi
+            limitResources:
+              cpu: 200m
+              memory: 1000Mi
+  e2e_perf:
+    showNumOfLastTasks: 3
+    cleanUpDelayMs: 0
+    cases:
+      - description: simple-case
+        schedulerName: default-scheduler
+        requestConfigs:
+          - numPods: 5
+            repeat: 2
+            requestResources:
+              cpu: 100m
+              memory: 500Mi
+            limitResources:
+              cpu: 200m
+              memory: 1000Mi
+  node_fairness:
+    schedulerNames:
+#      - yunikorn
+      - default-scheduler
+    cases:
+      - numPodsPerNode: 5
+        allocatePercentage: 80
+        resourceName: "cpu"
