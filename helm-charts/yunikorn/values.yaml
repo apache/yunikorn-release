@@ -29,12 +29,12 @@ serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
   tag: scheduler-latest
-  pullPolicy: Never
+  pullPolicy: Always
 
 admission_controller_image:
   repository: apache/yunikorn
   tag: admission-latest
-  pullPolicy: Never
+  pullPolicy: Always
   serviceAccountName: yunikorn-admin
   policyGroup: queues
   enableConfigHotRefresh: "true"
