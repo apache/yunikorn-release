@@ -59,8 +59,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: POLICY_GROUP
               value:  {{ .Values.admission_controller_image.policyGroup }}
-            - name: SCHEDULER_SERVICE_ADDRESS
-              value: {{ .Values.admission_controller_image.schedulerServiceName }}:{{ .Values.service.port }}
+            - name: SCHEDULER_SERVICE_NAME
+              value: {{ .Values.admission_controller_image.schedulerServiceName }}
+            - name: SCHEDULER_SERVICE_PORT
+              value: '{{ .Values.service.port }}'
             - name:  ENABLE_CONFIG_HOT_REFRESH
               value: 'true'
           lifecycle:
