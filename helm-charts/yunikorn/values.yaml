@@ -31,15 +31,6 @@ image:
   tag: scheduler-latest
   pullPolicy: Always
 
-admission_controller_image:
-  repository: apache/yunikorn
-  tag: admission-latest
-  pullPolicy: Always
-  serviceAccountName: yunikorn-admin
-  policyGroup: queues
-  enableConfigHotRefresh: "true"
-  schedulerServiceName: yunikorn-service
-
 web_image:
   repository: apache/yunikorn
   tag: web-latest

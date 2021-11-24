@@ -30,7 +30,7 @@ spec:
       labels:
         app: yunikorn
     spec:
-      serviceAccountName: {{ .Values.admission_controller_image.serviceAccountName }}
+      serviceAccountName: {{ .Values.admissionControllerImage.serviceAccountName }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- range .Values.imagePullSecrets }}
@@ -52,8 +52,8 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: yunikorn-admission-controller-webhook
-          image: {{ .Values.admission_controller_image.repository }}:{{ .Values.admission_controller_image.tag }}
-          imagePullPolicy: {{ .Values.admission_controller_image.pullPolicy }}
+          image: {{ .Values.admissionControllerImage.repository }}:{{ .Values.admissionControllerImage.tag }}
+          imagePullPolicy: {{ .Values.admissionControllerImage.pullPolicy }}
           ports:
             - containerPort: 9089
               name: webhook-api
@@ -74,33 +74,19 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: POLICY_GROUP
-              value:  {{ .Values.admission_controller_image.policyGroup }}
+              value:  {{ .Values.admissionControllerImage.policyGroup }}
             - name: SCHEDULER_SERVICE_NAME
-              value: {{ .Values.admission_controller_image.schedulerServiceName }}
+              value: {{ .Values.admissionControllerImage.schedulerServiceName }}
             - name: SCHEDULER_SERVICE_PORT
-              value: '{{ .Values.service.port }}'
+              value: '{{ .Values.admissionControllerImage.schedulerServicePort }}'
             - name:  ENABLE_CONFIG_HOT_REFRESH
               value: 'true'
           lifecycle:
-              postStart:
-                exec:
-                  command: ["/bin/sh", "/admission_util.sh", "create"]
+            postStart:
+              exec:
+                command: ["/bin/sh", "/admission_util.sh", "create"]
       dnsPolicy: ClusterFirstWithHostNet
       volumes:
         - name: webhook-tls-certs
           secret:
             secretName: webhook-server-tls
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: yunikorn-admission-controller-service
-  labels:
-    app: yunikorn
-spec:
-  ports:
-    - port: 443
-      targetPort: webhook-api
-  selector:
-    app: yunikorn
