@@ -37,13 +37,13 @@ spec:
         component: yunikorn-scheduler
         release: {{ .Release.Name }}
     spec:
-      {{- if .Values.imagePullSecrets }}
+      {{- if .Values.global.imagePullSecrets }}
       imagePullSecrets:
-      {{- range .Values.imagePullSecrets }}
+      {{- range .Values.global.imagePullSecrets }}
       - name: {{ . }}
       {{- end }}
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccount }}
+      serviceAccountName: {{ .Values.global.serviceAccount }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

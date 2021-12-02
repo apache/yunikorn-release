@@ -17,22 +17,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-imagePullSecrets:
-
-serviceAccount: yunikorn-admin
-
 admissionControllerImage:
   repository: apache/yunikorn
   tag: admission-latest
   pullPolicy: Always
-  serviceAccountName: yunikorn-admin
   policyGroup: queues
   enableConfigHotRefresh: "true"
-  schedulerServiceName: yunikorn-service
   schedulerServicePort: 9080
-
-curlImage:
-  repository: curlimages/curl
-  tag: latest
-  pullPolicy: IfNotPresent
 

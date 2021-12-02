@@ -30,10 +30,10 @@ spec:
       labels:
         app: yunikorn
     spec:
-      serviceAccountName: {{ .Values.admissionControllerImage.serviceAccountName }}
-      {{- if .Values.imagePullSecrets }}
+      serviceAccountName: {{ .Values.global.serviceAccount }}
+      {{- if .Values.global.imagePullSecrets }}
       imagePullSecrets:
-        {{- range .Values.imagePullSecrets }}
+        {{- range .Values.global.imagePullSecrets }}
         - name: {{ . }}
       {{- end }}
       {{- end }}
@@ -76,7 +76,7 @@ spec:
             - name: POLICY_GROUP
               value:  {{ .Values.admissionControllerImage.policyGroup }}
             - name: SCHEDULER_SERVICE_NAME
-              value: {{ .Values.admissionControllerImage.schedulerServiceName }}
+              value: {{ .Values.global.schedulerServiceName }}
             - name: SCHEDULER_SERVICE_PORT
               value: '{{ .Values.admissionControllerImage.schedulerServicePort }}'
             - name:  ENABLE_CONFIG_HOT_REFRESH
