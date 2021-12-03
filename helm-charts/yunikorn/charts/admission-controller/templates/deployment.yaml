@@ -1,0 +1,92 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yunikorn-admission-controller
+  labels:
+    app: yunikorn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yunikorn
+  template:
+    metadata:
+      labels:
+        app: yunikorn
+    spec:
+      serviceAccountName: {{ .Values.global.serviceAccount }}
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.global.imagePullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      hostNetwork: true
+      tolerations:
+        - operator: "Exists"
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: component
+                    operator: In
+                    values:
+                      - yunikorn-scheduler
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: yunikorn-admission-controller-webhook
+          image: {{ .Values.admissionControllerImage.repository }}:{{ .Values.admissionControllerImage.tag }}
+          imagePullPolicy: {{ .Values.admissionControllerImage.pullPolicy }}
+          ports:
+            - containerPort: 9089
+              name: webhook-api
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 500Mi
+            requests:
+              cpu: "100m"
+              memory: 500Mi
+          volumeMounts:
+            - name: webhook-tls-certs
+              mountPath: /run/secrets/tls
+              readOnly: true
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POLICY_GROUP
+              value:  {{ .Values.admissionControllerImage.policyGroup }}
+            - name: SCHEDULER_SERVICE_NAME
+              value: {{ .Values.global.schedulerServiceName }}
+            - name: SCHEDULER_SERVICE_PORT
+              value: '{{ .Values.admissionControllerImage.schedulerServicePort }}'
+            - name:  ENABLE_CONFIG_HOT_REFRESH
+              value: 'true'
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "/admission_util.sh", "create"]
+      dnsPolicy: ClusterFirstWithHostNet
+      volumes:
+        - name: webhook-tls-certs
+          secret:
+            secretName: webhook-server-tls

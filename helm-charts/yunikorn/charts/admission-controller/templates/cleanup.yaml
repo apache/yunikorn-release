@@ -17,7 +17,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: yunikorn-cleanup
+  name: admission-cleanup
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-delete
@@ -28,7 +28,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: yunikorn-cleanup
+      name: admmission-cleanup
       labels:
         app: yunikorn
         release: {{ .Release.Name }}
@@ -47,7 +47,8 @@ spec:
               NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace);
               TOKEN=$(cat ${SERVICEACCOUNT}/token);
               CACERT=${SERVICEACCOUNT}/ca.crt;
-              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/api/v1/namespaces/${NAMESPACE}/configmaps/yunikorn-configs;
-              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/api/v1/namespaces/${NAMESPACE}/serviceaccounts/yunikorn-admin;
-              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings/yunikorn-rbac;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/apps/v1/namespaces/${NAMESPACE}/deployments/yunikorn-admission-controller;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/apps/v1/namespaces/${NAMESPACE}/services/yunikorn-admission-controller-service;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/yunikorn-admission-controller-mutations;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations/yunikorn-admission-controller-validations;
       restartPolicy: Never

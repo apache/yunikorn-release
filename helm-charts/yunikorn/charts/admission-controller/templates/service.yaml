@@ -15,26 +15,14 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: ServiceAccount
+kind: Service
 metadata:
-  name: {{ .Values.global.serviceAccount }}
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "0"
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: yunikorn-rbac
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
-subjects:
-  - kind: ServiceAccount
-    name: {{ .Values.global.serviceAccount }}
-    namespace: {{ .Release.Namespace }}
-roleRef:
-  kind: ClusterRole
-  name: cluster-admin
-  apiGroup: rbac.authorization.k8s.io
+  name: yunikorn-admission-controller-service
+  labels:
+    app: yunikorn
+spec:
+  ports:
+    - port: 443
+      targetPort: webhook-api
+  selector:
+    app: yunikorn
