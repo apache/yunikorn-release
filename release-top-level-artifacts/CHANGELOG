@@ -15,6 +15,165 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 0.12
+
+** Sub-task
+    * [YUNIKORN-29] - Add integration testing tools to generate function/performance reports
+    * [YUNIKORN-508] - Fix/remove log collection error from upstream runs
+    * [YUNIKORN-552] - Add some unit tests to cover placeholder cleanup
+    * [YUNIKORN-642] - Configure the list of enabled app mgmt plugins through Helm chart
+    * [YUNIKORN-654] - Include node sorting policy in cluster page
+    * [YUNIKORN-707] - Add 1.20 to the e2e test support matrix
+    * [YUNIKORN-708] - Verify predicates functions for K8s 1.20
+    * [YUNIKORN-709] - Verify helm chart install on 1.20
+    * [YUNIKORN-715] - Refactor YuniKorn core's scheduler metrics for container allocation
+    * [YUNIKORN-716] - Refactor YuniKorn core's scheduler metrics for application status
+    * [YUNIKORN-757] - Discover daemonset pods and tag with ignoreUnschedulableNodes attributes
+    * [YUNIKORN-762] - Add a field in scheduler-interface to represent ignoring unschedulable nodes for the scheduler
+    * [YUNIKORN-784] - add 'properties' element the /ws/v1/partition/{partitionName}/queues response of website docs 
+    * [YUNIKORN-785] - add test to handlers_test.go to cover properties check
+    * [YUNIKORN-808] - document child template
+    * [YUNIKORN-810] - Add a field in scheduler-interface to represent required node for the scheduler
+    * [YUNIKORN-811] - Discover daemonset pods and parse nodeaffinity value to allocationAsk tags
+    * [YUNIKORN-812] - Handle required node tag for asks with certain tags
+    * [YUNIKORN-814] - The template of non-leaf queue should not be override by template of parent
+    * [YUNIKORN-816] - Lowercase the json key name of PartitionQueueDAOInfo#TemplateInfo
+    * [YUNIKORN-824] - add new filed "ClusterDAOInfo#PartitionName" to json response of docs
+    * [YUNIKORN-843] - Prepare servers and hardware for benchmark work
+    * [YUNIKORN-844] - Kubemark build, setup and configuration
+    * [YUNIKORN-851] - Documents of build kubemark and prometheus
+    * [YUNIKORN-858] - Pass node labels as node attributes for node sorting
+    * [YUNIKORN-860] - update the docs in web site about "nodeSortingPolicy"
+    * [YUNIKORN-877] - Fix the scheduling latency metrics
+    * [YUNIKORN-878] -  Add an another latency metrics to measure tryNode() latency
+    * [YUNIKORN-883] - Merge YUNIKORN-872 into master
+    * [YUNIKORN-905] - Core side changes of YUNIKORN-337
+    * [YUNIKORN-906] - Shim side changes of YUNIKORN-337
+    * [YUNIKORN-907] - SI side changes of YUNIKORN-337
+    * [YUNIKORN-909] - Add 1.21 to the e2e test support matrix
+    * [YUNIKORN-910] - Verify predicates functions for K8s 1.21
+    * [YUNIKORN-911] - Verify helm chart install on 1.21
+    * [YUNIKORN-914] - Prepare an abstract of talk for YuniKorn meetup in Nov 2021
+    * [YUNIKORN-917] - Update website to include YuniKorn Meetup contents
+    * [YUNIKORN-922] - Add application.stateaware.disable tag handling
+    * [YUNIKORN-923] - k8s-shim changes for YUNIKORN-921
+    * [YUNIKORN-924] - Documentation updates for YUNIKORN-921
+    * [YUNIKORN-929] - Rename "sessions" to "events"
+
+
+
+** Bug
+    * [YUNIKORN-385] - Deleted partitions are not deleted from core
+    * [YUNIKORN-561] - Some container tags are missing upon scheduler restart
+    * [YUNIKORN-703] - During recovery no nodes are added to the scheduler cache
+    * [YUNIKORN-706] - Fix the resource calculation when the pod has init-containers
+    * [YUNIKORN-749] - adjust log levels in the context
+    * [YUNIKORN-754] - Fix web link about build document in readme of incubator-yunikorn-k8shim 
+    * [YUNIKORN-759] - Fix helm install command in the README doc
+    * [YUNIKORN-760] - Fix Makefile in Yunikorn interface
+    * [YUNIKORN-761] - Add pre-commit action for scheduler-interface repo
+    * [YUNIKORN-765] - the RBAC role created by deployments/scheduler/yunikorn-rbac.yaml is not used by deployments/scheduler/scheduler.yaml
+    * [YUNIKORN-766] - driver/executor get hang occasionally if the applicationId is defined
+    * [YUNIKORN-770] - Remove unnecessary DEBUG log while removing a pod from the cache
+    * [YUNIKORN-771] - make license-check passes always on linux
+    * [YUNIKORN-775] - Create github action to build web UI
+    * [YUNIKORN-776] - fix core/config/limit.yaml and core/config/queues.yaml
+    * [YUNIKORN-793] - fix deadlock caused by listing queues with scheduling pending pods
+    * [YUNIKORN-794] -  Fix a few typos in the REST API about queue capacity
+    * [YUNIKORN-795] - ConfigMap changes does not update NodeSortingPolicy
+    * [YUNIKORN-798] - the REST APIs of getting queue application returns "Queue not found" even though the queue is existent
+    * [YUNIKORN-799] - Fix NPE in application#GetQueueName
+    * [YUNIKORN-804] - ws/v1/clusters returns invalid JSON when there are multiples partitions
+    * [YUNIKORN-805] - Fix race condition on the TestMode flag
+    * [YUNIKORN-815] - Fix scheduler interface makefile issues
+    * [YUNIKORN-817] - Avoid NPE in /ws/v1/nodes/utilization REST API when partition has no node
+    * [YUNIKORN-819] - Update go version dependency to 1.15
+    * [YUNIKORN-820] - Update SI dependency in the core repo
+    * [YUNIKORN-821] - UT:TestSIFromAlloc() is failing after gRPC and protobuf version changes
+    * [YUNIKORN-826] - the makefile in scheduler-interface module should not use bash-builtin "[[" 
+    * [YUNIKORN-831] - node sorting should check other resources of nodes instead of comparing node id directly
+    * [YUNIKORN-832] - Updating config can't remove partition
+    * [YUNIKORN-839] - getNodesUtilJSON is broken
+    * [YUNIKORN-841] - Data race in TestResumingStateTransitions()
+    * [YUNIKORN-848] - Scheduler occasionally  crashed due to concurrent r/w map error 
+    * [YUNIKORN-849] - The web can't get correct partition name from "/ws/v1/queues" since the key was changed from "partitionname" to "partitionName"
+    * [YUNIKORN-850] - Change download resolver from cgi to lua
+    * [YUNIKORN-854] - node removal with inflight placeholder replacement failure
+    * [YUNIKORN-855] - Fix disclaimer notice on website
+    * [YUNIKORN-862] - ClusterContext#removePartition ought to use write lock instead of read lock
+    * [YUNIKORN-871] - Admission controller should only validate yunikorn configmap changes
+    * [YUNIKORN-934] - Correct the link in deployments/examples/Readme
+    * [YUNIKORN-938] - Admission controller: remove v1beta1 usage
+    * [YUNIKORN-939] - shim e2e tests fail on go 1.15
+    * [YUNIKORN-942] - Flaky placeholder tests in core
+    * [YUNIKORN-947] - Add missing fields to the admission wehooks
+    * [YUNIKORN-948] - Data race in TestGetSchedulerHealthStatusContext 
+    * [YUNIKORN-950] - Add missing HTTP routes regarding statedump feature
+    * [YUNIKORN-952] - nil pointer error in webservice.getApplicationJSON()
+    * [YUNIKORN-963] - calculateNodesResourceUsage crashes when a node is over-allocated
+    * [YUNIKORN-964] - Fix vulnerabilities reported by artifacthub
+    * [YUNIKORN-965] - Fix race condition in k8s shim scheduler
+
+
+** New Feature
+    * [YUNIKORN-33] - Performance benchmark with kubemark
+    * [YUNIKORN-698] - [Umbrella] Kubernetes 1.20 support
+    * [YUNIKORN-701] - Add search box to the website
+    * [YUNIKORN-807] - Improve performance of node sorting
+
+
+** Improvement
+    * [YUNIKORN-21] - Optimize node sorting algorithms
+    * [YUNIKORN-75] - REST API for changing log level
+    * [YUNIKORN-543] - Document state diagram generation
+    * [YUNIKORN-625] - Use v1 for CertificateSigningRequest instead of v1beta1
+    * [YUNIKORN-664] - Adopt JSON based error responses
+    * [YUNIKORN-697] - Enforce partition name uniqueness in core
+    * [YUNIKORN-704] - [Umbrella] Use the same mechanism to schedule daemon set pods as the default scheduler
+    * [YUNIKORN-711] - Add LICENSE/DISCLAIMER/NOTICE file to the release repo
+    * [YUNIKORN-712] - Add license file to the site repo
+    * [YUNIKORN-744] - Call healthcheck REST API in e2e tests
+    * [YUNIKORN-745] - Add doc for healthcheck endpoint
+    * [YUNIKORN-746] - Simplify the REST API document
+    * [YUNIKORN-750] - Website search box returns no result
+    * [YUNIKORN-772] - Add AllocationAskUpdate in UpdateRequest
+    * [YUNIKORN-778] - Make nodeSelector an adjustable value in helm chart
+    * [YUNIKORN-779] - Download page improvements
+    * [YUNIKORN-781] - add queue properties to the response of /ws/v1/partition/{partition}/queues
+    * [YUNIKORN-789] - Add NOTICE and DISCLAIMER files to all yunikorn repos
+    * [YUNIKORN-791] - Allow to register nodes with infinite resources
+    * [YUNIKORN-800] - ensure consistent response between /ws/v1/partition/{partitioName}/queue/{queueName}/applications and /ws/v1/apps
+    * [YUNIKORN-801] - Empty user label log should be DEBUG level
+    * [YUNIKORN-806] - Refactor busy loop of PlaceholderManager#start
+    * [YUNIKORN-813] - The capacity of undefined resource should NOT be considered zero
+    * [YUNIKORN-818] - the response of REST APIs should use empty array rather than null
+    * [YUNIKORN-835] - Reminder readers that web-latest image in docker hub is not maintained anymore
+    * [YUNIKORN-837] - Improve coverage of resource.go
+    * [YUNIKORN-838] - Improve coverage of allocation_ask.go
+    * [YUNIKORN-847] - Use resource weighting for node sorting
+    * [YUNIKORN-861] - Gang scheduling support for affinity
+    * [YUNIKORN-872] - [Umbrella] Build against kubernetes 1.20
+    * [YUNIKORN-879] - Extend health check with allocation check
+    * [YUNIKORN-885] - Set healtch check as liveness probe
+    * [YUNIKORN-887] - Automate generation of k8shim FSM state transition diagrams
+    * [YUNIKORN-888] - Add documentation for k8shim state diagrams
+    * [YUNIKORN-890] - Update Yunikorn docs about e2e testing
+    * [YUNIKORN-921] - Applications should be able to opt-out of state-aware scheduling
+    * [YUNIKORN-927] - Improve logging in the yunikorn admission controller
+    * [YUNIKORN-932] - Improve logging reliability
+    * [YUNIKORN-940] - Periodic & on-demand state dump in Yunikorn
+    * [YUNIKORN-945] - state dump testing improvements
+
+** Test
+    * [YUNIKORN-786] - refactor TestHistoricalPartitionInfoUpdater to make it not depend on timer
+    * [YUNIKORN-886] - Fix e2e tests after YUNIKORN-794
+
+
+** Task
+    * [YUNIKORN-780] - Refactor node sorting policies into separate implementations
+    * [YUNIKORN-852] - Document changes from YUNIKORN-847
+    * [YUNIKORN-856] - website errata
+    * [YUNIKORN-857] - Add ENV var to disable gang scheduling
+    * [YUNIKORN-943] - Document new state dump features introduced in YUNIKORN-940 
+    * [YUNIKORN-967] - Update code coverage to @v2 (k8s shim)
+    * [YUNIKORN-969] - Update code coverage to @v2 (core)
