@@ -16,30 +16,35 @@
 
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-global:
-  imagePullSecrets:
-  serviceAccount: yunikorn-admin
-  schedulerServiceName: yunikorn-service
-  curlImage:
-    repository: curlimages/curl
-    tag: latest
-    pullPolicy: IfNotPresent
 
 replicaCount: 1
+
+imagePullSecrets:
 
 userLabelKey: "yunikorn.apache.org/username"
 
 operatorPlugins: "general"
 
+serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
   tag: scheduler-latest
+  pullPolicy: Always
+
+admission_controller_image:
+  repository: apache/yunikorn
+  tag: admission-latest
   pullPolicy: Always
 
 web_image:
   repository: apache/yunikorn
   tag: web-latest
   pullPolicy: Always
+
+curl_image:
+  repository: curlimages/curl
+  tag: latest
+  pullPolicy: IfNotPresent
 
 service:
   type: LoadBalancer

@@ -33,11 +33,11 @@ spec:
         app: yunikorn
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ .Values.global.serviceAccount }}
+      serviceAccountName: {{ .Values.serviceAccount }}
       containers:
         - name: curl
-          image: "{{ .Values.global.curlImage.repository }}:{{ .Values.global.curlImage.tag }}"
-          imagePullPolicy: {{ .Values.global.curlImage.pullPolicy }}
+          image: "{{ .Values.curl_image.repository }}:{{ .Values.curl_image.tag }}"
+          imagePullPolicy: {{ .Values.curl_image.pullPolicy }}
           command:
             - /bin/sh
             - -c
@@ -47,6 +47,8 @@ spec:
               NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace);
               TOKEN=$(cat ${SERVICEACCOUNT}/token);
               CACERT=${SERVICEACCOUNT}/ca.crt;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/apps/v1/namespaces/${NAMESPACE}/deployments/yunikorn-admission-controller;
+              curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/apps/v1/namespaces/${NAMESPACE}/services/yunikorn-admission-controller-service;
               curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/api/v1/namespaces/${NAMESPACE}/configmaps/yunikorn-configs;
               curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/api/v1/namespaces/${NAMESPACE}/serviceaccounts/yunikorn-admin;
               curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X DELETE ${APISERVER}/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings/yunikorn-rbac;
