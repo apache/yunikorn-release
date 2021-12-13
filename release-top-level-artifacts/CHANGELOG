@@ -30,7 +30,7 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-716] - Refactor YuniKorn core's scheduler metrics for application status
     * [YUNIKORN-757] - Discover daemonset pods and tag with ignoreUnschedulableNodes attributes
     * [YUNIKORN-762] - Add a field in scheduler-interface to represent ignoring unschedulable nodes for the scheduler
-    * [YUNIKORN-784] - add 'properties' element the /ws/v1/partition/{partitionName}/queues response of website docs 
+    * [YUNIKORN-784] - add 'properties' element the /ws/v1/partition/{partitionName}/queues response of website docs
     * [YUNIKORN-785] - add test to handlers_test.go to cover properties check
     * [YUNIKORN-808] - document child template
     * [YUNIKORN-810] - Add a field in scheduler-interface to represent required node for the scheduler
@@ -41,6 +41,7 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-824] - add new filed "ClusterDAOInfo#PartitionName" to json response of docs
     * [YUNIKORN-843] - Prepare servers and hardware for benchmark work
     * [YUNIKORN-844] - Kubemark build, setup and configuration
+    * [YUNIKORN-845] - Publish benchmark result on web-site
     * [YUNIKORN-851] - Documents of build kubemark and prometheus
     * [YUNIKORN-858] - Pass node labels as node attributes for node sorting
     * [YUNIKORN-860] - update the docs in web site about "nodeSortingPolicy"
@@ -59,6 +60,9 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-923] - k8s-shim changes for YUNIKORN-921
     * [YUNIKORN-924] - Documentation updates for YUNIKORN-921
     * [YUNIKORN-929] - Rename "sessions" to "events"
+    * [YUNIKORN-975] - Deadlock in Application.IsAllocationAssignedToApp()
+    * [YUNIKORN-976] - Admission controller TLS certificate errors
+    * [YUNIKORN-977] - Scheduler shuts down after 10 minutes
 
 
 
@@ -68,7 +72,7 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-703] - During recovery no nodes are added to the scheduler cache
     * [YUNIKORN-706] - Fix the resource calculation when the pod has init-containers
     * [YUNIKORN-749] - adjust log levels in the context
-    * [YUNIKORN-754] - Fix web link about build document in readme of incubator-yunikorn-k8shim 
+    * [YUNIKORN-754] - Fix web link about build document in readme of incubator-yunikorn-k8shim
     * [YUNIKORN-759] - Fix helm install command in the README doc
     * [YUNIKORN-760] - Fix Makefile in Yunikorn interface
     * [YUNIKORN-761] - Add pre-commit action for scheduler-interface repo
@@ -90,12 +94,12 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-819] - Update go version dependency to 1.15
     * [YUNIKORN-820] - Update SI dependency in the core repo
     * [YUNIKORN-821] - UT:TestSIFromAlloc() is failing after gRPC and protobuf version changes
-    * [YUNIKORN-826] - the makefile in scheduler-interface module should not use bash-builtin "[[" 
+    * [YUNIKORN-826] - the makefile in scheduler-interface module should not use bash-builtin "[["
     * [YUNIKORN-831] - node sorting should check other resources of nodes instead of comparing node id directly
     * [YUNIKORN-832] - Updating config can't remove partition
     * [YUNIKORN-839] - getNodesUtilJSON is broken
     * [YUNIKORN-841] - Data race in TestResumingStateTransitions()
-    * [YUNIKORN-848] - Scheduler occasionally  crashed due to concurrent r/w map error 
+    * [YUNIKORN-848] - Scheduler occasionally  crashed due to concurrent r/w map error
     * [YUNIKORN-849] - The web can't get correct partition name from "/ws/v1/queues" since the key was changed from "partitionname" to "partitionName"
     * [YUNIKORN-850] - Change download resolver from cgi to lua
     * [YUNIKORN-854] - node removal with inflight placeholder replacement failure
@@ -103,11 +107,9 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-862] - ClusterContext#removePartition ought to use write lock instead of read lock
     * [YUNIKORN-871] - Admission controller should only validate yunikorn configmap changes
     * [YUNIKORN-934] - Correct the link in deployments/examples/Readme
-    * [YUNIKORN-938] - Admission controller: remove v1beta1 usage
     * [YUNIKORN-939] - shim e2e tests fail on go 1.15
     * [YUNIKORN-942] - Flaky placeholder tests in core
-    * [YUNIKORN-947] - Add missing fields to the admission wehooks
-    * [YUNIKORN-948] - Data race in TestGetSchedulerHealthStatusContext 
+    * [YUNIKORN-948] - Data race in TestGetSchedulerHealthStatusContext
     * [YUNIKORN-950] - Add missing HTTP routes regarding statedump feature
     * [YUNIKORN-952] - nil pointer error in webservice.getApplicationJSON()
     * [YUNIKORN-963] - calculateNodesResourceUsage crashes when a node is over-allocated
@@ -120,13 +122,14 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-698] - [Umbrella] Kubernetes 1.20 support
     * [YUNIKORN-701] - Add search box to the website
     * [YUNIKORN-807] - Improve performance of node sorting
+    * [YUNIKORN-842] - [Umbrella] YuniKorn performance tuning and benchmark
+    * [YUNIKORN-908] - [Umbrella] Kubernetes 1.21 support
 
 
 ** Improvement
     * [YUNIKORN-21] - Optimize node sorting algorithms
     * [YUNIKORN-75] - REST API for changing log level
     * [YUNIKORN-543] - Document state diagram generation
-    * [YUNIKORN-625] - Use v1 for CertificateSigningRequest instead of v1beta1
     * [YUNIKORN-664] - Adopt JSON based error responses
     * [YUNIKORN-697] - Enforce partition name uniqueness in core
     * [YUNIKORN-704] - [Umbrella] Use the same mechanism to schedule daemon set pods as the default scheduler
@@ -154,7 +157,6 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-861] - Gang scheduling support for affinity
     * [YUNIKORN-872] - [Umbrella] Build against kubernetes 1.20
     * [YUNIKORN-879] - Extend health check with allocation check
-    * [YUNIKORN-885] - Set healtch check as liveness probe
     * [YUNIKORN-887] - Automate generation of k8shim FSM state transition diagrams
     * [YUNIKORN-888] - Add documentation for k8shim state diagrams
     * [YUNIKORN-890] - Update Yunikorn docs about e2e testing
@@ -174,6 +176,7 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-852] - Document changes from YUNIKORN-847
     * [YUNIKORN-856] - website errata
     * [YUNIKORN-857] - Add ENV var to disable gang scheduling
-    * [YUNIKORN-943] - Document new state dump features introduced in YUNIKORN-940 
+    * [YUNIKORN-943] - Document new state dump features introduced in YUNIKORN-940
     * [YUNIKORN-967] - Update code coverage to @v2 (k8s shim)
     * [YUNIKORN-969] - Update code coverage to @v2 (core)
+    * [YUNIKORN-972] - Update roadmap to reflect 0.11.0 released and 0.12.0 in-progress
