@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-Release Notes - Apache YuniKorn - Version 0.12
+Release Notes - Apache YuniKorn - Version 0.12.1
 
 ** Sub-task
     * [YUNIKORN-29] - Add integration testing tools to generate function/performance reports
@@ -48,6 +48,7 @@ Release Notes - Apache YuniKorn - Version 0.12
     * [YUNIKORN-877] - Fix the scheduling latency metrics
     * [YUNIKORN-878] -  Add an another latency metrics to measure tryNode() latency
     * [YUNIKORN-883] - Merge YUNIKORN-872 into master
+    * [YUNIKORN-895] - Update shim and core dependencies on master branch
     * [YUNIKORN-905] - Core side changes of YUNIKORN-337
     * [YUNIKORN-906] - Shim side changes of YUNIKORN-337
     * [YUNIKORN-907] - SI side changes of YUNIKORN-337
@@ -119,6 +120,7 @@ Release Notes - Apache YuniKorn - Version 0.12
 
 ** New Feature
     * [YUNIKORN-33] - Performance benchmark with kubemark
+    * [YUNIKORN-193] - Add option to allow parent to set unmanaged child queue properties
     * [YUNIKORN-698] - [Umbrella] Kubernetes 1.20 support
     * [YUNIKORN-701] - Add search box to the website
     * [YUNIKORN-807] - Improve performance of node sorting
