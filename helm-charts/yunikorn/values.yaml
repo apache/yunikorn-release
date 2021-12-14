@@ -28,17 +28,17 @@ operatorPlugins: "general"
 serviceAccount: yunikorn-admin
 image:
   repository: apache/yunikorn
-  tag: scheduler-0.12.0
+  tag: scheduler-0.12.1
   pullPolicy: Always
 
 admission_controller_image:
   repository: apache/yunikorn
-  tag: admission-0.12.0
+  tag: admission-0.12.1
   pullPolicy: Always
 
 web_image:
   repository: apache/yunikorn
-  tag: web-0.12.0
+  tag: web-0.12.1
   pullPolicy: Always
 
 curl_image:
