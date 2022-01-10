@@ -18,6 +18,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+admissionControllerReplicaCount: 1
 
 imagePullSecrets:
 
@@ -26,6 +27,8 @@ userLabelKey: "yunikorn.apache.org/username"
 operatorPlugins: "general"
 
 serviceAccount: yunikorn-admin
+admissionControllerServiceAccount: yunikorn-admission-controller
+
 image:
   repository: apache/yunikorn
   tag: scheduler-latest

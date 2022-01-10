@@ -28,6 +28,7 @@ spec:
   selector:
     matchLabels:
       app: yunikorn
+      component: yunikorn-scheduler
       release: {{ .Release.Name }}
   template:
     metadata:
@@ -87,12 +88,6 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/yunikorn/
-          {{ if .Values.embedAdmissionController }}
-          lifecycle:
-              postStart:
-                exec:
-                  command: ["/bin/sh", "/admission_util.sh", "create"]
-          {{ end }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
           imagePullPolicy: {{ .Values.web_image.pullPolicy }}
