@@ -75,10 +75,10 @@ Follow these steps to generate the list:
 - Scroll to the bottom of the page and copy the content of the text area and update the [CHANGELOG](../release-top-level-artifacts/CHANGELOG) file.
 
 ## Incompatible Changes
-YuniKorn community puts a high priority to the backwards compatibility. For each release, all incompatible
-changes must be carefully reviewed and documented. In general, incompatible changes to the public APIs usually requires
-a major version bump, this needs to be discussed in the private list. Examples are REST API changes, scheduler-interface
-main API changes. In the release notes, all incompatible changes must be clearly documented. User should be able to
+YuniKorn community puts a high priority on the backwards compatibility. For each release, all incompatible
+changes must be carefully reviewed and documented. In general, incompatible changes to the public APIs usually require
+a major version bump, and they need to be discussed in the private list. Examples are REST API changes, scheduler-interface
+main API changes. In the release notes, all incompatible changes must be clearly documented. Users should be able to
 understand the impact of the changes and smoothly migrate to newer versions based on the instructions.
 
 ## Run the release tool
