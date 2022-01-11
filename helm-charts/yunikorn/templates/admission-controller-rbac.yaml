@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{ if .Values.embedAdmissionController }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -85,3 +86,4 @@ roleRef:
   kind: Role
   name: yunikorn-admission-controller-role
   apiGroup: rbac.authorization.k8s.io
+{{ end }}

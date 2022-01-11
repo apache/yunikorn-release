@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{ if .Values.embedAdmissionController }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -89,3 +90,4 @@ spec:
       - name: admission-controller-secrets
         secret:
           secretName: admission-controller-secrets
+{{ end }}
