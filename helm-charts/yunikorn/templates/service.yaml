@@ -30,7 +30,7 @@ spec:
       targetPort: http1
       protocol: TCP
       name: yunikorn-core
-    - port: {{ .Values.service.port_web }}
+    - port: {{ .Values.service.portWeb }}
       targetPort: http2
       protocol: TCP
       name: yunikorn-service

@@ -28,6 +28,7 @@ spec:
   selector:
     matchLabels:
       app: yunikorn
+      component: yunikorn-scheduler
       release: {{ .Release.Name }}
   template:
     metadata:
@@ -65,14 +66,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.serviceAccountName
-            - name: ADMISSION_CONTROLLER_IMAGE_REGISTRY
-              value: "{{ .Values.admission_controller_image.repository }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_TAG
-              value: "{{ .Values.admission_controller_image.tag }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_PULL_POLICY
-              value: "{{ .Values.admission_controller_image.pullPolicy }}"
-            - name: ADMISSION_CONTROLLER_IMAGE_PULL_SECRETS
-              value: "{{ .Values.ImagePullSecrets }}"
             - name: USER_LABEL_KEY
               value: "{{ .Values.UserLabelKey }}"
             - name: OPERATOR_PLUGINS
@@ -87,18 +80,12 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/yunikorn/
-          {{ if .Values.embedAdmissionController }}
-          lifecycle:
-              postStart:
-                exec:
-                  command: ["/bin/sh", "/admission_util.sh", "create"]
-          {{ end }}
         - name: yunikorn-scheduler-web
-          image: "{{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}"
-          imagePullPolicy: {{ .Values.web_image.pullPolicy }}
+          image: "{{ .Values.webImage.repository }}:{{ .Values.webImage.tag }}"
+          imagePullPolicy: {{ .Values.webImage.pullPolicy }}
           ports:
             - name: http2
-              containerPort: {{ .Values.service.port_web }}
+              containerPort: {{ .Values.service.portWeb }}
               protocol: TCP
           resources:
             requests:
