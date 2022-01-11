@@ -29,6 +29,8 @@ operatorPlugins: "general"
 serviceAccount: yunikorn-admin
 admissionControllerServiceAccount: yunikorn-admission-controller
 
+admissionControllerNamespaceBlacklist: "^kube-system$"
+
 image:
   repository: apache/yunikorn
   tag: scheduler-latest
