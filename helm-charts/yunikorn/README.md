@@ -65,8 +65,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `image.tag`                          | Scheduler image tag                                      | `scheduler-latest` 
 | `image.pullPolicy`                   | Scheduler image pull policy                              | `Always`  
 | `webImage.repository`                | web app image repository                                 | `apache/yunikorn` 
-| `webImmage.tag`                      | web app image tag                                        | `web-latest` 
-| `webImmage.pullPolicy`               | web app image pull policy                                | `Always`  
+| `webImage.tag`                       | web app image tag                                        | `web-latest` 
+| `webImage.pullPolicy`                | web app image pull policy                                | `Always`  
 | `admissionControllerImage.repository`| admission controller image repository                    | `apache/yunikorn` 
 | `admissionControllerImage.tag`       | admission controller image tag                           | `admission-latest` 
 | `admissionControllerImage.pullPolicy`| admission controller image pull policy                   | `Always`  
