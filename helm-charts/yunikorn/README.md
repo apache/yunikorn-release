@@ -57,28 +57,28 @@ helm install yunikorn yunikorn/yunikorn
 ## Configuration
 The following table lists the configurable parameters of the YuniKorn chart and their default values.
 
-| Parameter                         | Description                                                    | Default                                     |
-| ---                               | ---                                                            | ---                                         |
-| `imagePullSecrets`                | Docker repository secrets                                      | ` `  
-| `serviceAccount`                  | Service account name                                           | `yunikorn-admin`  
-| `image.repository`                | Scheduler image repository                                     | `apache/yunikorn` 
-| `image.tag`                       | Scheduler image tag                                            | `scheduler-latest` 
-| `image.pullPolicy`                | Scheduler image pull policy                                    | `Always`  
-| `web_image.repository`            | web app image repository                                       | `apache/yunikorn` 
-| `web_image.tag`                   | web app image tag                                              | `web-latest` 
-| `web_image.pullPolicy`            | web app image pull policy                                      | `Always`  
-| `admission_controller_image.repository`| admission controller image repository                     | `apache/yunikorn` 
-| `admission_controller_image.tag`       | admission controller image tag                            | `admission-latest` 
-| `admission_controller_image.pullPolicy`| admission controller image pull policy                    | `Always`  
-| `service.port`                    | Port of the scheduler service                                  | `9080` 
-| `service.port_web`                | Port of the web application service                            | `9889`  
-| `resources.requests.cpu`          | CPU resource requests                                          | `200m`  
-| `resources.requests.memory`       | Memory resource requests                                       | `1Gi`  
-| `resources.limits.cpu`            | CPU resource limit                                             | `4`  
-| `resources.limits.memory`         | Memory resource limit                                          | `2Gi` 
-| `embedAdmissionController`        | Flag for enabling/disabling the admission controller           | `true`
-| `operatorPlugins`                 | Scheduler operator plugins                                     | `general` 
-| `nodeSelector`                    | Scheduler deployment nodeSelector(s)                           | ` `      
+| Parameter                            | Description                                              | Default                                     |
+| ---                                  | ---                                                      | ---                                         |
+| `imagePullSecrets`                   | Docker repository secrets                                | ` `  
+| `serviceAccount`                     | Service account name                                     | `yunikorn-admin`  
+| `image.repository`                   | Scheduler image repository                               | `apache/yunikorn` 
+| `image.tag`                          | Scheduler image tag                                      | `scheduler-latest` 
+| `image.pullPolicy`                   | Scheduler image pull policy                              | `Always`  
+| `webImage.repository`                | web app image repository                                 | `apache/yunikorn` 
+| `webImage.tag`                       | web app image tag                                        | `web-latest` 
+| `webImage.pullPolicy`                | web app image pull policy                                | `Always`  
+| `admissionControllerImage.repository`| admission controller image repository                    | `apache/yunikorn` 
+| `admissionControllerImage.tag`       | admission controller image tag                           | `admission-latest` 
+| `admissionControllerImage.pullPolicy`| admission controller image pull policy                   | `Always`  
+| `service.port`                       | Port of the scheduler service                            | `9080` 
+| `service.portWeb`                    | Port of the web application service                      | `9889`  
+| `resources.requests.cpu`             | CPU resource requests                                    | `200m`  
+| `resources.requests.memory`          | Memory resource requests                                 | `1Gi`  
+| `resources.limits.cpu`               | CPU resource limit                                       | `4`  
+| `resources.limits.memory`            | Memory resource limit                                    | `2Gi` 
+| `embedAdmissionController`           | Flag for enabling/disabling the admission controller     | `true`
+| `operatorPlugins`                    | Scheduler operator plugins                               | `general` 
+| `nodeSelector`                       | Scheduler deployment nodeSelector(s)                     | ` `      
 
 These parameters can be passed in via helm's `--set` option, such as `--set embedAdmissionController=false`.
 
