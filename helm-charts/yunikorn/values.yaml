@@ -31,17 +31,17 @@ admissionControllerServiceAccount: yunikorn-admission-controller
 
 image:
   repository: apache/yunikorn
-  tag: scheduler-0.12.1
+  tag: scheduler-0.12.2
   pullPolicy: Always
 
 admissionControllerImage:
   repository: apache/yunikorn
-  tag: admission-0.12.1
+  tag: admission-0.12.2
   pullPolicy: Always
 
 webImage:
   repository: apache/yunikorn
-  tag: web-0.12.1
+  tag: web-0.12.2
   pullPolicy: Always
 
 service:
