@@ -17,13 +17,12 @@
  -->
 # Apache YuniKorn (Incubating) - A Universal Scheduler
 
-[![Build Status](https://travis-ci.org/apache/incubator-yunikorn-core.svg?branch=master)](https://travis-ci.org/apache/incubator-yunikorn-core)
 [![codecov](https://codecov.io/gh/apache/incubator-yunikorn-core/branch/master/graph/badge.svg)](https://codecov.io/gh/apache/incubator-yunikorn-core)
 [![Go Report Card](https://goreportcard.com/badge/github.com/apache/incubator-yunikorn-core)](https://goreportcard.com/report/github.com/apache/incubator-yunikorn-core)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Repo Size](https://img.shields.io/github/repo-size/apache/incubator-yunikorn-core)](https://img.shields.io/github/repo-size/apache/incubator-yunikorn-core)
 
-<img src="https://raw.githubusercontent.com/apache/incubator-yunikorn-core/master/docs/images/logo/yunikorn-logo-blue.png" width="200">
+<img src="https://raw.githubusercontent.com/apache/incubator-yunikorn-core/master/images/logo/yunikorn-logo-blue.png" width="200">
 
 ----
 
@@ -39,7 +38,7 @@ shim layer and adopt to different ResourceManager implementation including Apach
 
 Following chart illustrates the high-level architecture of YuniKorn.
 
-![Arhitecture](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/images/architecture.png?raw=true)
+![Architecture](https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/docs/assets/architecture.png)
 
 YuniKorn consists of the following components spread over multiple code repositories, most of the following projects are written in GoLang.
 
@@ -84,12 +83,10 @@ The `k8shim` provides the integration for K8s scheduling and supported features 
 
 #### Performance testing
 We love high-performance software, and we made tremendous efforts to make it to support large scale cluster and high-churning tasks. 
-Here's [Performance Test Result](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/evaluate-perf-function-with-Kubemark.md) 
+Here's the latest [performance test result](https://yunikorn.apache.org/docs/next/performance/evaluate_perf_function_with_kubemark).
 
 #### Deployment model
-Yunikorn can be deployed as a K8s custom scheduler, and take over all POD scheduling. 
-An enhancement is open to improve coexistence behaviour of the YuniKorn scheduler with other Kubernetes schedulers,
-like the default scheduler, in the cluster: [Co-existing with other K8s schedulers](https://issues.apache.org/jira/browse/YUNIKORN-16). 
+Yunikorn can be deployed as a K8s custom scheduler, and take over all POD scheduling.
  
 #### Verified K8s versions 
 
@@ -99,28 +96,31 @@ like the default scheduler, in the cluster: [Co-existing with other K8s schedule
 | 1.13.x | 0.8.0 | 0.10.0 |
 | 1.14.x | 0.8.0 | 0.10.0 |
 | 1.15.x | 0.8.0 | 0.10.0 |
-| 1.16.x | 0.10.0 | ? |
-| 1.17.x | 0.10.0 | ? |
-| 1.18.x | 0.10.0 | ? |
+| 1.16.x | 0.10.0 | 0.11.0 |
+| 1.17.x | 0.10.0 | 0.11.0 |
+| 1.18.x | 0.10.0 | 0.11.0 |
+| 1.19.x | 0.11.0 | - |
+| 1.20.x | 0.12.1 | - |
+| 1.21.x | 0.12.1 | - |
+| 1.22.x | 0.12.2 (upcoming) | - |
+| 1.23.x | 0.12.2 (upcoming) | - |
 
 ### Web UI
 
 YuniKorn has builtin web UIs for queue hierarchies and apps. See below: 
 
-![Queues-UI](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/images/screenshot-queues.png?raw=true)
-
-![Apps-UI](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/images/screenshot-apps.png?raw=true)
+![Web-UI](https://raw.githubusercontent.com/apache/incubator-yunikorn-site/master/docs/assets/yk-ui-screenshots.gif)
 
 
 ## Roadmap
 
-Want to learn more about future of YuniKorn? You can find more information about what are already supported and future plans in the [Road Map](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/roadmap.md).
+Want to learn more about future of YuniKorn? You can find more information about what are already supported and future plans in the [Road Map](https://yunikorn.apache.org/community/roadmap).
 
 ## How to use
 
 The simplest way to run YuniKorn is to build a docker image and then deployed to Kubernetes with a yaml file,
 running as a customized scheduler. Then you can run workloads with this scheduler.
-See more instructions from the [User Guide](./docs/user-guide.md).
+See more instructions from the [User Guide](https://yunikorn.apache.org/docs/next/).
 
 ## How can I get involved?
 
@@ -129,12 +129,12 @@ Cloudera, Linkedin, Microsoft, Nvidia, Tencent, Uber, etc. (sorted by alphabet).
 We welcome any form of contributions, code, documentation or suggestions! 
 
 To get involved, please read following resources.
-- Logging an issue or improvement use the [Reporting an issue Guide](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/reporting-issues.md).
-- Before you contributing code or documentation to YuniKorn, please read our [Developer Guide](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/developer-guide.md).
-- When you are coding use the [Coding Guidelines](docs/coding-guidelines.md).
-- Please read [How to Contribute](docs/how-to-contribute.md) to understand the procedure and guidelines of making contributions.
-- We have periodically community sync ups in multiple timezones and languages, please find [Community Syncup](https://github.com/apache/incubator-yunikorn-core/blob/master/docs/community-sync-up.md) to attend online sync ups. 
-
+- Logging an issue or improvement use the [Reporting an issue Guide](https://yunikorn.apache.org/community/reporting_issues).
+- Before you contributing code or documentation to YuniKorn, please read our [Get Involved](https://yunikorn.apache.org/community/get_involved) guide.
+- When you are coding use the [Coding Guidelines](https://yunikorn.apache.org/community/coding_guidelines).
+- Please read [How to Contribute](https://yunikorn.apache.org/community/how_to_contribute) to understand the procedure and guidelines of making contributions.
+- We have periodically community sync ups in multiple timezones and languages, please find [Events](https://yunikorn.apache.org/community/events) to attend online sync ups.
+  
 ## Other Resources
 
 **Demo videos**
