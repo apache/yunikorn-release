@@ -32,5 +32,6 @@ spec:
       targetPort: webhook-api
   selector:
     app: yunikorn
+    component: yunikorn-admission-controller
     release: {{ .Release.Name }}
 {{ end }}
