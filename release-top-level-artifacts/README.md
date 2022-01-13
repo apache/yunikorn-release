@@ -31,7 +31,7 @@ General requirement for building YuniKorn images from this release:
 
 ### Yunikorn Scheduler
 The scheduler and shim are build as one set of artifacts and have one requirement:
-* Go 1.11 or later
+* Go 1.15 or later
 
 ### Yunikorn web UI
 The YuniKorn web UI uses a two stage docker build with predefined images.
