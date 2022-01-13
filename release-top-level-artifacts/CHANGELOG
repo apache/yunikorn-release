@@ -24,9 +24,11 @@ Release Notes - Apache YuniKorn - Version 0.12.2
     * [YUNIKORN-1013] - Update the copyright years in NOTICE file to 2022
     * [YUNIKORN-1014] - Update e2e test matrix to include K8s 1.22.x, 1.23.x
     * [YUNIKORN-1015] - Helm chart should reflect compatibility with K8S 1.22, 1.23
+    * [YUNIKORN-1018] - Update CHANGELOG for 0.12.2
 
 ** Bug
     * [YUNIKORN-995] - Use v1 for ClusterRoleBinding rbac.authorization.k8s.io instead of v1beta1
+    * [YUNIKORN-1022] - Helm chart services are not specific enough
 
 ** Improvement
     * [YUNIKORN-928] - refactor admission controller code
@@ -34,4 +36,4 @@ Release Notes - Apache YuniKorn - Version 0.12.2
 ** Task
     * [YUNIKORN-1016] - Update scheduler-interface dependency to v0.12.2-1 (core)
     * [YUNIKORN-1017] - Update dependencies to v0.12.2-1 (k8shim)
-
+    * [YUNIKORN-1023] - Update README to reflect build requirements of Go 1.15+
