@@ -102,8 +102,6 @@ Yunikorn can be deployed as a K8s custom scheduler, and take over all POD schedu
 | 1.19.x | 0.11.0 | - |
 | 1.20.x | 0.12.1 | - |
 | 1.21.x | 0.12.1 | - |
-| 1.22.x | 0.12.2 (upcoming) | - |
-| 1.23.x | 0.12.2 (upcoming) | - |
 
 ### Web UI
 
@@ -130,10 +128,10 @@ We welcome any form of contributions, code, documentation or suggestions!
 
 To get involved, please read following resources.
 - Logging an issue or improvement use the [Reporting an issue Guide](https://yunikorn.apache.org/community/reporting_issues).
-- Before you contributing code or documentation to YuniKorn, please read our [Get Involved](https://yunikorn.apache.org/community/get_involved) guide.
+- Before contributing code or documentation to YuniKorn, please read our [Get Involved](https://yunikorn.apache.org/community/get_involved) guide.
 - When you are coding use the [Coding Guidelines](https://yunikorn.apache.org/community/coding_guidelines).
 - Please read [How to Contribute](https://yunikorn.apache.org/community/how_to_contribute) to understand the procedure and guidelines of making contributions.
-- We have periodically community sync ups in multiple timezones and languages, please find [Events](https://yunikorn.apache.org/community/events) to attend online sync ups.
+- We have periodic community sync ups in multiple timezones and languages, please find [Events](https://yunikorn.apache.org/community/events) to attend online sync ups.
   
 ## Other Resources
 
