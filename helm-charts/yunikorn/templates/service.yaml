@@ -36,4 +36,5 @@ spec:
       name: yunikorn-service
   selector:
     app: yunikorn
+    component: yunikorn-scheduler
     release: {{ .Release.Name }}
