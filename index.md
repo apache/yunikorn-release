@@ -132,7 +132,7 @@ To get involved, please read following resources.
 - When you are coding use the [Coding Guidelines](https://yunikorn.apache.org/community/coding_guidelines).
 - Please read [How to Contribute](https://yunikorn.apache.org/community/how_to_contribute) to understand the procedure and guidelines of making contributions.
 - We have periodic community sync ups in multiple timezones and languages, please find [Events](https://yunikorn.apache.org/community/events) to attend online sync ups.
-  
+
 ## Other Resources
 
 **Demo videos**
