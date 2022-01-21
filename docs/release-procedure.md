@@ -18,7 +18,7 @@ limitations under the License.
 YuniKorn Release Procedure
 ----
 
-This project provides the instructions and tools needed to generate Apache YuniKorn (Incubating) release artefacts. This obeys ASF [release policy](http://www.apache.org/legal/release-policy.html), and [Podling Release Policy](https://incubator.apache.org/policy/incubation.html#releases).
+This project provides the instructions and tools needed to generate Apache YuniKorn (Incubating) release artifacts. This obeys ASF [release policy](http://www.apache.org/legal/release-policy.html), and [Podling Release Policy](https://incubator.apache.org/policy/incubation.html#releases).
 
 * [Create a Release](#Create-a-Release)
     * [Tag and update release for version](#Tag-and-update-release-for-version)
@@ -26,7 +26,7 @@ This project provides the instructions and tools needed to generate Apache YuniK
     * [Run the release tool](#Run-the-release-tool)
         * [Create Signature](#Create-Signature)
         * [Create Checksum](#Create-Checksum)
-    * [Upload Release Candidate Artefacts](#Upload-Release-Candidate-Artefacts)
+    * [Upload Release Candidate Artifacts](#Upload-Release-Candidate-Artifacts)
     * [Start Voting Thread](#Start-Voting-Thread)
     * [Publish the Release](#Publish-the-Release)
         * [Release Docker images](#Release-Docker-images)
@@ -39,10 +39,10 @@ This project provides the instructions and tools needed to generate Apache YuniK
     * [Add the signature to the project KEYS file](#Add-the-signature-to-the-project-KEYS-file)
 
 # Create a Release
-Simplified release procedure: 
+Simplified release procedure:
 1. Create a release branch for the target release in all git repos, such as `branch-0.8`
 2. Stabilize the release by fixing test failures and bugs only
-3. Tag update release for a new version to prepare a release candidate, e.g `v0.8.0`
+3. Tag update release for a new version to prepare a release candidate, e.g `v0.8.0-1` for RC1
 4. Update the CHANGELOG
 5. Configure [release-configs.json](../tools/release-configs.json)
 6. Run script [build-release.py](../tools/build-release.py) to generate source code tarball, checksum and signature.
@@ -50,17 +50,16 @@ Simplified release procedure:
 
 ## Tag and update release for version
 Branching and tagging can, and in most cases will, require changes in the go mod files.
-Branching is part of the release preparation and often has happened some time before the release process starts. 
+Branching is part of the release preparation and often has happened some time before the release process starts.
 A release needs to be tagged in git before starting the release process.
-As an example check [YUNIKORN-358](https://issues.apache.org/jira/browse/YUNIKORN-358).
-Release candidates and final release use the same tag which gets moved if a new release candidate is generated. 
+As an example check [YUNIKORN-358](https://issues.apache.org/jira/browse/YUNIKORN-358) and [YUNIKORN-1004](https://issues.apache.org/jira/browse/YUNIKORN-1004).
+Release candidates should be tagged with the version and build number of the release candidate. For example, artifacts used to build 0.8.0 RC2 should be tagged `v0.8.0-2` and releases created in GitHub. Once the release is finalized, git tags and GitHub releases should be created for `v0.8.0` pointing to the same commits. Under no circumstances should an existing tag be removed or moved. This will break golang dependency resolution for downstream users.
 
 The tagging is multi step process, all actions are done on the branch that will be released, like `branch-0.8`:
-1. Tag the web and scheduler interface with the release tag.
-2. Update the `go.mod` file in the core using `go get github.com/apache/incubator-yunikorn-scheduler-interface`  
+1. Tag the web and scheduler interface with the release tag, like `v0.8.0-1`.
+2. Update the `go.mod` file in the core using `go get github.com/apache/incubator-yunikorn-scheduler-interface`
 Add the tag and commit the changes.
-3. Update the `go.mod` file in the shim using `go get github.com/apache/incubator-yunikorn-scheduler-interface` and  
-`go get github.com/apache/incubator-yunikorn-core`. Add the tag and commit the changes.
+3. Update the `go.mod` file in the shim using `go get github.com/apache/incubator-yunikorn-scheduler-interface` and `go get github.com/apache/incubator-yunikorn-core`. Add the tag and commit the changes.
 4. Create a new branch in the yunikorn-release repo, set the correct chart version in [Chart.yaml](../helm-charts/yunikorn/Chart.yaml), and then create the tag.
 
 ## Update the CHANGELOG
@@ -101,10 +100,10 @@ python3 build-release.py --sign <email-address>
 ### Create Signature
 If you have GPG with a _pinentry_ program setup you can automatically sign the release using the release tool.
 On MacOSX this will be setup automatically if you use the keychain for the keys.
-For more details check the [GnuPG tools wiki](https://wiki.archlinux.org/index.php/GnuPG) and specifically the [pinentry](https://wiki.archlinux.org/index.php/GnuPG#pinentry) chapter.  
+For more details check the [GnuPG tools wiki](https://wiki.archlinux.org/index.php/GnuPG) and specifically the [pinentry](https://wiki.archlinux.org/index.php/GnuPG#pinentry) chapter.
 
 Run the release tool using the option `--sign <email-address>` to auto sign the release.
- 
+
 Manually creating the signature for the file generated by the tool:
 ```shell script
 gpg --local-user <email-address> --armor --output apache-yunikorn-0.8.0-incubating-src.tar.gz.asc --detach-sig apache-yunikorn-0.8.0-incubating-src.tar.gz
@@ -116,22 +115,24 @@ gpg --verify apache-yunikorn-0.8.0-incubating-src.tar.gz.asc apache-yunikorn-0.8
 ```
 
 ### Create Checksum
-This step is included in the release after generation of the source tar ball, if the release tool is used this step can be skipped. 
+This step is included in the release after generation of the source tar ball, if the release tool is used this step can be skipped.
 ```shell script
 shasum -a 512 apache-yunikorn-0.8.0-incubating-src.tar.gz > apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512
 ```
 This will create the checksum in the file: `apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512`
 Verify that the checksum is correct using:
 ```shell script
-shasum -a 512 -c apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512 
+shasum -a 512 -c apache-yunikorn-0.8.0-incubating-src.tar.gz.sha512
 ```
 
-## Upload Release Candidate Artefacts
-The release artefacts consist of three parts:
+## Upload Release Candidate Artifacts
+The release artifacts consist of three parts:
+
 - source tarball
 - signature file
 - checksum file
-The three artefacts need to be uploaded to: `https://dist.apache.org/repos/dist/dev/incubator/yunikorn/` 
+
+The three artifacts need to be uploaded to: `https://dist.apache.org/repos/dist/dev/incubator/yunikorn/`
 
 Create a release directory based on the version, i.e. `0.8.0`, add the three files to directory.
 Commit the changes.
@@ -143,18 +144,25 @@ NOTE: you will need to install subversion to access this repo (use your apache I
 
 ## Start Voting Thread
 According to [podling release doc](https://incubator.apache.org/policy/incubation.html#releases) and [release approval doc](http://www.apache.org/legal/release-policy.html#release-approval). Steps are:
-- start a voting thread on `dev@yunikorn.apache.org`. (72 hours)
-- send a summary of that vote to the Incubator’s general list and request IPMC to vote. (72 hours)
-Both voting need to acquire at least three +1 votes are required and more +1 votes than -1 votes.
+- Start a voting thread on `dev@yunikorn.apache.org`. (72 hours).
+- Send a summary of that vote to the Incubator’s general list and request IPMC to vote. (72 hours). Both votes need to acquire at least three +1 votes are required and more +1 votes than -1 votes.
+
+Make sure the voting thread includes:
+- The link where the release artifacts can be downloaded, for example https://dist.apache.org/repos/dist/dev/incubator/yunikorn/0.8.0-rc1/.
+- A link to the yunikorn KEYS file at https://downloads.apache.org/incubator/yunikorn/KEYS.
+- A link to the list of JIRA issues that have been resolved in the release. For example, https://issues.apache.org/jira/issues/?filter=1235127. Verify the JIRA link is accessible to users who are not logged in and that it references the correct release.
+
+## Retag Git Repositories and Create GitHub Releases
+Once an RC has passed voting by both the community and the Incubator IPMC, retag all git repositories with final tags without the build number (e.g. `v0.8.0`). Create associated GitHub releases as well. Do NOT remove the existing RC tags (e.g. `v0.8.0-1`, `v0.8.0-2`). When creating the release for `incubator-yunikorn-release`, attach the `apache-yunikorn-*-incubating.tar.gz` and `yunikorn-*.tgz` files to the release.
 
 ## Publish the Release
-Once the voting is passed, move the release artefacts from the staging area to the release location `https://dist.apache.org/repos/dist/release/incubator/yunikorn/`. 
+Once the voting is passed, move the release artifacts from the staging area to the release location `https://dist.apache.org/repos/dist/release/incubator/yunikorn/`.
 Once moved to this space, the content will be automatically synced to `https://downloads.apache.org/incubator/yunikorn/` which must be used as the final location for release files.
 Read more for [location of files on main server](https://infra.apache.org/mirrors#location).
 
 This will temporarily provide us with two releases in the release area.
 This is needed to allow the start the mirror sync process and allow for the download page to be updated.
-Cleanup of the older release is handled after the website has been updated in the [cleanup](#Cleanup). 
+Cleanup of the older release is handled after the website has been updated in the [cleanup](#Cleanup).
 
 ### Release Docker images
 The standard build process should be used to build the image.
@@ -167,22 +175,22 @@ Make can also be used to build and push the image if you have access to the Apac
 Push the latest docker images to the apache docker hub using the release as tag.
 Make sure the docker image is built on the specific SHA.
 ```shell script
-VERSION=0.8.0; DOCKER_USERNAME=<name>; DOCKER_PASSWORD=<password>; make push 
+VERSION=0.8.0; DOCKER_USERNAME=<name>; DOCKER_PASSWORD=<password>; make push
 ```
-Publish an announcement email to the `dev@yunikorn.apache.org` email list. 
+Publish an announcement email to the `dev@yunikorn.apache.org` email list.
 
 ### Release Helm Charts
 This step is part of the release tool if the release tool is used the packaging can be skipped.
 
 If the release tool is **not** used the `Chart.yaml` and the `values.yaml` must be updated manually.
-The other option is to run the helm script against the generated source directory as the tool does: 
+The other option is to run the helm script against the generated source directory as the tool does:
 ```shell script
-helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} staging/<release-dir>/helm-charts/yunikorn --destination staging/ 
+helm package --sign --key ${your_key_name} --keyring ${path/to/keyring.secret} staging/<release-dir>/helm-charts/yunikorn --destination staging/
 ```
 Signing the helm package requires a legacy PGP keyring. The PGP v2 keyring must be converted to the legacy format.
 For more information please check [Helm documentation](https://helm.sh/docs/topics/provenance/).
 Helm charts should be signed on release.
-Contrary to the source code tar ball signing, signing the helm charts requires manual entry of the key password. 
+Contrary to the source code tar ball signing, signing the helm charts requires manual entry of the key password.
 
 The helm package will generate two files:
 - helm package: example `yunikorn-0.8.0.tgz`
@@ -200,8 +208,8 @@ Note: do not use the `helm repo index` command to update the `index.yaml` file. 
 Update the file manually.
 
 ### Update the website
-- Create a new documentation version on YuniKorn website based on the latest content in [docs](https://github.com/apache/incubator-yunikorn-site/tree/master/docs) directory. Refer to [this](https://github.com/apache/incubator-yunikorn-site/tree/master#release-a-new-version) guide to create the new documentation. 
-- Create the release announcement to be referenced from download page on the website. The release announcement is a markdown file based on the version: `0.8.0.md`. The file is stored as part of the [static pages](https://github.com/apache/incubator-yunikorn-site/tree/master/src/pages/release-announce) on the website. 
+- Create a new documentation version on YuniKorn website based on the latest content in [docs](https://github.com/apache/incubator-yunikorn-site/tree/master/docs) directory. Refer to [this](https://github.com/apache/incubator-yunikorn-site/tree/master#release-a-new-version) guide to create the new documentation.
+- Create the release announcement to be referenced from download page on the website. The release announcement is a markdown file based on the version: `0.8.0.md`. The file is stored as part of the [static pages](https://github.com/apache/incubator-yunikorn-site/tree/master/src/pages/release-announce) on the website.
 - Update the [download page](https://github.com/apache/incubator-yunikorn-site/tree/master/src/pages/community/download.md) of the website.
 
 The release announcement are linked to the release details on the download page.
@@ -218,12 +226,12 @@ Older releases not mentioned in the table can still be accessed via the archive 
 NOTE: this step should be performed after the website updates have been made as the download links change.
 
 There should only be one release, the latest, in the release area.
-Any release that has been in the release area will be automatically copied to the archive. 
+Any release that has been in the release area will be automatically copied to the archive.
 Older releases should be downloaded from the archive directly, not from the release area.
 
 The releases need to clean up in two locations:
 * Remove the newly released version from the _dev_ area by removing the old release candidate directory.
-  For the location see [release candidate location](#Upload-Release-Candidate-Artefacts)
+  For the location see [release candidate location](#Upload-Release-Candidate-Artifacts)
 * Remove the non-current release from the _release_ area by removing the old release directory.
   For the location see [release location](#Publish-the-Release)
 
@@ -242,7 +250,7 @@ Mirror links might take up to 24 hours to be updated.
 
 # Signing your first release
 If you haven't signed any releases before, read the documentation to [generate signing key](https://infra.apache.org/openpgp.html#generate-key)
-Follow the steps below to add the key you can use to sign. 
+Follow the steps below to add the key you can use to sign.
 
 ## Generate a Key
 Generate a new PGP key (skip this step if you already have an Apache linked key):
