@@ -29,11 +29,15 @@ Release Notes - Apache YuniKorn - Version 0.12.2
 ** Bug
     * [YUNIKORN-995] - Use v1 for ClusterRoleBinding rbac.authorization.k8s.io instead of v1beta1
     * [YUNIKORN-1022] - Helm chart services are not specific enough
+    * [YUNIKORN-1038] - Admission controller does not ignore the YuniKorn scheduler pod
 
 ** Improvement
     * [YUNIKORN-928] - refactor admission controller code
 
 ** Task
+    * [YUNIKORN-987] - remove references to Cloudera jiras
     * [YUNIKORN-1016] - Update scheduler-interface dependency to v0.12.2-1 (core)
     * [YUNIKORN-1017] - Update dependencies to v0.12.2-1 (k8shim)
     * [YUNIKORN-1023] - Update README to reflect build requirements of Go 1.15+
+    * [YUNIKORN-1024] - Update CHANGELOG for 0.12.2
+
