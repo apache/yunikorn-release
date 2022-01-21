@@ -27,6 +27,9 @@ userLabelKey: "yunikorn.apache.org/username"
 operatorPlugins: "general"
 
 serviceAccount: yunikorn-admin
+
+stateDumpFilePath: yunikorn-state.txt
+
 admissionControllerServiceAccount: yunikorn-admission-controller
 
 admissionControllerNamespaceBlacklist: "^kube-system$"

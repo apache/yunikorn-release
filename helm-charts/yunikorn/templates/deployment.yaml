@@ -70,6 +70,11 @@ spec:
               value: "{{ .Values.UserLabelKey }}"
             - name: OPERATOR_PLUGINS
               value: "{{ .Values.operatorPlugins }}"
+            - name: STATE_DUMP_FILE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: yunikorn-configs
+                  key: stateDumpFilePath
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}

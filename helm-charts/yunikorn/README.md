@@ -63,6 +63,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | ---                                    | ---                                                    | ---                                         |
 | `imagePullSecrets`                     | Docker repository secrets                              | ` `
 | `serviceAccount`                       | Service account name                                   | `yunikorn-admin`
+| `stateDumpFilePath`                    | File path for state dump output                        | `yunikorn-state.txt`
 | `image.repository`                     | Scheduler image repository                             | `apache/yunikorn`
 | `image.tag`                            | Scheduler image tag                                    | `scheduler-latest`
 | `image.pullPolicy`                     | Scheduler image pull policy                            | `Always`
