@@ -18,6 +18,8 @@
 Release Notes - Apache YuniKorn - Version 0.12.2
 
 ** Sub-task
+    * [YUNIKORN-625] - Use v1 for CertificateSigningRequest instead of v1beta1
+    * [YUNIKORN-726] - Quick start results in admission controller crashloop back off.
     * [YUNIKORN-938] - Admission controller: remove v1beta1 usage
     * [YUNIKORN-941] - split scheduler and admission controller deployment
     * [YUNIKORN-947] - Add missing fields to the admission wehooks
@@ -30,6 +32,7 @@ Release Notes - Apache YuniKorn - Version 0.12.2
     * [YUNIKORN-995] - Use v1 for ClusterRoleBinding rbac.authorization.k8s.io instead of v1beta1
     * [YUNIKORN-1022] - Helm chart services are not specific enough
     * [YUNIKORN-1038] - Admission controller does not ignore the YuniKorn scheduler pod
+    * [YUNIKORN-1041] - Fix binding of dynamic volumes to pod
 
 ** Improvement
     * [YUNIKORN-928] - refactor admission controller code
