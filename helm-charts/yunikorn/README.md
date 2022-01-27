@@ -66,6 +66,9 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `image.repository`                     | Scheduler image repository                             | `apache/yunikorn`
 | `image.tag`                            | Scheduler image tag                                    | `scheduler-latest`
 | `image.pullPolicy`                     | Scheduler image pull policy                            | `Always`
+| `pluginImage.repository`               | Scheduler plugin image repository                      | `apache/yunikorn`
+| `pluginImage.tag`                      | Scheduler plugin image tag                             | `scheduler-plugin-latest`
+| `pluginImage.pullPolicy`               | Scheduler plugin image pull policy                     | `Always`
 | `webImage.repository`                  | Web app image repository                               | `apache/yunikorn`
 | `webImage.tag`                         | Web app image tag                                      | `web-latest`
 | `webImage.pullPolicy`                  | Web app image pull policy                              | `Always`
