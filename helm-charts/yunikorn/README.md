@@ -66,6 +66,9 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `image.repository`                     | Scheduler image repository                             | `apache/yunikorn`
 | `image.tag`                            | Scheduler image tag                                    | `scheduler-latest`
 | `image.pullPolicy`                     | Scheduler image pull policy                            | `Always`
+| `pluginImage.repository`               | Scheduler plugin image repository                      | `apache/yunikorn`
+| `pluginImage.tag`                      | Scheduler plugin image tag                             | `scheduler-plugin-latest`
+| `pluginImage.pullPolicy`               | Scheduler plugin image pull policy                     | `Always`
 | `webImage.repository`                  | Web app image repository                               | `apache/yunikorn`
 | `webImage.tag`                         | Web app image tag                                      | `web-latest`
 | `webImage.pullPolicy`                  | Web app image pull policy                              | `Always`
@@ -79,7 +82,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `resources.requests.memory`            | Memory resource requests                               | `1Gi`
 | `resources.limits.cpu`                 | CPU resource limit                                     | `4`
 | `resources.limits.memory`              | Memory resource limit                                  | `2Gi`
-| `embedAdmissionController`             | Flag for enabling/disabling the admission controlle    | `true`
+| `embedAdmissionController`             | Flag for enabling/disabling the admission controller   | `true`
+| `enableSchedulerPlugin`                | Flag for enabling/disabling scheduler plugin mode      | `false`
 | `operatorPlugins`                      | Scheduler operator plugins                             | `general`
 | `nodeSelector`                         | Scheduler deployment nodeSelector(s)                   | ` `
 

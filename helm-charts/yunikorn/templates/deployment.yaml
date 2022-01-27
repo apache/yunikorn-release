@@ -51,8 +51,13 @@ spec:
       {{- end }}
       containers:
         - name: yunikorn-scheduler-k8s
+      {{- if .Values.enableSchedulerPlugin }}
+          image: "{{ .Values.pluginImage.repository }}:{{ .Values.pluginImage.tag }}"
+          imagePullPolicy: {{ .Values.pluginImage.pullPolicy }}
+      {{- else }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+      {{- end }}
           ports:
             - name: http1
               containerPort: {{ .Values.service.port }}
