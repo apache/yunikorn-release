@@ -79,7 +79,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `resources.requests.memory`            | Memory resource requests                               | `1Gi`
 | `resources.limits.cpu`                 | CPU resource limit                                     | `4`
 | `resources.limits.memory`              | Memory resource limit                                  | `2Gi`
-| `embedAdmissionController`             | Flag for enabling/disabling the admission controlle    | `true`
+| `embedAdmissionController`             | Flag for enabling/disabling the admission controller   | `true`
+| `enableSchedulerPlugin`                | Flag for enabling/disabling scheduler plugin mode      | `false`
 | `operatorPlugins`                      | Scheduler operator plugins                             | `general`
 | `nodeSelector`                         | Scheduler deployment nodeSelector(s)                   | ` `
 
