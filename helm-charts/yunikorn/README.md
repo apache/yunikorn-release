@@ -44,7 +44,7 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 | K8s Version   | Support?  |
 | ------------- |:-------------:|
 | 1.18.x (or earlier) | X |
-| 1.19.x | √ |
+| 1.19.x | End-of-life; Untested |
 | 1.20.x | √ |
 | 1.21.x | √ |
 | 1.22.x | √ |
