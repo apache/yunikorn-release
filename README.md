@@ -32,4 +32,4 @@ A simplified procedure:
 - Start a voting thread for the project followed by an incubator voting thread 
 - Publish the release
 
-The full procedure is documented in the [release procedure](docs/release-procedure.md).
+The full procedure is documented in the [release procedure](https://yunikorn.apache.org/community/release_procedure).
