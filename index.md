@@ -102,6 +102,8 @@ Yunikorn can be deployed as a K8s custom scheduler, and take over all POD schedu
 | 1.19.x | 0.11.0 | - |
 | 1.20.x | 0.12.1 | - |
 | 1.21.x | 0.12.1 | - |
+| 1.22.x | 0.12.2 | - |
+| 1.23.x | 0.12.3 | - |
 
 ### Web UI
 
