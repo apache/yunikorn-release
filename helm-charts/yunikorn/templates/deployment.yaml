@@ -49,6 +49,14 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: yunikorn-scheduler-k8s
       {{- if .Values.enableSchedulerPlugin }}
@@ -94,11 +102,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "100Mi"
-              cpu: "100m"
+              memory: {{ .Values.webResources.requests.memory }}
+              cpu: {{ .Values.webResources.requests.cpu }}
             limits:
-              memory: "500Mi"
-              cpu: "200m"
+              memory: {{ .Values.webResources.limits.memory }}
+              cpu: {{ .Values.webResources.limits.cpu }}
       volumes:
         - name: config-volume
           configMap:
