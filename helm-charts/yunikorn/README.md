@@ -63,6 +63,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | ----------------------------------------------- | ---------------------------------------------------- | ------------------------------- |
 | `imagePullSecrets`                              | Docker repository secrets                            | ` `                             |
 | `serviceAccount`                                | Service account name                                 | `yunikorn-admin`                |
+| `replicaCount`                                  | Scheduler replicas to be deployed                    | `1`                             |
 | `image.repository`                              | Scheduler image repository                           | `apache/yunikorn`               |
 | `image.tag`                                     | Scheduler image tag                                  | `scheduler-latest`              |
 | `image.pullPolicy`                              | Scheduler image pull policy                          | `Always`                        |
@@ -72,7 +73,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `webImage.repository`                           | Web app image repository                             | `apache/yunikorn`               |
 | `webImage.tag`                                  | Web app image tag                                    | `web-latest`                    |
 | `webImage.pullPolicy`                           | Web app image pull policy                            | `Always`                        |
-| `admissionController.image.replicaCount`        | Admission controller image repository                | `1`                             |
+| `admissionController.replicaCount`              | Admission controller replicas to be deployed         | `1`                             |
 | `admissionController.serviceAccount`            | Admission controller service account name            | `yunikorn-admission-controller` |
 | `admissionController.image.repository`          | Admission controller image repository                | `apache/yunikorn`               |
 | `admissionController.image.tag`                 | Admission controller image tag                       | `admission-latest`              |
