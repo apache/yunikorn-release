@@ -79,13 +79,12 @@ resources:
     memory: 2Gi
 
 webResources:
-  resources:
-    requests:
-      memory: "100Mi"
-      cpu: "100m"
-    limits:
-      memory: "500Mi"
-      cpu: "200m"
+  requests:
+    memory: "100Mi"
+    cpu: "100m"
+  limits:
+    memory: "500Mi"
+    cpu: "200m"
 
 # When this flag is true, the admission controller will be installed along with the scheduler.
 # When this flag is false, the admission controller will not be installed.
