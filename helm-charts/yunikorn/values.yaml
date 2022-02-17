@@ -59,6 +59,8 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  service:
+    type: ClusterIP
 
 web:
   image:
@@ -74,7 +76,7 @@ web:
       cpu: "200m"
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 9080
   portWeb: 9889
 
