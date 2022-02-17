@@ -94,19 +94,19 @@ spec:
             - name: config-volume
               mountPath: /etc/yunikorn/
         - name: yunikorn-scheduler-web
-          image: "{{ .Values.webImage.repository }}:{{ .Values.webImage.tag }}"
-          imagePullPolicy: {{ .Values.webImage.pullPolicy }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           ports:
             - name: http2
               containerPort: {{ .Values.service.portWeb }}
               protocol: TCP
           resources:
             requests:
-              memory: {{ .Values.webResources.requests.memory }}
-              cpu: {{ .Values.webResources.requests.cpu }}
+              memory: {{ .Values.web.resources.requests.memory }}
+              cpu: {{ .Values.web.resources.requests.cpu }}
             limits:
-              memory: {{ .Values.webResources.limits.memory }}
-              cpu: {{ .Values.webResources.limits.cpu }}
+              memory: {{ .Values.web.resources.limits.memory }}
+              cpu: {{ .Values.web.resources.limits.cpu }}
       volumes:
         - name: config-volume
           configMap:

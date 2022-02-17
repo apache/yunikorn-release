@@ -70,9 +70,6 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `pluginImage.repository`                        | Scheduler plugin image repository                    | `apache/yunikorn`               |
 | `pluginImage.tag`                               | Scheduler plugin image tag                           | `scheduler-plugin-latest`       |
 | `pluginImage.pullPolicy`                        | Scheduler plugin image pull policy                   | `Always`                        |
-| `webImage.repository`                           | Web app image repository                             | `apache/yunikorn`               |
-| `webImage.tag`                                  | Web app image tag                                    | `web-latest`                    |
-| `webImage.pullPolicy`                           | Web app image pull policy                            | `Always`                        |
 | `admissionController.replicaCount`              | Admission controller replicas to be deployed         | `1`                             |
 | `admissionController.serviceAccount`            | Admission controller service account name            | `yunikorn-admission-controller` |
 | `admissionController.image.repository`          | Admission controller image repository                | `apache/yunikorn`               |
@@ -92,10 +89,13 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `resources.requests.memory`                     | Memory resource requests                             | `1Gi`                           |
 | `resources.limits.cpu`                          | CPU resource limit                                   | `4`                             |
 | `resources.limits.memory`                       | Memory resource limit                                | `2Gi`                           |
-| `webResources.requests.cpu`                     | Web app CPU resource requests                        | `100m`                          |
-| `webResources.requests.memory`                  | Web app memory resource requests                     | `100Mi`                         |
-| `webResources.limits.cpu`                       | Web app CPU resource limit                           | `200m`                          |
-| `webResources.limits.memory`                    | Web app memory resource limit                        | `500Mi`                         |
+| `web.image.repository`                          | Web app image repository                             | `apache/yunikorn`               |
+| `web.image.tag`                                 | Web app image tag                                    | `web-latest`                    |
+| `web.image.pullPolicy`                          | Web app image pull policy                            | `Always`                        |
+| `web.resources.requests.cpu`                    | Web app CPU resource requests                        | `100m`                          |
+| `web.resources.requests.memory`                 | Web app memory resource requests                     | `100Mi`                         |
+| `web.resources.limits.cpu`                      | Web app CPU resource limit                           | `200m`                          |
+| `web.resources.limits.memory`                   | Web app memory resource limit                        | `500Mi`                         |
 | `embedAdmissionController`                      | Flag for enabling/disabling the admission controller | `true`                          |
 | `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode    | `false`                         |
 | `operatorPlugins`                               | Scheduler operator plugins                           | `general`                       |
