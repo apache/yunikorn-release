@@ -19,7 +19,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.admissionControllerServiceAccount }}
+  name: {{ .Values.admissionController.serviceAccount }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-install
@@ -64,7 +64,7 @@ metadata:
     "helm.sh/hook-weight": "1"
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.admissionControllerServiceAccount }}
+    name: {{ .Values.admissionController.serviceAccount }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
@@ -80,7 +80,7 @@ metadata:
     "helm.sh/hook-weight": "1"
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.admissionControllerServiceAccount }}
+    name: {{ .Values.admissionController.serviceAccount }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role

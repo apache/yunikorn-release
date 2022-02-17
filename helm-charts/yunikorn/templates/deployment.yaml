@@ -49,6 +49,14 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: yunikorn-scheduler-k8s
       {{- if .Values.enableSchedulerPlugin }}
@@ -86,19 +94,19 @@ spec:
             - name: config-volume
               mountPath: /etc/yunikorn/
         - name: yunikorn-scheduler-web
-          image: "{{ .Values.webImage.repository }}:{{ .Values.webImage.tag }}"
-          imagePullPolicy: {{ .Values.webImage.pullPolicy }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           ports:
             - name: http2
               containerPort: {{ .Values.service.portWeb }}
               protocol: TCP
           resources:
             requests:
-              memory: "100Mi"
-              cpu: "100m"
+              memory: {{ .Values.web.resources.requests.memory }}
+              cpu: {{ .Values.web.resources.requests.cpu }}
             limits:
-              memory: "500Mi"
-              cpu: "200m"
+              memory: {{ .Values.web.resources.limits.memory }}
+              cpu: {{ .Values.web.resources.limits.cpu }}
       volumes:
         - name: config-volume
           configMap:
