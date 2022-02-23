@@ -48,7 +48,10 @@ admissionController:
     pullPolicy: Always
   replicaCount: 1
   serviceAccount: yunikorn-admission-controller
-  namespaceBlacklist: "^kube-system$"
+  processNamespaces: ""
+  bypassNamespaces: "^kube-system$"
+  labelNamespaces: ""
+  noLabelNamespaces: ""
   resources:
     requests:
       cpu: 100m

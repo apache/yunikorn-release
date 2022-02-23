@@ -79,8 +79,14 @@ spec:
             value: queues
           - name: ADMISSION_CONTROLLER_SERVICE
             value: yunikorn-admission-controller-service
-          - name: ADMISSION_CONTROLLER_NAMESPACE_BLACKLIST
-            value: "{{ .Values.admissionController.namespaceBlacklist }}"
+          - name: ADMISSION_CONTROLLER_PROCESS_NAMESPACES
+            value: "{{ .Values.admissionController.processNamespaces }}"
+          - name: ADMISSION_CONTROLLER_BYPASS_NAMESPACES
+            value: "{{ .Values.admissionController.bypassNamespaces }}"
+          - name: ADMISSION_CONTROLLER_LABEL_NAMESPACES
+            value: "{{ .Values.admissionController.labelNamespaces }}"
+          - name: ADMISSION_CONTROLLER_NO_LABEL_NAMESPACES
+            value: "{{ .Values.admissionController.noLabelNamespaces }}"
           - name: SCHEDULER_SERVICE_ADDRESS
             value: "yunikorn-service:9080"
           - name: ENABLE_CONFIG_HOT_REFRESH
