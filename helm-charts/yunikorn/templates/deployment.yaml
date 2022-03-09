@@ -83,6 +83,10 @@ spec:
               value: "{{ .Values.UserLabelKey }}"
             - name: OPERATOR_PLUGINS
               value: "{{ .Values.operatorPlugins }}"
+            {{- if .Values.placeholderImage }}
+            - name: PLACEHOLDER_IMAGE
+              value: "{{ .Values.placeholderImage }}"
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
