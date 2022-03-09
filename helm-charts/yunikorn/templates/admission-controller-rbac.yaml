@@ -33,10 +33,10 @@ metadata:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "1"
 rules:
-  - apiGroups: ["*"]
+  - apiGroups: ["admissionregistration.k8s.io"]
     resources: ["validatingwebhookconfigurations"]
     verbs: ["get", "watch", "list", "create", "patch", "update", "delete"]
-  - apiGroups: ["*"]
+  - apiGroups: ["admissionregistration.k8s.io"]
     resources: ["mutatingwebhookconfigurations"]
     verbs: ["get", "watch", "list", "create", "patch", "update", "delete"]
 ---
