@@ -64,6 +64,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `imagePullSecrets`                              | Docker repository secrets                                           | ` `                             |
 | `serviceAccount`                                | Service account name                                                | `yunikorn-admin`                |
 | `replicaCount`                                  | Scheduler replicas to be deployed                                   | `1`                             |
+| `hostNetwork`                                   | Whether scheduler should run in the host network                    | `false`                         |
 | `image.repository`                              | Scheduler image repository                                          | `apache/yunikorn`               |
 | `image.tag`                                     | Scheduler image tag                                                 | `scheduler-latest`              |
 | `image.pullPolicy`                              | Scheduler image pull policy                                         | `Always`                        |
@@ -75,6 +76,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `admissionController.image.repository`          | Admission controller image repository                               | `apache/yunikorn`               |
 | `admissionController.image.tag`                 | Admission controller image tag                                      | `admission-latest`              |
 | `admissionController.image.pullPolicy`          | Admission controller image pull policy                              | `Always`                        |
+| `admissionController.hostNetwork`               | Whether admission controller should run in the host network         | `true`                          |
 | `admissionController.processNamespaces`         | Comma-separated list of namespace regexes to process (empty=ALL)    | ``                              |
 | `admissionController.bypassNamespaces`          | Comma-separated list of namespace regexes to bypass (empty=NONE)    | `^kube-system$`                 |
 | `admissionController.labelNamespaces`           | Comma-separated list of namespace regexes to label (empty=ALL)      | ``                              |

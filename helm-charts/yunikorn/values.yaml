@@ -18,14 +18,11 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
 imagePullSecrets:
-
 userLabelKey: "yunikorn.apache.org/username"
-
 operatorPlugins: "general"
-
 serviceAccount: yunikorn-admin
+hostNetwork: false
 
 image:
   repository: apache/yunikorn
@@ -52,6 +49,7 @@ admissionController:
   bypassNamespaces: "^kube-system$"
   labelNamespaces: ""
   noLabelNamespaces: ""
+  hostNetwork: true
   resources:
     requests:
       cpu: 100m
