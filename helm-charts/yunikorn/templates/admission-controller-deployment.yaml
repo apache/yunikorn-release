@@ -40,6 +40,7 @@ spec:
         component: yunikorn-admission-controller
         release: {{ .Release.Name }}
     spec:
+      hostNetwork: {{ .Values.admissionController.hostNetwork }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}

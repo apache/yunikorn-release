@@ -38,6 +38,7 @@ spec:
         component: yunikorn-scheduler
         release: {{ .Release.Name }}
     spec:
+      hostNetwork: {{ .Values.hostNetwork }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}
