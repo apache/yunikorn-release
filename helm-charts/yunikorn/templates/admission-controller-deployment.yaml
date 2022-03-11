@@ -40,7 +40,10 @@ spec:
         component: yunikorn-admission-controller
         release: {{ .Release.Name }}
     spec:
-      hostNetwork: {{ .Values.admissionController.hostNetwork }}
+      {{- if .Values.admissionController.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}

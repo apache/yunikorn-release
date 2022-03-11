@@ -38,7 +38,10 @@ spec:
         component: yunikorn-scheduler
         release: {{ .Release.Name }}
     spec:
-      hostNetwork: {{ .Values.hostNetwork }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }} 
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}
