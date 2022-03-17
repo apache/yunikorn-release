@@ -24,6 +24,8 @@ operatorPlugins: "general"
 serviceAccount: yunikorn-admin
 hostNetwork: false
 
+placeHolderImage: k8s.gcr.io/pause
+
 image:
   repository: apache/yunikorn
   tag: scheduler-latest

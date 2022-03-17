@@ -87,6 +87,8 @@ spec:
               value: "{{ .Values.UserLabelKey }}"
             - name: OPERATOR_PLUGINS
               value: "{{ .Values.operatorPlugins }}"
+            - name: PLACEHOLDER_IMAGE
+              value: "{{ .Values.placeHolderImage }}"
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}

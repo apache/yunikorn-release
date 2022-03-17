@@ -109,6 +109,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `nodeSelector`                                  | Scheduler deployment nodeSelector(s)                                | `{}`                            |
 | `tolerations`                                   | Scheduler deployment tolerations                                    | `[]`                            |
 | `affinity`                                      | Scheduler deployment affinity                                       | `{}`                            |
+| `placeholderImage`                              | Docker image of the placeholder pods                                | `k8s.gcr.io/pause`              |
 
 These parameters can be passed in via helm's `--set` option, such as `--set embedAdmissionController=false`.
 
