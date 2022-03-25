@@ -19,7 +19,7 @@
 package framework
 
 import (
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"go.uber.org/zap"
 )
 

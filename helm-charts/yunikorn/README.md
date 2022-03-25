@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  -->
-# Apache YuniKorn (Incubating) - A Universal Scheduler
+# Apache YuniKorn - A Universal Scheduler
 
-Apache YuniKorn (Incubating) is a light-weight, universal resource scheduler for container orchestrator systems.
+Apache YuniKorn is a light-weight, universal resource scheduler for container orchestrator systems.
 It was created to achieve fine-grained resource sharing for various workloads efficiently on a large scale, multi-tenant,
 and cloud-native environment. YuniKorn brings a unified, cross-platform, scheduling experience for mixed workloads that consist
 of stateless batch workloads and stateful services. 
@@ -52,7 +52,7 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 
 ## Installing the chart
 ```
-helm repo add yunikorn  https://apache.github.io/incubator-yunikorn-release
+helm repo add yunikorn  https://apache.github.io/yunikorn-release
 helm repo update 
 helm install yunikorn yunikorn/yunikorn
 ```

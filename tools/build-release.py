@@ -39,7 +39,7 @@ def build_release(email_address):
 
     release_meta = data["release"]
     version = release_meta["version"]
-    release_package_name = "apache-yunikorn-{0}-incubating-src".format(version)
+    release_package_name = "apache-yunikorn-{0}-src".format(version)
     repo_list = data["repositories"]
 
     print("release meta info:")
@@ -170,9 +170,9 @@ def update_dep_ref_k8shim(local_repo_path):
     mod_file = os.path.join(local_repo_path, "go.mod")
     with open(mod_file, "a") as file_object:
         file_object.write("\n")
-        file_object.write("replace github.com/apache/incubator-yunikorn-core => ../core \n")
+        file_object.write("replace github.com/apache/yunikorn-core => ../core \n")
         file_object.write(
-            "replace github.com/apache/incubator-yunikorn-scheduler-interface => ../scheduler-interface \n")
+            "replace github.com/apache/yunikorn-scheduler-interface => ../scheduler-interface \n")
 
 
 # core depends on scheduler-interface
@@ -182,7 +182,7 @@ def update_dep_ref_core(local_repo_path):
     with open(mod_file, "a") as file_object:
         file_object.write("\n")
         file_object.write(
-            "replace github.com/apache/incubator-yunikorn-scheduler-interface => ../scheduler-interface \n")
+            "replace github.com/apache/yunikorn-scheduler-interface => ../scheduler-interface \n")
 
 
 # update go mod in the repos
