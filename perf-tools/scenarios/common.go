@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/incubator-yunikorn-release/perf-tools/framework"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-release/perf-tools/framework"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
 )

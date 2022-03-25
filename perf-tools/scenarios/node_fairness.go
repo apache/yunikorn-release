@@ -23,12 +23,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/incubator-yunikorn-core/pkg/common/resources"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/constants"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-core/pkg/common/resources"
+	"github.com/apache/yunikorn-release/perf-tools/constants"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 	v1 "k8s.io/api/core/v1"
 
-	"github.com/apache/incubator-yunikorn-release/perf-tools/framework"
+	"github.com/apache/yunikorn-release/perf-tools/framework"
 	"go.uber.org/zap"
 )
 

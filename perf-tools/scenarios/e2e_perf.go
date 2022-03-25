@@ -25,8 +25,8 @@ import (
 	"time"
 
 	"github.com/TaoYang526/goutils/pkg/profiling"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/framework"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-release/perf-tools/framework"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"go.uber.org/zap"
 )
 

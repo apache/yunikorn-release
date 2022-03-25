@@ -15,9 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Apache YuniKorn (Incubating) Release
+# Apache YuniKorn Release
 ----
-This project provides the instructions and tools needed to generate Apache YuniKorn (Incubating) release artifacts.
+This project provides the instructions and tools needed to generate Apache YuniKorn release artifacts.
 Reference:
  - [ASF Release Creation Process](https://infra.apache.org/release-publishing.html)
  - [ASF Release Policy](http://www.apache.org/legal/release-policy.html).
@@ -29,7 +29,7 @@ A simplified procedure:
 - Create a tag and prepare to generate the release, e.g `v0.8.0`
 - Run the release tool to generate source code tarball, checksum and signature
 - Upload tarball, signature and checksum as a release candidate
-- Start a voting thread for the project followed by an incubator voting thread 
+- Start a voting thread for the project 
 - Publish the release
 
 The full procedure is documented in the [release procedure](https://yunikorn.apache.org/community/release_procedure).

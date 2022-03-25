@@ -27,10 +27,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 
-	"github.com/apache/incubator-yunikorn-release/perf-tools/framework"
-	_ "github.com/apache/incubator-yunikorn-release/perf-tools/scenarios"
+	"github.com/apache/yunikorn-release/perf-tools/framework"
+	_ "github.com/apache/yunikorn-release/perf-tools/scenarios"
 	"go.uber.org/zap"
 )
 

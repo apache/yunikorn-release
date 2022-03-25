@@ -16,12 +16,12 @@
 // limitations under the License.
 //
 
-module github.com/apache/incubator-yunikorn-release
+module github.com/apache/yunikorn-release
 
 go 1.15
 
 require (
-	github.com/apache/incubator-yunikorn-core v0.0.0-20210130000555-5a1c19e280f6
+	github.com/apache/yunikorn-core v0.0.0-20220325135453-73d55282f052
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5

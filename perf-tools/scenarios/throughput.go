@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/incubator-yunikorn-release/perf-tools/constants"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/framework"
-	"github.com/apache/incubator-yunikorn-release/perf-tools/utils"
+	"github.com/apache/yunikorn-release/perf-tools/constants"
+	"github.com/apache/yunikorn-release/perf-tools/framework"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"go.uber.org/zap"
 )
 

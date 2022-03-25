@@ -21,7 +21,7 @@ package utils
 import (
 	"go.uber.org/zap/zapcore"
 
-	"github.com/apache/incubator-yunikorn-core/pkg/log"
+	"github.com/apache/yunikorn-core/pkg/log"
 	"go.uber.org/zap"
 )
 

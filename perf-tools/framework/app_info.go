@@ -21,7 +21,7 @@ package framework
 import (
 	"time"
 
-	"github.com/apache/incubator-yunikorn-core/pkg/common/resources"
+	"github.com/apache/yunikorn-core/pkg/common/resources"
 
 	apiv1 "k8s.io/api/core/v1"
 )

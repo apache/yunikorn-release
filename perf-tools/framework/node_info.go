@@ -21,7 +21,7 @@ package framework
 import (
 	"fmt"
 
-	"github.com/apache/incubator-yunikorn-core/pkg/common/resources"
+	"github.com/apache/yunikorn-core/pkg/common/resources"
 )
 
 type NodeInfo struct {
