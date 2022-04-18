@@ -31,7 +31,7 @@ General requirement for building YuniKorn images from this release:
 
 ### Yunikorn Scheduler
 The scheduler and shim are build as one set of artifacts and have one requirement:
-* Go 1.15 or later
+* Go 1.16 or later
 
 ### Yunikorn web UI
 The YuniKorn web UI uses a two stage docker build with predefined images.
@@ -50,8 +50,21 @@ The command will generate the following three docker images in the local docker 
 * apache/yunikorn:admission-latest
 * apache/yunikorn:web-latest
 
+## Verifying the release
+A script and configuration to create a simple cluster using the locally built images is provided in this release archive.
+Follow the instructions in [Building](#building) to create the local docker images.
+The script for validating the release and the build use the same defaults. 
+
+After the images have been created run the script for more instructions and to list the tools required for validating
+the release:
+```shell
+./validate_cluster.sh
+```
+The `kind` cluster created using the included config is a small, but fully functional Kubernetes cluster, with
+Apache YuniKorn deployed.
+
 ## Deploying YuniKorn 
-The simplest way to run YuniKorn is to use the provided helm charts, you can find the templates in the release 
+The simplest way to run Apache YuniKorn is to use the provided helm charts, you can find the templates in the release 
 package `helm-charts`.
 There are a few prerequisites:
 1. An existing K8s cluster is up and running.
@@ -82,7 +95,6 @@ Apache YuniKorn provides a convenience release with pre-build docker images and 
 These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are 
 located in the [User Guide](https://yunikorn.apache.org/docs/).
 
-
 ## Testing the build
 Running the unit tests is supported via the make command.
 It will run the tests for all parts of YuniKorn in order:
@@ -99,13 +111,12 @@ Unit testing for the scheduler has no additional pre-requisites.
 ### Yunikorn web UI
 The project requires a number of external tools to be installed for test and development.
 A non image build requires the following tools to be installed:
-* Node.js 10.16.2
-* Angular CLI 8.3.19
-* yarn 1.21
+* Node.js 16.14.2
+* Angular CLI 13.3.0
+* yarn 1.22
 
 Running unit tests adds the following requirements:
 * Karma
-* Protractor
 * json-server
 
 Please check the [documentation](https://yunikorn.apache.org/docs/) for further details.

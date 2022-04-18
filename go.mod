@@ -18,14 +18,14 @@
 
 module github.com/apache/yunikorn-release
 
-go 1.15
+go 1.16
 
 require (
+	github.com/TaoYang526/goutils v0.0.0-20210209083921-039008f0a57d
 	github.com/apache/yunikorn-core v0.0.0-20220325135453-73d55282f052
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5
-	github.com/TaoYang526/goutils v0.0.0-20210209083921-039008f0a57d
 	go.uber.org/zap v1.13.0
 	gonum.org/v1/plot v0.9.0
 	gopkg.in/yaml.v2 v2.2.8

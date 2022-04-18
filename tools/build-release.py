@@ -22,11 +22,11 @@ import os
 import re
 import shutil
 import subprocess
-import sys
 import tarfile
 from tempfile import mkstemp
 
 import git
+import sys
 
 
 # Main build routine
@@ -107,6 +107,8 @@ def setup_base_dir(release_top_path, helm_path, base_path, version):
         shutil.copy2(org, dest)
     # set the base Makefile version info
     replace(os.path.join(base_path, "Makefile"), 'latest', version)
+    # set the base validate_cluster version info
+    replace(os.path.join(base_path, "validate_cluster.sh"), 'latest', version)
     # update the version tags in the README
     replace(os.path.join(base_path, "README.md"), '-latest', '-' + version)
     # copy the helm charts
