@@ -93,6 +93,21 @@ function usage() {
   echo "  HELMCHART,    default: './helm-charts/yunikorn'"
 }
 
+# remove kind cluster ion failure
+function remove_cluster() {
+	echo "Removing kind cluster"
+	kind delete cluster --name yk8s
+	exit 1
+}
+
+# print message on how to cleanup cluster
+function cleanup() {
+	echo
+	echo "To clean up the cluster after use execute the following command:"
+	echo "  kind delete cluster --name yk8s"
+	echo
+}
+
 # tool check: run before input check to make sure all tools are available
 tool_check
 if [ $? -eq 1 ]; then
@@ -134,36 +149,64 @@ kind create cluster --name yk8s --image ${KIND_IMAGE} --config=${KIND_CONFIG}
 if [ $? -eq 1 ]; then
   exit 1
 fi
+echo
+echo "Pre-Loading docker images..."
+echo
+kind load docker-image ${REGISTRY}/yunikorn:admission-${VERSION} --name yk8s >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+	echo "Pre-Loading Admission Controller image failed, aborting"
+  remove_cluster
+fi
+kind load docker-image ${REGISTRY}/yunikorn:scheduler-${VERSION} --name yk8s >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+	echo "Pre-Loading scheduler image failed, aborting"
+  remove_cluster
+fi
+kind load docker-image ${REGISTRY}/yunikorn:web-${VERSION} --name yk8s >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+	echo "Pre-Loading web image failed, aborting"
+  remove_cluster
+fi
 
 kubectl config use-context kind-yk8s
 if [ $? -eq 1 ]; then
-  exit 1
+	echo "Kubernetes context switch failed, aborting"
+  remove_cluster
 fi
 
 kubectl create namespace yunikorn
 if [ $? -eq 1 ]; then
-  exit 1
+	echo "Namespace creation failed, aborting"
+  remove_cluster
 fi
-
+echo
+echo "Deploying helm chart..."
 helm install yunikorn ${HELMCHART} --namespace yunikorn \
     --set image.repository=${REGISTRY}/yunikorn \
     --set image.tag=scheduler-${VERSION} \
-    --set image.pullPolicy=Always \
+    --set image.pullPolicy=IfNotPresent \
     --set admissionController.image.repository=${REGISTRY}/yunikorn \
     --set admissionController.image.tag=admission-${VERSION} \
-    --set admissionController.image.pullPolicy=Always \
+    --set admissionController.image.pullPolicy=IfNotPresent \
     --set web.image.repository=${REGISTRY}/yunikorn \
     --set web.image.tag=web-${VERSION} \
-    --set web.image.pullPolicy=Always
+    --set web.image.pullPolicy=IfNotPresent
 echo
 echo "Waiting for helm deployment to finish..."
-kubectl wait --for=condition=available --timeout=300s deployment/yunikorn-scheduler -n yunikorn
-kubectl wait --for=condition=ready --timeout=300s pod -l app=yunikorn -n yunikorn
+kubectl wait --for=condition=available --timeout=150s deployment/yunikorn-scheduler -n yunikorn
+if [ $? -eq 1 ]; then
+	cleanup
+  exit 1
+fi
+
+kubectl wait --for=condition=ready --timeout=150s pod -l app=yunikorn -n yunikorn
+if [ $? -eq 1 ]; then
+	cleanup
+  exit 1
+fi
+
 echo
 echo "Setting up port forwarding for REST (9080) and web UI (9889)"
 kubectl port-forward svc/yunikorn-service 9889:9889 -n yunikorn >/dev/null 2>&1 &
 kubectl port-forward svc/yunikorn-service 9080:9080 -n yunikorn >/dev/null 2>&1 &
-echo
-echo "To clean up the cluster after use execute the following command:"
-echo "  kind delete cluster --name yk8s" 
-echo
+cleanup
