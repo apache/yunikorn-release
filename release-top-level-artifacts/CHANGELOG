@@ -15,6 +15,194 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+
+Release Notes - Apache YuniKorn - Version 1.0.0
+
+** Sub-task
+    * [YUNIKORN-462] - Streamline core to shim update on allocation change
+    * [YUNIKORN-593] - Optimize the UT for ListApplications
+    * [YUNIKORN-638] - Make placeholder image configurable
+    * [YUNIKORN-717] - Refactor YuniKorn core's scheduler metrics for node number and sorting latency
+    * [YUNIKORN-721] - Improve YuniKorn core's queue-level and scheduler metrics
+    * [YUNIKORN-864] - update design documentation with new interface
+    * [YUNIKORN-935] - Refactor resourcemanagercallback mock class
+    * [YUNIKORN-955] - Move the web UI calls to the new REST API endpoints
+    * [YUNIKORN-956] - Remove old REST handlers: objects and code
+    * [YUNIKORN-957] - Move doStateDump to new internal REST objects
+    * [YUNIKORN-958] - Expose node utilisation info in new REST calls
+    * [YUNIKORN-960] - Expose cluster utilisation info in new REST calls
+    * [YUNIKORN-979] - Add e2e test for admission controller bypassNamespaces
+    * [YUNIKORN-989] - Update the copyright years in NOTICE file to 2022
+    * [YUNIKORN-992] - Update website for v1.0 release
+    * [YUNIKORN-993] - helm chart release v1.0
+    * [YUNIKORN-994] - update release procedure for release tagging
+    * [YUNIKORN-1006] - Address QU 30, 40, 50
+    * [YUNIKORN-1007] - LC20 For Docker Repo
+    * [YUNIKORN-1008] - Allow admission controller to bypass pods in certain namespaces
+    * [YUNIKORN-1020] - Update security issue report guidelines
+    * [YUNIKORN-1021] - Add committer/PPMC user list on the website
+    * [YUNIKORN-1031] - Add Chinese translation for homepage
+    * [YUNIKORN-1043] - Minor fix on the people page
+    * [YUNIKORN-1045] - Add maturity matrix to the website
+    * [YUNIKORN-1050] - Compare YARN metrics with Yunikorn
+    * [YUNIKORN-1051] - Collect Go runtime metrics
+    * [YUNIKORN-1052] - Add more cluster-wide metrics to Yunikorn
+    * [YUNIKORN-1054] - Add more queue metrics to Yunikorn
+    * [YUNIKORN-1064] - Doc changes for YUNIKORN-958 & YUNIKORN-960
+    * [YUNIKORN-1072] - Upgrade and sign-off status file
+    * [YUNIKORN-1104] - Add e2e test for configmap validator in admission controller
+    * [YUNIKORN-1114] - Document changes from YUNIKORN-961
+    * [YUNIKORN-1115] - document changes from YUNIKORN-1093
+    * [YUNIKORN-1130] - Documentation updates for units on resources
+    * [YUNIKORN-1131] - Document behaviour of resource in REST API
+    * [YUNIKORN-1132] - Document changes from YUNIKORN-165
+    * [YUNIKORN-1135] - document changes from YUNIKORN-1128
+    * [YUNIKORN-1145] - Update code in core repo to remove incubator references
+    * [YUNIKORN-1146] - Update code in SI repo to remove incubator references
+    * [YUNIKORN-1147] - Update code in shim repo to remove incubator references
+    * [YUNIKORN-1148] - Update code in release repo to remove incubator references
+    * [YUNIKORN-1149] - Update code in web repo to remove incubator references
+    * [YUNIKORN-1150] - Update website to remove incubator references
+    * [YUNIKORN-1155] - Placeholder timeout should not be initialized to the default value during recovery
+    * [YUNIKORN-1156] - Document changes from YUNIKORN-193
+    * [YUNIKORN-1158] - Document changes from YUNIKORN-1087
+    * [YUNIKORN-1160] - Fix codecov after migration
+    * [YUNIKORN-1161] - Pods not linked to placeholders are stuck in Running state if YK is restarted
+    * [YUNIKORN-1167] - Document changes from YUNIKORN-1163
+    * [YUNIKORN-1170] - Update timestamps to be consistently int64
+    * [YUNIKORN-1181] - Privacy policy update
+    * [YUNIKORN-1182] - Fix YUNIKORN-1161 and YUNIKORN-1155 properly
+
+
+
+** Bug
+    * [YUNIKORN-384] - [webUI] UI doesn't parse partition info correctly with more than one partition
+    * [YUNIKORN-410] - Pod state change may cause incorrect update on SchedulerNode#occupied
+    * [YUNIKORN-583] - Codecov report is always failing
+    * [YUNIKORN-689] - Pods could be scheduled on nodes that don't have enough CPUs
+    * [YUNIKORN-953] - Investigate of kubeflow/training-operator
+    * [YUNIKORN-973] - Correct the link in master/deployments/examples
+    * [YUNIKORN-982] - Handle placeholders that are different from real allocations
+    * [YUNIKORN-988] - The YuniKorn logo doesn't render correctly on mobile
+    * [YUNIKORN-1019] - Fix broken links / outdated info on GH Pages
+    * [YUNIKORN-1037] - Update community conf links
+    * [YUNIKORN-1042] - "Why YuniKorn" is not rendered properly on mobile
+    * [YUNIKORN-1055] - Increase the web site build timeout in github action
+    * [YUNIKORN-1063] - Fix build issues on website
+    * [YUNIKORN-1076] - Emit K8s event for invalid Task Group annotation
+    * [YUNIKORN-1077] - Negative Container Count
+    * [YUNIKORN-1092] - IsReservedOnNode() can match wrong node
+    * [YUNIKORN-1095] - Periodic state dump REST call doesn't return anything
+    * [YUNIKORN-1097] - RMProxy DEBUG cannot log event with channel
+    * [YUNIKORN-1098] - E2E tests pull in wrong admission controller image
+    * [YUNIKORN-1099] - Deadlock in Application.notifyRMAllocationReleased()
+    * [YUNIKORN-1100] - Fix inconsistencies and leaks in shim caches
+    * [YUNIKORN-1108] - Fix race conditions in dispatcher_test.go
+    * [YUNIKORN-1109] - Fix data race in core event handling
+    * [YUNIKORN-1113] - Allow admission controller / scheduler to run in host network
+    * [YUNIKORN-1116] - Update SchedulerNode properties using proper locks
+    * [YUNIKORN-1121] - MockScheduler addTask ignores resource settings
+    * [YUNIKORN-1123] - UpdateNode may cause the scheduler to crash
+    * [YUNIKORN-1124] - Avoid passing empty nodeAttributes in UpdateNode request
+    * [YUNIKORN-1128] - absUsedCapacity is not exposed in the queue
+    * [YUNIKORN-1134] - Use new resource format in web app
+    * [YUNIKORN-1137] - Fix typo in placement related messages
+    * [YUNIKORN-1138] - rename the variables that end with infos and informations
+    * [YUNIKORN-1144] - Deadlock in context.getTask()
+    * [YUNIKORN-1152] - Make sure that --placeHolderImage switch is always properly set
+    * [YUNIKORN-1159] - Node occupied resources are not detected on YuniKorn startup
+    * [YUNIKORN-1162] - Recovery code does not update occupied resources on node
+    * [YUNIKORN-1164] - Fix inconsistent lock behavior in application.go
+    * [YUNIKORN-1165] - Yunikorn plugin inconsistent node assignment + scheduling
+    * [YUNIKORN-1166] - Fix release procedure documentation
+    * [YUNIKORN-1168] - E2e tests fail sometimes due to missing service account
+    * [YUNIKORN-1175] - Web UI should show node utilization as percentage
+    * [YUNIKORN-1178] - Nil pointer dereference during schedule recovery
+    * [YUNIKORN-1179] - Logs are spammed with health check status messages
+    * [YUNIKORN-1180] - JSON parse error when creating placeholders
+
+
+** New Feature
+    * [YUNIKORN-138] - Redesign display of resources in web UI
+    * [YUNIKORN-629] - Add size specification to queue config
+    * [YUNIKORN-971] - Implement YuniKorn as a Kubernetes Scheduler Plugin
+    * [YUNIKORN-1005] - [Umbrella] Prepare graduation from ASF incubator
+
+
+** Improvement
+    * [YUNIKORN-165] - API response fields can be returned as proper data structure rather than free text
+    * [YUNIKORN-183] - Logging clean up
+    * [YUNIKORN-371] - Document how to manage and update go mod dependencies
+    * [YUNIKORN-596] - Document pod labels and annotations
+    * [YUNIKORN-601] - KubeClient mock does not allow failure tests
+    * [YUNIKORN-720] - Add and improve queue metrics throughout the scheduling cycle
+    * [YUNIKORN-764] - Document how to verify a release
+    * [YUNIKORN-797] - testing `DAOString` with multiple resources is unstable
+    * [YUNIKORN-870] - Enhance application-related REST APIs
+    * [YUNIKORN-876] - Optimize scheduler memory consumption
+    * [YUNIKORN-937] - Update eventrecorder usage to new K8S API
+    * [YUNIKORN-949] - Location of the state dump file should be configurable
+    * [YUNIKORN-954] - [Umbrella] Remove old REST API
+    * [YUNIKORN-961] - Expose build and version information in a REST call
+    * [YUNIKORN-978] - Admission controller improvements
+    * [YUNIKORN-981] - Cleanup comments and logging in queue code
+    * [YUNIKORN-997] - Use K8s fine-grained access control for YuniKorn scheduler
+    * [YUNIKORN-998] - expose gang related info in application REST info
+    * [YUNIKORN-1009] - add git sha as label to admission controller image
+    * [YUNIKORN-1027] - Go: deprecation of io/ioutil
+    * [YUNIKORN-1028] - move master branches to pseudo versions in go.mod
+    * [YUNIKORN-1057] - Add helm setting to deploy scheduler in plugin mode
+    * [YUNIKORN-1062] - fix table layout in md files
+    * [YUNIKORN-1065] - panic in nodeUpdate when node disappears
+    * [YUNIKORN-1067] - standardise on formatMetricName() call
+    * [YUNIKORN-1078] - More configuration parameters in helm chart
+    * [YUNIKORN-1084] - Update namespace handling in admission controller
+    * [YUNIKORN-1087] - track scheduling time in the allocation
+    * [YUNIKORN-1088] - remove empty updates from nodes calls
+    * [YUNIKORN-1090] - remove common.Node from the shim
+    * [YUNIKORN-1093] - Track rejected applications
+    * [YUNIKORN-1102] - shim context getTask error is ignored
+    * [YUNIKORN-1103] - Support fetching queue name from pod annotation "yunikorn.apache.org/queue"
+    * [YUNIKORN-1105] - Rethink memory resource conversion to MB
+    * [YUNIKORN-1106] - Reduce core scheduler idle CPU usage
+    * [YUNIKORN-1110] - update REST API documentation
+    * [YUNIKORN-1111] - Run yunikorn as non-root user
+    * [YUNIKORN-1118] - Config validation should soft-succeed if yunikorn is not reachable
+    * [YUNIKORN-1119] - Rotate admission controller server and CA certificates
+    * [YUNIKORN-1120] - Allow unit specifiers in core configs
+    * [YUNIKORN-1133] - Upgrade angular framework to latest stable release
+    * [YUNIKORN-1141] - [Umbrella] Post graduation tasks
+    * [YUNIKORN-1163] - REST API - Return history of application state transitions
+    * [YUNIKORN-1172] - Make e2e tests cleanup pods faster
+
+** Test
+    * [YUNIKORN-522] - Smoke test for dynamic queue clean up
+
+
+** Task
+    * [YUNIKORN-197] - update commit instructions in docs
+    * [YUNIKORN-364] - Add search support to yunikorn site
+    * [YUNIKORN-951] - Add perf-tool description into benchmarking tutorial page
+    * [YUNIKORN-983] - interface message complexity, phase 2
+    * [YUNIKORN-990] - DocSearch Migration
+    * [YUNIKORN-991] - [UMBRELLA] YuniKorn 1.0 release efforts
+    * [YUNIKORN-996] - update roadmap with v1.0 plan
+    * [YUNIKORN-1025] - Run github actions on push as well as pull request
+    * [YUNIKORN-1040] - add e2e test that re-starts the scheduler pod
+    * [YUNIKORN-1044] - Publish design doc for scheduler plugin to website.
+    * [YUNIKORN-1048] - Update how to contribute to documentation
+    * [YUNIKORN-1056] - Update website with info about how to use scheduler plugin
+    * [YUNIKORN-1058] - Update e2e tests to exercise plugin mode as well
+    * [YUNIKORN-1060] - Remove Kubernetes 1.19 from e2e tests
+    * [YUNIKORN-1061] - Remove 1.19 from supported K8s versions in helm charts
+    * [YUNIKORN-1066] - Fix typos in website
+    * [YUNIKORN-1068] - Doc changes for state dump file path
+    * [YUNIKORN-1073] - AllocationAskRelease field allocationkey should be allocationKey
+    * [YUNIKORN-1074] - Make e2e tests more resilient
+    * [YUNIKORN-1080] - remove travis build badges
+    * [YUNIKORN-1081] - Don't expose helm services externally by default
+    * [YUNIKORN-1083] - Doc step for deploying admission controller in manual process
+    * [YUNIKORN-1125] - remove unlimited node
+    * [YUNIKORN-1140] - Update e2e tests to work with new REST API changes
+    * [YUNIKORN-1142] - Document admission controller TLS certificate management
+
