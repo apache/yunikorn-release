@@ -13,7 +13,7 @@
       "name": "yunikorn-k8shim",
       "alias": "k8shim",
       "description": "the scheduler shim for K8s",
-      "tag": "v1.0.0-1",
+      "tag": "v1.0.0-2",
       "repository": "https://github.com/apache/yunikorn-k8shim"
     }, {
       "name": "yunikorn-scheduler-interface",

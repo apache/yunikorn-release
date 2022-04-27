@@ -120,6 +120,7 @@ Release Notes - Apache YuniKorn - Version 1.0.0
     * [YUNIKORN-1178] - Nil pointer dereference during schedule recovery
     * [YUNIKORN-1179] - Logs are spammed with health check status messages
     * [YUNIKORN-1180] - JSON parse error when creating placeholders
+    * [YUNIKORN-1190] - Shim needs to account for usage of pods without app ID
 
 
 ** New Feature
@@ -174,6 +175,7 @@ Release Notes - Apache YuniKorn - Version 1.0.0
     * [YUNIKORN-1141] - [Umbrella] Post graduation tasks
     * [YUNIKORN-1163] - REST API - Return history of application state transitions
     * [YUNIKORN-1172] - Make e2e tests cleanup pods faster
+    * [YUNIKORN-1189] - Release validation script should support plugin mode
 
 ** Test
     * [YUNIKORN-522] - Smoke test for dynamic queue clean up
