@@ -82,8 +82,7 @@ def build_release(email_address):
 # Function passed in as a filter to the tar command to keep tar as clean as possible
 def exclude_files(tarinfo):
     file_name = os.path.basename(tarinfo.name)
-    exclude = [".git", ".github", ".gitignore", ".travis.yml", ".asf.yaml", ".golangci.yml", ".helmignore", "LICENSE",
-               "landmark"]
+    exclude = [".DS_Store", ".git", ".github", ".gitignore", ".asf.yaml", "LICENSE"]
     if file_name in exclude:
         print("exclude file from tarball %s" % tarinfo.name)
         return None
