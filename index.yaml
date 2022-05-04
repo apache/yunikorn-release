@@ -135,7 +135,7 @@ entries:
       version: 0.12.2
     - apiVersion: v1
       appVersion: 1.0.0
-      created: "2022-05-04T14:59:24.760841+1000"
+      created: "2022-05-04T14:59:24.760841+10:00"
       description: YuniKorn scheduler for Kubernetes
       digest: e79736824562eee16e731ff0690eebb9de979c1953dc3499890e2846ce517116
       home: https://yunikorn.apache.org
