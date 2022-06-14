@@ -121,9 +121,7 @@ def copy_helm_charts(helm_path, base_path, version):
     distutils.dir_util.copy_tree(helm_path, release_helm_path)
     # rename the version in the helm charts to the actual version
     yunikorn_chart_path = os.path.join(release_helm_path, "yunikorn")
-    replace(os.path.join(yunikorn_chart_path, "values.yaml"), 'tag: scheduler-.*', 'tag: scheduler-' + version)
-    replace(os.path.join(yunikorn_chart_path, "values.yaml"), 'tag: admission-.*', 'tag: admission-' + version)
-    replace(os.path.join(yunikorn_chart_path, "values.yaml"), 'tag: web-.*', 'tag: web-' + version)
+    replace(os.path.join(yunikorn_chart_path, "values.yaml"), '(tag: .*-)(latest)', '\\g<1>' + version)
     replace(os.path.join(yunikorn_chart_path, "Chart.yaml"), 'version: .*', 'version: ' + version)
     replace(os.path.join(yunikorn_chart_path, "Chart.yaml"), 'appVersion: .*', 'appVersion: \"' + version + '\"')
 
