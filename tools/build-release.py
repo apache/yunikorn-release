@@ -29,17 +29,32 @@ import git
 import sys
 
 
+# fail the execution
+def fail(message):
+    print(message)
+    sys.exit(1)
+
+
 # Main build routine
 def build_release(email_address):
     tools_dir = os.path.dirname(os.path.realpath(__file__))
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
     with open(config_file) as configs:
-        data = json.load(configs)
+        try:
+            data = json.load(configs)
+        except json.JSONDecodeError:
+            fail("load config: unexpected json decode failure")
 
+    if "release" not in data:
+        fail("load config: release data not found")
     release_meta = data["release"]
+    if "version" not in release_meta:
+        fail("load config: version data not found in release")
     version = release_meta["version"]
     release_package_name = "apache-yunikorn-{0}-src".format(version)
+    if "repositories" not in data:
+        fail("load config: repository list not found")
     repo_list = data["repositories"]
 
     print("release meta info:")
@@ -57,8 +72,15 @@ def build_release(email_address):
     # download source code from github repo
     sha = dict()
     for repo_meta in repo_list:
-        sha[repo_meta["name"]] = download_sourcecode(release_base, repo_meta)
-        update_make_version(repo_meta["name"], os.path.join(release_base, repo_meta["alias"]), version)
+        if "name" not in repo_meta:
+            fail("repository name missing in repo list")
+        name = repo_meta["name"]
+        if "alias" not in repo_meta:
+            fail("repository alias missing in repo list")
+        alias = repo_meta["alias"]
+
+        sha[name] = download_sourcecode(release_base, repo_meta)
+        update_make_version(name, os.path.join(release_base, alias), version)
 
     # update the sha for all repos in the build scripts
     # must be run after all repos have been checked out
@@ -144,22 +166,33 @@ def replace(file_path, pattern, subst):
 
 
 def download_sourcecode(base_path, repo_meta):
+    # these two have been checked before we get here
+    alias = repo_meta["alias"]
+    name = repo_meta["name"]
+    # make sure the rest is OK
+    if "tag" not in repo_meta:
+        fail("repository tag missing in repo list")
+    tag = repo_meta["tag"]
+    if "repository" not in repo_meta:
+        fail("repository url missing in repo list")
+    url = repo_meta["repository"]
+    description = ""
+    if "description" in repo_meta:
+        description = repo_meta["description"]
     print("downloading source code")
     print("repository info:")
-    print(" - repository: %s " % repo_meta["repository"])
-    print(" - description: %s " % repo_meta["description"])
-    print(" - tag: %s " % repo_meta["tag"])
-    repo = git.Repo.clone_from(
-        url=repo_meta["repository"],
-        to_path=os.path.join(base_path, repo_meta["alias"]))
-    repo.git.checkout(repo_meta["tag"])
-    tag = repo.tag("refs/tags/" + repo_meta["tag"])
-    sha = tag.commit.hexsha
-    print(" - tag sha: %s " % sha)
+    print(" - repository:  %s" % url)
+    print(" - description: %s" % description)
+    print(" - tag:         %s" % tag)
+    repo = git.Repo.clone_from(url=url, to_path=os.path.join(base_path, alias))
+    repo.git.checkout(tag)
+    tags = repo.tag("refs/tags/" + tag)
+    sha = tags.commit.hexsha
+    print(" - tag sha:     %s" % sha)
 
     # avoid pulling dependencies from github,
     # add replace to go mod files to make sure it builds locally
-    update_dep_ref(repo_meta["name"], os.path.join(base_path, repo_meta["alias"]))
+    update_dep_ref(name, os.path.join(base_path, alias))
     return sha
 
 
@@ -167,6 +200,8 @@ def download_sourcecode(base_path, repo_meta):
 def update_dep_ref_k8shim(local_repo_path):
     print("updating dependency for k8shim")
     mod_file = os.path.join(local_repo_path, "go.mod")
+    if not os.path.isfile(mod_file):
+        fail("k8shim go.mod does not exist")
     with open(mod_file, "a") as file_object:
         file_object.write("\n")
         file_object.write("replace github.com/apache/yunikorn-core => ../core \n")
@@ -178,6 +213,8 @@ def update_dep_ref_k8shim(local_repo_path):
 def update_dep_ref_core(local_repo_path):
     print("updating dependency for core")
     mod_file = os.path.join(local_repo_path, "go.mod")
+    if not os.path.isfile(mod_file):
+        fail("core go.mod does not exist")
     with open(mod_file, "a") as file_object:
         file_object.write("\n")
         file_object.write(
@@ -208,15 +245,20 @@ def update_make_version(repo_name, local_repo_path, version):
 def update_sha_shim(repo_name, local_repo_path, sha):
     print("updating sha for k8shim")
     make_file = os.path.join(local_repo_path, "Makefile")
-    replace(make_file, 'coreSHA=.*\\)', 'coreSHA=' + sha["yunikorn-core"])
-    replace(make_file, 'siSHA=.*\\)', 'siSHA=' + sha["yunikorn-scheduler-interface"])
-    replace(make_file, 'shimSHA=.*\\)', 'shimSHA=' + sha[repo_name])
+    if not os.path.isfile(make_file):
+        fail("k8shim repo Makefile does not exist")
+    replace(make_file, "(CORE_SHA=)(.*)", "\\g<1>" + sha["yunikorn-core"])
+    replace(make_file, "(SI_SHA=)(.*)", "\\g<1>" + sha["yunikorn-scheduler-interface"])
+    replace(make_file, "(SHIM_SHA=)(.*)", "\\g<1>" + sha[repo_name])
 
 
 # web only uses its own revision
 def update_sha_web(repo_name, local_repo_path, sha):
     print("updating sha for web")
-    replace(os.path.join(local_repo_path, "Makefile"), "SHA=.*\\)", 'SHA=' + sha[repo_name])
+    make_file = os.path.join(local_repo_path, "Makefile")
+    if not os.path.isfile(make_file):
+        fail("web repo Makefile does not exist")
+    replace(make_file, "(WEB_SHA=)(.*)", "\\g<1>" + sha[repo_name])
 
 
 # update git revision in the makefiles
@@ -259,14 +301,12 @@ def call_gpg(tarball_file, email_address):
         print("gpg not found on the path, not signing package")
         return
     print("Signing source code file using email: %s" % email_address)
-    subprocess.call([cmd,
-                     '--local-user',
-                     email_address,
-                     '--armor',
-                     '--output',
-                     tarball_file + ".asc",
-                     '--detach-sig',
-                     tarball_file])
+    command = [cmd, '--armor', '--detach-sig']
+    command.extend(['--local-user', email_address])
+    command.extend(['--output', tarball_file + ".asc", tarball_file])
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("failed to create gpg signature")
 
 
 # Package the helm chart and sign if an email is provided
@@ -288,7 +328,9 @@ def call_helm(staging_dir, base_path, version, email_address):
     else:
         print("Packaging helm chart (unsigned)")
     command.extend([release_helm_path, '--destination', staging_dir])
-    subprocess.call(command)
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("helm chart creation failed")
     if not email_address:
         helm_package = "yunikorn-" + version + ".tgz"
         helm_pack_path = os.path.join(staging_dir, helm_package)
