@@ -17,6 +17,7 @@
 #
 # Artifact Hub repository metadata file
 #
+repositoryID: c3ef868e-59a8-430e-b808-ff9e30c369e0
 owners:
   - name: Apache YuniKorn
     email: apache.yunikorn@gmail.com
