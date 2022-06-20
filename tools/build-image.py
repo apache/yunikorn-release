@@ -136,7 +136,7 @@ def get_auth():
     docker_user = input("Enter docker hub username: ")
     global docker_pass
     docker_pass = getpass.getpass(prompt="Docker hub password: ", stream=None)
-    if (docker_pass == "") | (docker_user == ""):
+    if docker_pass == "" or docker_user == "":
         fail("username and password required")
 
 
