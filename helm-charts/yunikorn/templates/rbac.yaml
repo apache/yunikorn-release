@@ -72,7 +72,7 @@ metadata:
   name: yunikorn-rbac
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount }}
@@ -89,7 +89,7 @@ metadata:
   name: yunikorn-rbac-kube-scheduler
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount }}
@@ -106,7 +106,7 @@ metadata:
   name: yunikorn-rbac-volume-scheduler
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount }}
@@ -123,7 +123,7 @@ metadata:
   name: yunikorn-rbac
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount }}
