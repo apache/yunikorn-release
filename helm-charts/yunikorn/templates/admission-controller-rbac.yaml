@@ -61,7 +61,7 @@ metadata:
   name: yunikorn-admission-controller-cluster-rbac
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.admissionController.serviceAccount }}
@@ -77,7 +77,7 @@ metadata:
   name: yunikorn-admission-controller-rbac
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.admissionController.serviceAccount }}
