@@ -45,10 +45,18 @@ Run the `make` command to build docker images.
 ```shell script
 make
 ```
-The command will generate the following three docker images in the local docker repository:
-* apache/yunikorn:scheduler-latest
-* apache/yunikorn:admission-latest
-* apache/yunikorn:web-latest
+The local build only generates an image for one processor architecture.
+The default for the architecture is the local processor type that is retrieved via the `uname -m` command.
+The architecture can be overridden by setting the shell variable `HOST_ARCH`.
+For details on how to change the architectures see the processing of `HOST_ARCH` in the `Makefile` included in the `k8shim` directory.
+
+The command will generate the following four docker images in the local docker repository:
+* apache/yunikorn:scheduler-_amd64_-latest
+* apache/yunikorn:scheduler-plugin-_amd64_-latest
+* apache/yunikorn:admission-_amd64_-latest
+* apache/yunikorn:web-_amd64_-latest
+
+Note: the naming of the images assumes a processor architecture that maps to the docker architecture _amd64_.
 
 ## Verifying the release
 A script and configuration to create a simple cluster using the locally built images is provided in this release archive.
@@ -76,15 +84,18 @@ helm install yunikorn ./helm-charts/yunikorn
 ```
 
 ## Customising the build
-The `make` command will pass on the following two variables:
+The `make` command will pass on the following variables:
 * VERSION
 * REGISTRY
+* HOST_ARCH
 These variables can be used to generate customised build: 
 ```shell script
-VERSION="0.9.1" REGISTRY="internal" make
+HOST_ARCH="arm64" VERSION="1.1.0" REGISTRY="internal" make
 ```
 
-The values defined in the helm charts assume a default build without changes to the `VERSION` or `REGISTRY`. 
+These same variables can be set and will be picked up by the validate_cluster script. 
+
+The values defined in the helm charts assume a default build without changes to the variables. 
 Once you have built your own docker images, you will need to replace the docker image name in the helm chart templates.
 Open `helm-charts/yunikorn/values.yaml` and replace the docker image information with ones you built.
 
@@ -94,6 +105,8 @@ For more instructions, please refer to [User Guide](https://yunikorn.apache.org/
 Apache YuniKorn provides a convenience release with pre-build docker images and helm charts.
 These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are 
 located in the [User Guide](https://yunikorn.apache.org/docs/).
+
+The convenience build images are multi architecture images. Supported architectures are  `amd64` and `arm64v8`.
 
 ## Testing the build
 Running the unit tests is supported via the make command.

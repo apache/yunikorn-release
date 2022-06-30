@@ -30,6 +30,7 @@ A simplified procedure:
 - Run the release tool to generate source code tarball, checksum and signature
 - Upload tarball, signature and checksum as a release candidate
 - Start a voting thread for the project 
-- Publish the release
+- Publish the release (source code, helm chart and pre-build images)
+- Update the website
 
 The full procedure is documented in the [release procedure](https://yunikorn.apache.org/community/release_procedure).

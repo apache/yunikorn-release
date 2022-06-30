@@ -48,3 +48,7 @@ test:
 	$(MAKE) -C $(CORE_DIR) test
 	$(MAKE) -C $(SHIM_DIR) test
 	$(MAKE) -C $(WEB_DIR) test
+
+.PHONY: arch
+arch:
+	eval `$(MAKE) -C $(SHIM_DIR) arch`
