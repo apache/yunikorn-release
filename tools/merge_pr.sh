@@ -41,6 +41,10 @@ function cleanup() {
   git checkout ${BRANCH} --quiet
   git branch -D ${PRBRANCH} --quiet
   git branch -D ${MERGEBRANCH} --quiet
+  if [ ${STASHED} == "true" ]; then
+		echo "  Restoring stashed files..."
+  	git stash pop --quiet
+  fi
 }
 
 # clean up temporary branch and stay at merge point
@@ -49,7 +53,11 @@ function leave() {
   echo "Stopping before changed were pushed"
   echo ""
   echo "Push changes using:               git push ${REMOTE} ${MERGEBRANCH}:${MASTER}"
+	echo "Revert back to original branch:   git checkout ${BRANCH}"
   echo "Cleanup of the temporary branch:  git branch -D ${MERGEBRANCH}"
+  if [ ${STASHED} == "true" ]; then
+  	echo "Restore stashed changes:          git stash pop"
+  fi
 }
 
 # prompt for a continue response
@@ -121,7 +129,8 @@ REMOTE="${REMOTE:-origin}"
 
 # merging to master branch only for now
 MASTER=master
-
+# assume a clean slate
+STASHED="false"
 # temporary branch IDs
 PRID=$1
 PRBRANCH=PR-$1
@@ -138,6 +147,13 @@ BRANCH=`git rev-parse --abbrev-ref HEAD`
 if [ $? -eq 128 ]; then
   echo "git check failed: no git repository found in the current directory"
   exit 1
+fi
+# save whatever we need to save before changing branches
+if ! git diff-index --quiet HEAD --
+then
+	echo "Stashing changed and new files to create clean base"
+	git stash push --include-untracked --quiet -m "before merge PR ${PRID}"
+	STASHED="true"
 fi
 
 # check temp branches
@@ -157,9 +173,8 @@ if [ $? -eq 128 ]; then
 fi
 
 # merge the PR
-git merge --squash ${PRBRANCH}
-# check that the merge passed
-if [ $? -ne 0 ]; then
+if ! git merge --squash ${PRBRANCH}
+then
   continue "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
   if [ $? -eq 1 ]; then
     echo "aborting"
@@ -210,23 +225,24 @@ if [ -n "${CONFLICT}" ]; then
   echo " conflict:"$'\t'"merge conflict solved manually"
 fi
 echo " committer:"$'\t'${SIGNED}
-continue "Commit changes? " ""
-if [ $? -ne 0 ]; then
+
+if ! continue "Commit changes? " ""
+then
   echo "aborting before commit"
   abort
 fi
 
 # commit the changes
-git commit --author "${AUTHOR}" -e -m "${SUBJECT}" -m "${BODY}" -m "${CONFLICT}" -m "${CLOSES}" -m "${SIGNED}"
-if [ $? -ne 0 ]; then
+if ! git commit --author "${AUTHOR}" -e -m "${SUBJECT}" -m "${BODY}" -m "${CONFLICT}" -m "${CLOSES}" -m "${SIGNED}"
+then
   echo "commit failed: aborting"
   abort
 fi
 
-continue "push change to ${MASTER}? " "Merge completed local ref: ${MERGEBRANCH}"
-if [ $? -eq 0 ]; then
-  git push ${REMOTE} ${MERGEBRANCH}:${MASTER}
-  if [ $? -ne 0 ]; then
+if ! continue "push change to ${MASTER}? " "Merge completed local ref: ${MERGEBRANCH}"
+then
+  if ! git push ${REMOTE} ${MERGEBRANCH}:${MASTER}
+  then
     echo "Push failed"
     leave
   else
