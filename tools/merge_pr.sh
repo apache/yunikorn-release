@@ -175,13 +175,13 @@ fi
 # merge the PR
 if ! git merge --squash ${PRBRANCH}
 then
-  continue "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
-  if [ $? -eq 1 ]; then
+  if ! continue "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
+  then
     echo "aborting"
     abort
   fi
-  continue "continue? " "Please fix any conflicts and 'git add' conflicting files..."
-  if [ $? -eq 1 ]; then
+  if ! continue "continue? " "Please fix any conflicts and 'git add' conflicting files..."
+  then
     echo "aborting"
     abort
   fi
@@ -239,7 +239,7 @@ then
   abort
 fi
 
-if ! continue "push change to ${MASTER}? " "Merge completed local ref: ${MERGEBRANCH}"
+if continue "push change to ${MASTER}? " "Merge completed local ref: ${MERGEBRANCH}"
 then
   if ! git push ${REMOTE} ${MERGEBRANCH}:${MASTER}
   then
