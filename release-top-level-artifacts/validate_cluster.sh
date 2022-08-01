@@ -33,7 +33,7 @@ function config_check() {
 
 # docker check
 function docker_check() {
-  DOCKER_UP=`docker version | grep "^Server:"`
+  DOCKER_UP=$(docker version | grep "^Server:")
   if [ -z "${DOCKER_UP}" ]; then
     echo "docker daemon must be running"
     return 1
@@ -85,7 +85,7 @@ function run_detail() {
 
 # usage message
 function usage() {
-  NAME=`basename "$0"`
+  NAME=$(basename "$0")
   echo "You must enter exactly 1 command line argument"
   echo "  ${NAME} K8s-VERSION"
   echo "K8s-VERSION: the numeric version of the K8s release, example: 1.22.4"
@@ -99,7 +99,7 @@ function usage() {
   echo "  KIND_CONFIG,  default: './kind.yaml'"
   echo "  HELMCHART,    default: './helm-charts/yunikorn'"
   echo "  PLUGIN,       default: 'false'"
-  echo "  HOST_ARCH,    default: '`uname -m`'"
+  echo "  HOST_ARCH,    default: '$(uname -m)'"
 }
 
 # remove kind cluster ion failure
@@ -140,7 +140,7 @@ KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
 PLUGIN="${PLUGIN:-false}"
 # load the docker architecture via make
-eval `make arch`
+eval "$(make arch)"
 
 # show details for the run
 run_detail
@@ -157,7 +157,7 @@ if [ $? -eq 1 ]; then
   exit 1
 fi
 
-kind create cluster --name yk8s --image ${KIND_IMAGE} --config=${KIND_CONFIG}
+kind create cluster --name yk8s --image "${KIND_IMAGE}" --config="${KIND_CONFIG}"
 if [ $? -eq 1 ]; then
   exit 1
 fi
@@ -165,25 +165,25 @@ echo
 echo "Pre-Loading docker images..."
 echo
 ADM_IMAGE=admission-${DOCKER_ARCH}-${VERSION}
-kind load docker-image ${REGISTRY}/yunikorn:${ADM_IMAGE} --name yk8s >/dev/null 2>&1
+kind load docker-image "${REGISTRY}"/yunikorn:"${ADM_IMAGE}" --name yk8s >/dev/null 2>&1
 if [ $? -eq 1 ]; then
 	echo "Pre-Loading ${ADM_IMAGE} image failed, aborting"
   remove_cluster
 fi
 SCHED_IMAGE=scheduler-${DOCKER_ARCH}-${VERSION}
-kind load docker-image ${REGISTRY}/yunikorn:${SCHED_IMAGE} --name yk8s >/dev/null 2>&1
+kind load docker-image "${REGISTRY}"/yunikorn:"${SCHED_IMAGE}" --name yk8s >/dev/null 2>&1
 if [ $? -eq 1 ]; then
 	echo "Pre-Loading ${SCHED_IMAGE} image failed, aborting"
   remove_cluster
 fi
 PLUGIN_IMAGE=scheduler-plugin-${DOCKER_ARCH}-${VERSION}
-kind load docker-image ${REGISTRY}/yunikorn:${PLUGIN_IMAGE} --name yk8s >/dev/null 2>&1
+kind load docker-image "${REGISTRY}"/yunikorn:"${PLUGIN_IMAGE}" --name yk8s >/dev/null 2>&1
 if [ $? -eq 1 ]; then
 	echo "Pre-Loading ${PLUGIN_IMAGE} image failed, aborting"
   remove_cluster
 fi
 WEB_IMAGE=web-${DOCKER_ARCH}-${VERSION}
-kind load docker-image ${REGISTRY}/yunikorn:${WEB_IMAGE} --name yk8s >/dev/null 2>&1
+kind load docker-image "${REGISTRY}"/yunikorn:"${WEB_IMAGE}" --name yk8s >/dev/null 2>&1
 if [ $? -eq 1 ]; then
 	echo "Pre-Loading ${WEB_IMAGE} image failed, aborting"
   remove_cluster
@@ -202,20 +202,20 @@ if [ $? -eq 1 ]; then
 fi
 echo
 echo "Deploying helm chart..."
-helm install yunikorn ${HELMCHART} --namespace yunikorn \
-    --set image.repository=${REGISTRY}/yunikorn \
-    --set image.tag=${SCHED_IMAGE} \
+helm install yunikorn "${HELMCHART}" --namespace yunikorn \
+    --set image.repository="${REGISTRY}"/yunikorn \
+    --set image.tag="${SCHED_IMAGE}" \
     --set image.pullPolicy=IfNotPresent \
-    --set pluginImage.repository=${REGISTRY}/yunikorn \
-    --set pluginImage.tag=${PLUGIN_IMAGE} \
+    --set pluginImage.repository="${REGISTRY}"/yunikorn \
+    --set pluginImage.tag="${PLUGIN_IMAGE}" \
     --set pluginImage.pullPolicy=IfNotPresent \
-    --set admissionController.image.repository=${REGISTRY}/yunikorn \
-    --set admissionController.image.tag=${ADM_IMAGE} \
+    --set admissionController.image.repository="${REGISTRY}"/yunikorn \
+    --set admissionController.image.tag="${ADM_IMAGE}" \
     --set admissionController.image.pullPolicy=IfNotPresent \
-    --set web.image.repository=${REGISTRY}/yunikorn \
-    --set web.image.tag=${WEB_IMAGE} \
+    --set web.image.repository="${REGISTRY}"/yunikorn \
+    --set web.image.tag="${WEB_IMAGE}" \
     --set web.image.pullPolicy=IfNotPresent \
-    --set enableSchedulerPlugin=${PLUGIN}
+    --set enableSchedulerPlugin="${PLUGIN}"
 echo
 echo "Waiting for helm deployment to finish..."
 kubectl wait --for=condition=available --timeout=150s deployment/yunikorn-scheduler -n yunikorn
