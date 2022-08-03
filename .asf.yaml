@@ -16,7 +16,7 @@
 # limitations under the License.
 
 github:
-  description: "Apache YuniKorn K8shim"
+  description: "Apache YuniKorn Release"
   homepage: https://yunikorn.apache.org/
   labels:
     - yunikorn
