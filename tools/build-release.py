@@ -87,6 +87,9 @@ def build_release(email_address):
     # must be run after all repos have been checked out
     update_sha(release_base, repo_list, sha)
 
+    # merge licenses for anything that was added not part of Apache
+    merge_licenses(release_base, repo_list)
+
     # build the helm package
     call_helm(staging_dir, release_base, version, email_address)
 
@@ -96,6 +99,7 @@ def build_release(email_address):
     print("creating tarball %s" % tarball_path)
     with tarfile.open(tarball_path, "w:gz") as tar:
         tar.add(os.path.join(release_base, "LICENSE"), arcname=release_package_name + "/LICENSE")
+        tar.add(os.path.join(release_base, "NOTICE"), arcname=release_package_name + "/NOTICE")
         tar.add(release_base, arcname=release_package_name, filter=exclude_files)
     write_checksum(tarball_path, tarball_name)
     if email_address:
@@ -105,7 +109,7 @@ def build_release(email_address):
 # Function passed in as a filter to the tar command to keep tar as clean as possible
 def exclude_files(tarinfo):
     file_name = os.path.basename(tarinfo.name)
-    exclude = [".DS_Store", ".git", ".github", ".gitignore", ".asf.yaml", "LICENSE"]
+    exclude = [".DS_Store", ".git", ".github", ".gitignore", ".asf.yaml", "LICENSE", "NOTICE"]
     if file_name in exclude:
         print("exclude file from tarball %s" % tarinfo.name)
         return None
@@ -344,6 +348,29 @@ def call_helm(staging_dir, base_path, version, email_address):
                     break
                 h.update(data)
         print("Helm package digest: %s  %s\n" % (h.hexdigest(), helm_package))
+
+
+# Merge the added lines from the license files
+def merge_licenses(base_dir, repo_list):
+    start = 202  # Apache License is 202 lines
+    lic = os.path.join(base_dir, "LICENSE")
+    if not os.path.isfile(lic):
+        fail("license does not exist at top level staging directory")
+    with open(lic, 'a') as lp:
+        for repo_meta in repo_list:
+            alias = repo_meta["alias"]
+            lic_repo = os.path.join(os.path.join(base_dir, alias), "LICENSE")
+            if not os.path.isfile(lic_repo):
+                fail("license does not exist in '%s' repository" % alias)
+            with open(lic_repo, 'r') as fp:
+                lines = fp.readlines()
+                if len(lines) <= start:
+                    continue
+                print("copying license details from: %s\n" % alias)
+                i = start
+                while i < len(lines):
+                    lp.write(lines[i])
+                    i += 1
 
 
 # Print the usage info
