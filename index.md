@@ -22,7 +22,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Repo Size](https://img.shields.io/github/repo-size/apache/yunikorn-core)](https://img.shields.io/github/repo-size/apache/yunikorn-core)
 
-<img src="https://github.com/apache/yunikorn-site/blob/88ab3358ea1bd282abc417525eb37838d0ecb3d1/static/img/logo/yunikorn-logo-blue.png" width="200">
+<img src="https://raw.githubusercontent.com/apache/yunikorn-site/master/static/img/logo/yunikorn-logo-blue.png" width="200">
 
 ----
 
