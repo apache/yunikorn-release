@@ -15,6 +15,106 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.1.0
+
+** Sub-task
+    * [YUNIKORN-641] - Add events for placeholder timeout to pod
+    * [YUNIKORN-752] - Add scheduler restart test coverage
+    * [YUNIKORN-753] - Call healthcheck REST API to verify the scheduler correctness in e2e test
+    * [YUNIKORN-1183] - pre-select node for daemon set pod
+    * [YUNIKORN-1184] - [Core] preempt pods based on the priorities
+    * [YUNIKORN-1186] - Race condition during recovery
+    * [YUNIKORN-1188] - Document current status and propose solutions
+    * [YUNIKORN-1193] - Release build failed on arm64
+    * [YUNIKORN-1197] - Placeholders are immediately replaced during recovery
+    * [YUNIKORN-1198] - Increase recovery test coverage
+    * [YUNIKORN-1205] - Deletion of pending placeholder moves app from "Accepted" to "Completing" 
+    * [YUNIKORN-1207] - [Shim] preempt pods based on the priorities
+    * [YUNIKORN-1209] - SI build failed on arm64
+    * [YUNIKORN-1211] - Shim build failed on arm64
+    * [YUNIKORN-1212] - Auto-detect build architecture
+    * [YUNIKORN-1222] - [SI] preempt pods based on the priorities
+    * [YUNIKORN-1231] - Add e2e tests for the entire preemption flow
+
+
+
+** Bug
+    * [YUNIKORN-1085] - DaemonSet pods may fail to be scheduled on new nodes added during autoscaling
+    * [YUNIKORN-1129] - cleanup yunikorn-state.txt file in tests
+    * [YUNIKORN-1136] - show absUsedCapacity in web UI for the queue
+    * [YUNIKORN-1191] - Scheduler plugin ignores logging level
+    * [YUNIKORN-1199] - E2E tests don't work with new REST API
+    * [YUNIKORN-1201] - commit hash of docker image label change cut -f
+    * [YUNIKORN-1206] - Admission controller namespace label filtering doesn't work with jobs
+    * [YUNIKORN-1210] - Change the error log of handleRecoverApplicationEvent function
+    * [YUNIKORN-1216] - Data race in PlaceholderManager on cleanupTime
+    * [YUNIKORN-1218] - Scheduler crashed with concurrent map access error in health checker
+    * [YUNIKORN-1224] - Failed to publish website due to incompatible node version
+    * [YUNIKORN-1226] - Deprecate maturity page in YuniKorn
+    * [YUNIKORN-1227] - Race condition in Predicates code on Node / Pod
+    * [YUNIKORN-1228] - Race condition when serializing K8s objects
+    * [YUNIKORN-1229] - Helm chart for 1.0.0 uses incorrect image for plugin mode
+    * [YUNIKORN-1233] - REST api shows negative request time for some allocations
+    * [YUNIKORN-1239] - error handling in release script
+    * [YUNIKORN-1241] - remove RequiredNode from PlaceholderData
+    * [YUNIKORN-1242] - gang: delay in scheduling after using all placeholders
+    * [YUNIKORN-1244] - Performance regression in scheduling after YUNIKORN-1227
+    * [YUNIKORN-1245] - Clean up cache GetNodesInfoMap
+    * [YUNIKORN-1246] - release reservation of required node in tryAllocate
+    * [YUNIKORN-1247] - Helm Hooks on Role/RoleBinding in rbac.yaml Causes Fresh Install Deployment Failure With helm upgrade --install
+    * [YUNIKORN-1248] - Fix arch issue for Mac M1
+    * [YUNIKORN-1254] - Update image version of node in the run command in the local_run.sh
+    * [YUNIKORN-1262] - stash local changes in merge_perge.sh
+    * [YUNIKORN-1265] - fix shellcheck issues in our shell scripts
+    * [YUNIKORN-1268] - Document placeholder REST changes
+    * [YUNIKORN-1282] - Resource metrics are not tracked correctly for all queue types
+    * [YUNIKORN-1290] - DOCKER_ARCH is empty when executing command "make image" on arm64 architecture 
+    * [YUNIKORN-1292] - Fix github pages issues after moving to TLP
+    * [YUNIKORN-1297] - constants missing after scheduler-interface build
+
+
+** New Feature
+    * [YUNIKORN-702] - Add doc to explain yunikorn can support any K8s workload
+    * [YUNIKORN-1251] - update validation script to handle multi architecture images
+
+
+** Improvement
+    * [YUNIKORN-186] - clean up events in k8shim
+    * [YUNIKORN-705] - [Umbrella] Gang Scheduling stabilization 
+    * [YUNIKORN-725] - Support building on arm64
+    * [YUNIKORN-1122] - Move constants to scheduler interface
+    * [YUNIKORN-1192] - Update exclude list in release build
+    * [YUNIKORN-1208] - Add Kubernetes 1.24 to e2e test matrix
+    * [YUNIKORN-1215] - Enable multi-arch release builds
+    * [YUNIKORN-1225] - pin docusaurus version for website
+    * [YUNIKORN-1243] - Build replacement web UI image for e2e tests
+    * [YUNIKORN-1250] - add .asf.yaml to release repo
+    * [YUNIKORN-1252] - expose timed out placeholders count in application REST info
+    * [YUNIKORN-1257] - Docker build improvements
+    * [YUNIKORN-1263] - Add pending requests to application object in REST API
+    * [YUNIKORN-1264] - Refactor asks and allocations to use consistent locking
+    * [YUNIKORN-1270] - Removal of unused queue field in Allocation
+    * [YUNIKORN-1274] - Remove FailedScheduling pod events from predicate logic
+    * [YUNIKORN-1276] - REST API for specific application
+    * [YUNIKORN-1277] - Simplify command line processing code
+    * [YUNIKORN-1286] - REST API doc change to remove ".* is missing.*" error response 
+
+** Test
+    * [YUNIKORN-1204] - Refactor test framework 
+    * [YUNIKORN-1234] - Add unit test for GetPreemptionFromTag
+
+
+** Task
+    * [YUNIKORN-1240] - Document changes required for RM multi-arch release builds
+    * [YUNIKORN-1256] - License issue with deployments examples
+    * [YUNIKORN-1258] - Move github actions to latest versions
+    * [YUNIKORN-1259] - Remove "How to contribute" doc from web repo
+    * [YUNIKORN-1260] - remove logos from core repo
+    * [YUNIKORN-1267] - Document requests attribute on application REST response
+    * [YUNIKORN-1269] - Remove unused preemption code
+    * [YUNIKORN-1271] - update people page on website
+    * [YUNIKORN-1272] - Remove queueName from REST API requests / allocations
+    * [YUNIKORN-1283] - upgrade go dependencies
+    * [YUNIKORN-1287] - fix go.mod references from YUNIKORN-1122
+    * [YUNIKORN-1289] - Publish Daemonset scheduling design doc
+    * [YUNIKORN-1291] - Add interface message simplification design doc to sidebar
