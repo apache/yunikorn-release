@@ -84,7 +84,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.serviceAccountName
             - name: USER_LABEL_KEY
-              value: "{{ .Values.UserLabelKey }}"
+              value: "{{ .Values.userLabelKey }}"
             - name: OPERATOR_PLUGINS
               value: "{{ .Values.operatorPlugins }}"
             - name: PLACEHOLDER_IMAGE
