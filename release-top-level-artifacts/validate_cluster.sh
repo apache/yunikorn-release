@@ -140,6 +140,21 @@ KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
 PLUGIN="${PLUGIN:-false}"
 # load the docker architecture via make
+if [ "x86_64" == $HOST_ARCH ]; then
+  DOCKER_ARCH="amd64"
+elif [ "i386" == $HOST_ARCH ]; then
+  DOCKER_ARCH="i386"
+elif [ *"arm64"* == $HOST_ARCH ]; then
+  DOCKER_ARCH="arm64v8"
+elif [ *"aarch64"* == $HOST_ARCH ]; then
+  DOCKER_ARCH="arm64v8"
+elif [ "armv7l" == $HOST_ARCH ]; then
+  DOCKER_ARCH="arm32v7"
+else
+  echo "Unknow architecture ${HOST_ARCH} defaulting to: amd64"
+  DOCKER_ARCH="amd64"
+fi
+
 eval "$(make arch)"
 
 # show details for the run
