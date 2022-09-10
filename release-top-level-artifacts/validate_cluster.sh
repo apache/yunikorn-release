@@ -139,6 +139,7 @@ REGISTRY="${REGISTRY:-apache}"
 KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
 PLUGIN="${PLUGIN:-false}"
+HOST_ARCH=$(uname -m)
 # load the docker architecture via make
 if [ "x86_64" == $HOST_ARCH ]; then
   DOCKER_ARCH="amd64"
