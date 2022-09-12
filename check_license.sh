@@ -24,7 +24,7 @@ echo "checking license headers:"
 if [ "${OS}" = "darwin" ]; then
   find -E . ! -path "./.git*" -regex ".*(Makefile|\.(go|sh|py|md|conf|yaml|yml|tpl))" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > LICRES
 else
-  find . ! -path "./.git*" -regex ".*\(Makefile\|\.\(go\|py\|sh\|md\|yaml\|yml\|tpl\)\)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > LICRES
+  find . ! -path "./.git*" -regex ".*\(Makefile\|\.\(go\|py\|sh\|md\|conf\|yaml\|yml\|tpl\)\)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > LICRES
 fi
 # any file mentioned in the output is missing the license
 if [ -s LICRES ]; then
