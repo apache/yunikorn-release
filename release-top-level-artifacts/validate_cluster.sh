@@ -80,6 +80,7 @@ function run_detail() {
   echo "  Kubernetes image:        ${KIND_IMAGE}"
   echo "  Registry name:           ${REGISTRY}"
   echo "  Plugin mode:             ${PLUGIN}"
+  echo "  Executable Architecture: ${EXEC_ARCH}"
   echo "  Image Architecture:      ${DOCKER_ARCH}"
 }
 
@@ -140,7 +141,7 @@ KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
 PLUGIN="${PLUGIN:-false}"
 # load the docker architecture via make
-eval "$(make arch)"
+eval "$(make -s arch)"
 
 # show details for the run
 run_detail
