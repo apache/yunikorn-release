@@ -80,6 +80,7 @@ function run_detail() {
   echo "  Kubernetes image:        ${KIND_IMAGE}"
   echo "  Registry name:           ${REGISTRY}"
   echo "  Plugin mode:             ${PLUGIN}"
+  echo "  Executable Architecture: ${EXEC_ARCH}"
   echo "  Image Architecture:      ${DOCKER_ARCH}"
 }
 
@@ -139,24 +140,8 @@ REGISTRY="${REGISTRY:-apache}"
 KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
 PLUGIN="${PLUGIN:-false}"
-HOST_ARCH=$(uname -m)
 # load the docker architecture via make
-if [ "x86_64" == $HOST_ARCH ]; then
-  DOCKER_ARCH="amd64"
-elif [ "i386" == $HOST_ARCH ]; then
-  DOCKER_ARCH="i386"
-elif [ *"arm64"* == $HOST_ARCH ]; then
-  DOCKER_ARCH="arm64v8"
-elif [ *"aarch64"* == $HOST_ARCH ]; then
-  DOCKER_ARCH="arm64v8"
-elif [ "armv7l" == $HOST_ARCH ]; then
-  DOCKER_ARCH="arm32v7"
-else
-  echo "Unknow architecture ${HOST_ARCH} defaulting to: amd64"
-  DOCKER_ARCH="amd64"
-fi
-
-eval "$(make arch)"
+eval "$(make -s arch)"
 
 # show details for the run
 run_detail

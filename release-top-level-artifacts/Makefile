@@ -51,4 +51,4 @@ test:
 
 .PHONY: arch
 arch:
-	eval `$(MAKE) -C $(SHIM_DIR) arch`
+	@eval "$(MAKE) -C $(SHIM_DIR) arch"
