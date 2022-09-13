@@ -17,6 +17,8 @@ limitations under the License.
 
 # Apache YuniKorn Release
 ----
+[![pre-commit](https://github.com/apache/yunikorn-release/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/apache/yunikorn-release/actions/workflows/pre-commit.yml)
+
 This project provides the instructions and tools needed to generate Apache YuniKorn release artifacts.
 Reference:
  - [ASF Release Creation Process](https://infra.apache.org/release-publishing.html)
