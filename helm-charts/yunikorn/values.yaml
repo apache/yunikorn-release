@@ -52,6 +52,11 @@ admissionController:
   labelNamespaces: ""
   noLabelNamespaces: ""
   hostNetwork: true
+  bypassAuth: false
+  trustControllers: true
+  systemUsers: "system:serviceaccount:kube-system:*"
+  externalUsers: ""
+  externalGroups: ""
   resources:
     requests:
       cpu: 100m
