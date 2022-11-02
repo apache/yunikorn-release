@@ -1,0 +1,68 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yunikorn-defaults
+  labels:
+    app: yunikorn
+    chart: {{ include "yunikorn.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/resource-policy": keep
+data:
+{{- if .Values.operatorPlugins }}
+{{- if not (get .Values.yunikornDefaults "operatorPlugins") }}
+  service.operatorPlugins: "{{.Values.operatorPlugins}}"
+{{- end }}
+{{- end }}
+{{- if .Values.placeHolderImage }}
+{{- if not (get .Values.yunikornDefaults "service.placeholderImage") }}
+  service.placeholderImage: "{{ .Values.placeHolderImage }}"
+{{- end }}
+{{- end }}
+{{- if .Values.admissionController.processNamespaces }}
+{{- if not (get .Values.yunikornDefaults "admissionController.filtering.processNamespaces") }}
+  admissionController.filtering.processNamespaces: "{{ .Values.admissionController.processNamespaces }}"
+{{- end }}
+{{- end }}
+{{- if .Values.admissionController.bypassNamespaces }}
+{{- if not (get .Values.yunikornDefaults "admissionController.filtering.bypassNamespaces") }}
+  admissionController.filtering.bypassNamespaces: "{{ .Values.admissionController.bypassNamespaces }}"
+{{- end }}
+{{- end }}
+{{- if .Values.admissionController.labelNamespaces }}
+{{- if not (get .Values.yunikornDefaults "admissionController.filtering.labelNamespaces") }}
+  admissionController.filtering.labelNamespaces: "{{ .Values.admissionController.labelNamespaces }}"
+{{- end }}
+{{- end }}
+{{- if .Values.admissionController.noLabelNamespaces }}
+{{- if not (get .Values.yunikornDefaults "admissionController.filtering.noLabelNamespaces") }}
+  admissionController.filtering.noLabelNamespaces: "{{ .Values.admissionController.noLabelNamespaces }}"
+{{- end }}
+{{- end }}
+{{- if .Values.configuration }}
+{{- if not (get .Values.yunikornDefaults "queues.yaml") }}
+  queues.yaml: {{quote .Values.configuration}}
+{{- end }}
+{{- end }}
+{{- if .Values.yunikornDefaults }}
+{{- range $key, $val := .Values.yunikornDefaults }}
+  "{{ $key }}": {{quote $val }}
+{{- end }}
+{{- end }}
