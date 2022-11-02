@@ -96,9 +96,6 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
-          volumeMounts:
-            - name: config-volume
-              mountPath: /etc/yunikorn/
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
@@ -113,7 +110,3 @@ spec:
             limits:
               memory: {{ .Values.web.resources.limits.memory }}
               cpu: {{ .Values.web.resources.limits.cpu }}
-      volumes:
-        - name: config-volume
-          configMap:
-            name: yunikorn-configs
