@@ -101,6 +101,11 @@ embedAdmissionController: true
 # When this flag is false, the scheduler will be deployed as a standalone scheduler.
 enableSchedulerPlugin: false
 
+# When this flag is true, the Helm chart will install the required ConfigMap.
+# When this flag is false, no ConfigMap will be installed; you will need
+# to install a valid ConfigMap prior to installing the Helm chart.
+enableConfigMap: true
+
 #
 # ------------------------------------------------------------------------
 # Please choose one configuration from following two for yunikorn
@@ -158,8 +163,3 @@ configuration: |
 #                max:
 #                  memory: 100G
 #                  vcore: 10
-
-# Use this configuration to not create the yunikorn-configs ConfigMap
-# as part of this helm installation. You must provide your own
-# `yunikorn-configs` map in the release namespace for YuniKorn to work.
-#configuration: null
