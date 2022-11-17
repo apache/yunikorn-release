@@ -30,7 +30,7 @@ kind: ClusterRole
 metadata:
   name: yunikorn-scheduler
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "1"
 rules:
   - apiGroups: [""]
@@ -55,7 +55,7 @@ kind: Role
 metadata:
   name: yunikorn-scheduler
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "1"
 rules:
   - apiGroups: [""]
@@ -71,7 +71,7 @@ kind: ClusterRoleBinding
 metadata:
   name: yunikorn-rbac
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
@@ -88,7 +88,7 @@ kind: ClusterRoleBinding
 metadata:
   name: yunikorn-rbac-kube-scheduler
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
@@ -105,7 +105,7 @@ kind: ClusterRoleBinding
 metadata:
   name: yunikorn-rbac-volume-scheduler
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
@@ -122,7 +122,7 @@ kind: RoleBinding
 metadata:
   name: yunikorn-rbac
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount

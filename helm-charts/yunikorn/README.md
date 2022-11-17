@@ -57,59 +57,70 @@ helm repo update
 helm install yunikorn yunikorn/yunikorn
 ```
 ## Configuration
-The following table lists the configurable parameters of the YuniKorn chart and their default values.
+The following table lists the configurable parameters of the YuniKorn chart and their default values:
 
-| Parameter                                       | Description                                                         | Default                         |
-| ----------------------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
-| `imagePullSecrets`                              | Docker repository secrets                                           | ` `                             |
-| `serviceAccount`                                | Service account name                                                | `yunikorn-admin`                |
-| `replicaCount`                                  | Scheduler replicas to be deployed                                   | `1`                             |
-| `hostNetwork`                                   | Whether scheduler should run in the host network                    | `false`                         |
-| `image.repository`                              | Scheduler image repository                                          | `apache/yunikorn`               |
-| `image.tag`                                     | Scheduler image tag                                                 | `scheduler-latest`              |
-| `image.pullPolicy`                              | Scheduler image pull policy                                         | `Always`                        |
-| `pluginImage.repository`                        | Scheduler plugin image repository                                   | `apache/yunikorn`               |
-| `pluginImage.tag`                               | Scheduler plugin image tag                                          | `scheduler-plugin-latest`       |
-| `pluginImage.pullPolicy`                        | Scheduler plugin image pull policy                                  | `Always`                        |
-| `admissionController.replicaCount`              | Admission controller replicas to be deployed                        | `1`                             |
-| `admissionController.serviceAccount`            | Admission controller service account name                           | `yunikorn-admission-controller` |
-| `admissionController.image.repository`          | Admission controller image repository                               | `apache/yunikorn`               |
-| `admissionController.image.tag`                 | Admission controller image tag                                      | `admission-latest`              |
-| `admissionController.image.pullPolicy`          | Admission controller image pull policy                              | `Always`                        |
-| `admissionController.hostNetwork`               | Whether admission controller should run in the host network         | `true`                          |
-| `admissionController.processNamespaces`         | Comma-separated list of namespace regexes to process (empty=ALL)    | ``                              |
-| `admissionController.bypassNamespaces`          | Comma-separated list of namespace regexes to bypass (empty=NONE)    | `^kube-system$`                 |
-| `admissionController.labelNamespaces`           | Comma-separated list of namespace regexes to label (empty=ALL)      | ``                              |
-| `admissionController.noLabelNamespaces`         | Comma-separated list of namespace regexes not to label (empty=NONE) | ``                              |
-| `admissionController.resources.requests.cpu`    | Admission controller CPU resource requests                          | `100m`                          |
-| `admissionController.resources.requests.memory` | Admission controller memory resource requests                       | `500Mi`                         |
-| `admissionController.resources.limits.cpu`      | Admission controller CPU resource limit                             | `500m`                          |
-| `admissionController.resources.limits.memory`   | Admission controller memory resource limit                          | `500Mi`                         |
-| `admissionController.nodeSelector`              | Admission controller deployment nodeSelector(s)                     | `{}`                            |
-| `admissionController.tolerations`               | Admission controller deployment tolerations                         | `[]`                            |
-| `admissionController.affinity`                  | Admission controller deployment affinity                            | `{}`                            |
-| `admissionController.service.type`              | Admission controller service type                                   | `ClusterIP`                     |
-| `service.type`                                  | Scheduler service type                                              | `ClusterIP`                     |
-| `service.port`                                  | Port of the scheduler service                                       | `9080`                          |
-| `service.portWeb`                               | Port of the web application service                                 | `9889`                          |
-| `resources.requests.cpu`                        | CPU resource requests                                               | `200m`                          |
-| `resources.requests.memory`                     | Memory resource requests                                            | `1Gi`                           |
-| `resources.limits.cpu`                          | CPU resource limit                                                  | `4`                             |
-| `resources.limits.memory`                       | Memory resource limit                                               | `2Gi`                           |
-| `web.image.repository`                          | Web app image repository                                            | `apache/yunikorn`               |
-| `web.image.tag`                                 | Web app image tag                                                   | `web-latest`                    |
-| `web.image.pullPolicy`                          | Web app image pull policy                                           | `Always`                        |
-| `web.resources.requests.cpu`                    | Web app CPU resource requests                                       | `100m`                          |
-| `web.resources.requests.memory`                 | Web app memory resource requests                                    | `100Mi`                         |
-| `web.resources.limits.cpu`                      | Web app CPU resource limit                                          | `200m`                          |
-| `web.resources.limits.memory`                   | Web app memory resource limit                                       | `500Mi`                         |
-| `embedAdmissionController`                      | Flag for enabling/disabling the admission controller                | `true`                          |
-| `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode                   | `false`                         |
-| `operatorPlugins`                               | Scheduler operator plugins                                          | `general`                       |
-| `nodeSelector`                                  | Scheduler deployment nodeSelector(s)                                | `{}`                            |
-| `tolerations`                                   | Scheduler deployment tolerations                                    | `[]`                            |
-| `affinity`                                      | Scheduler deployment affinity                                       | `{}`                            |
-| `placeholderImage`                              | Docker image of the placeholder pods                                | `k8s.gcr.io/pause`              |
+| Parameter                                       | Description                                                 | Default                         |
+| ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
+| `imagePullSecrets`                              | Docker repository secrets                                   | ` `                             |
+| `serviceAccount`                                | Service account name                                        | `yunikorn-admin`                |
+| `hostNetwork`                                   | Whether scheduler should run in the host network            | `false`                         |
+| `image.repository`                              | Scheduler image repository                                  | `apache/yunikorn`               |
+| `image.tag`                                     | Scheduler image tag                                         | `scheduler-latest`              |
+| `image.pullPolicy`                              | Scheduler image pull policy                                 | `Always`                        |
+| `pluginImage.repository`                        | Scheduler plugin image repository                           | `apache/yunikorn`               |
+| `pluginImage.tag`                               | Scheduler plugin image tag                                  | `scheduler-plugin-latest`       |
+| `pluginImage.pullPolicy`                        | Scheduler plugin image pull policy                          | `Always`                        |
+| `admissionController.replicaCount`              | Admission controller replicas to be deployed                | `1`                             |
+| `admissionController.serviceAccount`            | Admission controller service account name                   | `yunikorn-admission-controller` |
+| `admissionController.image.repository`          | Admission controller image repository                       | `apache/yunikorn`               |
+| `admissionController.image.tag`                 | Admission controller image tag                              | `admission-latest`              |
+| `admissionController.image.pullPolicy`          | Admission controller image pull policy                      | `Always`                        |
+| `admissionController.hostNetwork`               | Whether admission controller should run in the host network | `true`                          |
+| `admissionController.resources.requests.cpu`    | Admission controller CPU resource requests                  | `100m`                          |
+| `admissionController.resources.requests.memory` | Admission controller memory resource requests               | `500Mi`                         |
+| `admissionController.resources.limits.cpu`      | Admission controller CPU resource limit                     | `500m`                          |
+| `admissionController.resources.limits.memory`   | Admission controller memory resource limit                  | `500Mi`                         |
+| `admissionController.nodeSelector`              | Admission controller deployment nodeSelector(s)             | `{}`                            |
+| `admissionController.tolerations`               | Admission controller deployment tolerations                 | `[]`                            |
+| `admissionController.affinity`                  | Admission controller deployment affinity                    | `{}`                            |
+| `admissionController.service.type`              | Admission controller service type                           | `ClusterIP`                     |
+| `service.type`                                  | Scheduler service type                                      | `ClusterIP`                     |
+| `service.port`                                  | Port of the scheduler service                               | `9080`                          |
+| `service.portWeb`                               | Port of the web application service                         | `9889`                          |
+| `resources.requests.cpu`                        | CPU resource requests                                       | `200m`                          |
+| `resources.requests.memory`                     | Memory resource requests                                    | `1Gi`                           |
+| `resources.limits.cpu`                          | CPU resource limit                                          | `4`                             |
+| `resources.limits.memory`                       | Memory resource limit                                       | `2Gi`                           |
+| `web.image.repository`                          | Web app image repository                                    | `apache/yunikorn`               |
+| `web.image.tag`                                 | Web app image tag                                           | `web-latest`                    |
+| `web.image.pullPolicy`                          | Web app image pull policy                                   | `Always`                        |
+| `web.resources.requests.cpu`                    | Web app CPU resource requests                               | `100m`                          |
+| `web.resources.requests.memory`                 | Web app memory resource requests                            | `100Mi`                         |
+| `web.resources.limits.cpu`                      | Web app CPU resource limit                                  | `200m`                          |
+| `web.resources.limits.memory`                   | Web app memory resource limit                               | `500Mi`                         |
+| `embedAdmissionController`                      | Flag for enabling/disabling the admission controller        | `true`                          |
+| `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode           | `false`                         |
+| `nodeSelector`                                  | Scheduler deployment nodeSelector(s)                        | `{}`                            |
+| `tolerations`                                   | Scheduler deployment tolerations                            | `[]`                            |
+| `affinity`                                      | Scheduler deployment affinity                               | `{}`                            |
+| `yunikornDefaults`                              | Data for the `yunikorn-defaults` ConfigMap                  | `{}`                            |
 
-These parameters can be passed in via helm's `--set` option, such as `--set embedAdmissionController=false`.
+These parameters can be passed in via helm's `--set` and `--values (-f)` options, such as `--set resources.requests.cpu=2000m` or `-f myvalues.yaml`.
+
+In addition to these parameters, YuniKorn supports reading most of its runtime configuration directly from two ConfigMaps in the installed namespace: `yunikorn-defaults` and `yunikorn-configs`. The `yunikorn-defaults` ConfigMap is rendered by Helm based on the contents of the `yunikornDefaults` parameter. The `yunikorn-configs` ConfigMap is entirely ignored by Helm, and can be populated (or not) using external mechanisms. At runtime, YuniKorn will evaluate both ConfigMaps, using the contents of `yunikorn-configs` as an override to `yunikorn-defaults`.
+
+## Deprecated Configuration
+The following configuration parameters are deprecated and will be ignored in a future release of YuniKorn:
+
+| Parameter                               | Description                                         | Replacement                                                       |
+| ----------------------------------------| --------------------------------------------------- | ----------------------------------------------------------------- |
+| `operatorPlugins`                       | Scheduler operator plugins                          | `service.operatorPlugins` ConfigMap entry                         |
+| `placeholderImage`                      | Docker image of the placeholder pods                | `service.placeholderImage` ConfigMap entry                        |
+| `admissionController.processNamespaces` | List of namespace regexes to process (empty=ALL)    | `admissionController.filtering.processNamespaces` ConfigMap entry |
+| `admissionController.bypassNamespaces`  | List of namespace regexes to bypass (empty=NONE)    | `admissionController.filtering.bypassNamespaces` ConfigMap entry  |
+| `admissionController.labelNamespaces`   | List of namespace regexes to label (empty=ALL)      | `admissionController.filtering.labelNamespaces` ConfigMap entry   |
+| `admissionController.noLabelNamespaces` | List of namespace regexes not to label (empty=NONE) | `admissionController.filtering.noLabelNamespaces` ConfigMap entry |
+| `configuration`                         | YAML-formatted queue configuration                  | `queues.yaml` ConfigMap entry                                     |
+
+Currently, if both the deprecated parameter and the replacement ConfigMap entry are specified, the ConfigMap entry will take precedence.
 

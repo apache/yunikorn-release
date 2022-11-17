@@ -17,14 +17,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
 imagePullSecrets:
-userLabelKey: "yunikorn.apache.org/username"
-operatorPlugins: "general"
 serviceAccount: yunikorn-admin
-hostNetwork: false
-
-placeHolderImage: k8s.gcr.io/pause
 
 image:
   repository: apache/yunikorn
@@ -40,6 +34,10 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+configuration: null    # deprecated; use queues.yaml in yunikornDefaults
+operatorPlugins: null  # deprecated; use service.operatorPlugins in yunikornDefaults
+placeHolderImage: null # deprecated; use service.placeholderImage in yunikornDefaults
+
 admissionController:
   image:
     repository: apache/yunikorn
@@ -47,10 +45,6 @@ admissionController:
     pullPolicy: Always
   replicaCount: 1
   serviceAccount: yunikorn-admission-controller
-  processNamespaces: ""
-  bypassNamespaces: "^kube-system$"
-  labelNamespaces: ""
-  noLabelNamespaces: ""
   hostNetwork: true
   resources:
     requests:
@@ -64,6 +58,10 @@ admissionController:
   affinity: {}
   service:
     type: ClusterIP
+  processNamespaces: null # deprecated; use admissionController.processNamespaces in yunikornDefaults
+  bypassNamespaces: null  # deprecated; use admissionController.bypassNamespaces in yunikornDefaults
+  labelNamespaces: null   # deprecated; use admissionController.labelNamespaces in yunikornDefaults
+  noLabelNamespaces: null # deprecated; use admissionController.noLabelNamespaces in yunikornDefaults
 
 web:
   image:
@@ -91,6 +89,13 @@ resources:
     cpu: 4
     memory: 2Gi
 
+# Bootstrap configuration for YuniKorn - will be rendered into yunikorn-defaults ConfigMap.
+# Any valid options for YuniKorn may be specified here.
+# Example:
+# yunikornDefaults:
+#   service.placeholderImage: registry.gcr.io/pause:3.7
+#
+yunikornDefaults: {}
 
 # When this flag is true, the admission controller will be installed along with the scheduler.
 # When this flag is false, the admission controller will not be installed.
@@ -100,62 +105,3 @@ embedAdmissionController: true
 # When this flag is true, the scheduler will be deployed as Kubernetes scheduler plugin.
 # When this flag is false, the scheduler will be deployed as a standalone scheduler.
 enableSchedulerPlugin: false
-
-#
-# ------------------------------------------------------------------------
-# Please choose one configuration from following two for yunikorn
-# Use "CMD + /" to comment-out or uncomment a block before the deployment
-# ------------------------------------------------------------------------
-#
-
-# Use this configuration to automatically map K8s namespaces to yunikorn queues
-configuration: |
-  partitions:
-    -
-      name: default
-      placementrules:
-        - name: tag
-          value: namespace
-          create: true
-      queues:
-        - name: root
-          submitacl: '*'
-
-# Use this configuration to configure absolute capacities for yunikorn queues
-#configuration: |
-#  partitions:
-#    -
-#      name: default
-#      queues:
-#        -
-#          name: root
-#          submitacl: '*'
-#          queues:
-#            -
-#              name: advertisement
-#              resources:
-#                guaranteed:
-#                  memory: 500G
-#                  vcore: 50
-#                max:
-#                  memory: 800G
-#                  vcore: 80
-#            -
-#              name: search
-#              resources:
-#                guaranteed:
-#                  memory: 400G
-#                  vcore: 40
-#                max:
-#                  memory: 600G
-#                  vcore: 60
-#            -
-#              name: sandbox
-#              resources:
-#                guaranteed:
-#                  memory: 100G
-#                  vcore: 10
-#                max:
-#                  memory: 100G
-#                  vcore: 10
-

@@ -30,7 +30,7 @@ kind: ClusterRole
 metadata:
   name: yunikorn-admission-controller-cluster-role
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "1"
 rules:
   - apiGroups: ["admissionregistration.k8s.io"]
@@ -48,7 +48,7 @@ kind: Role
 metadata:
   name: yunikorn-admission-controller-role
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "1"
 rules:
   - apiGroups: [""]
@@ -63,7 +63,7 @@ kind: ClusterRoleBinding
 metadata:
   name: yunikorn-admission-controller-cluster-rbac
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
@@ -79,7 +79,7 @@ kind: RoleBinding
 metadata:
   name: yunikorn-admission-controller-rbac
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
