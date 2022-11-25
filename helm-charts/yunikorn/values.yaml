@@ -81,6 +81,16 @@ service:
   port: 9080
   portWeb: 9889
 
+ingress:
+  enabled: false
+  ingressClassName: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: []
+  pathType: Prefix
+  tls: []
+
 resources:
   requests:
     cpu: 200m
