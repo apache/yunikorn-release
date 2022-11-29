@@ -15,8 +15,7 @@
 # limitations under the License.
 
 {{- if .Values.ingress.enabled -}}
-{{- $ingressPathType := .Values.ingress.pathType -}}
-{{- $svcPort := .Values.service.portWeb -}}
+{{- .Values.service.portWeb := .Values.service.portWeb -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -51,12 +50,12 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
-            pathType: {{ $ingressPathType }}
+            pathType: {{ .Values.ingress.pathType }}
             backend:
               service:
                 name: yunikorn-service
                 port:
-                  number: {{ $svcPort }}
+                  number: {{ .Values.service.portWeb }}
         {{- end }}
   {{- end }}
 {{- end }}
