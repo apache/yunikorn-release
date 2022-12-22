@@ -49,6 +49,7 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 | 1.23.x              |       √      |
 | 1.24.x              |       √      |
 | 1.25.x              |       √      |
+| 1.26.x              |       √      |
 
 ## Installing the chart
 ```
