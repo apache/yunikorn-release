@@ -103,7 +103,7 @@ resources:
 # Any valid options for YuniKorn may be specified here.
 # Example:
 # yunikornDefaults:
-#   service.placeholderImage: registry.gcr.io/pause:3.7
+#   service.placeholderImage: registry.k8s.io/pause:3.7
 #
 yunikornDefaults: {}
 
