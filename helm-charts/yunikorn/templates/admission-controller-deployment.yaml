@@ -26,6 +26,10 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{- if .Values.admissionController.hostNetwork }}
+  strategy:
+    type: Recreate
+  {{- end }}
   replicas: {{ .Values.admissionController.replicaCount }}
   selector:
     matchLabels:
