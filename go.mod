@@ -29,8 +29,6 @@ require (
 	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20220817201139-bc19a97f63c8 // indirect
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
-	golang.org/x/sys v0.0.0-20220817070843-5a390386f1f2 // indirect
-	golang.org/x/tools v0.1.12 // indirect
 	gonum.org/v1/plot v0.9.0
 	gopkg.in/yaml.v2 v2.2.8
 	gotest.tools v2.2.0+incompatible
@@ -38,3 +36,5 @@ require (
 	k8s.io/apimachinery v0.20.11
 	k8s.io/client-go v0.20.11
 )
+
+replace golang.org/x/net => golang.org/x/net v0.4.0
