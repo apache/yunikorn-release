@@ -51,7 +51,7 @@ spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}
-      - name: {{ . }}
+        - name: {{ . }}
       {{- end }}
       {{- end }}
       serviceAccountName: {{ .Values.admissionController.serviceAccount }}
@@ -83,10 +83,10 @@ spec:
               mountPath: /run/secrets/webhook
               readOnly: true
           env:
-          - name: NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           ports:
             - containerPort: 9089
               name: webhook-api
@@ -105,7 +105,7 @@ spec:
             periodSeconds: 5
             failureThreshold: 3
       volumes:
-      - name: admission-controller-secrets
-        secret:
-          secretName: admission-controller-secrets
+        - name: admission-controller-secrets
+          secret:
+            secretName: admission-controller-secrets
 {{ end }}
