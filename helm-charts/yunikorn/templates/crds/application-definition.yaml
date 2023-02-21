@@ -35,8 +35,8 @@ spec:
     kind: Application
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
-    - app
-   # list of versions supported by this CustomResourceDefinition
+      - app
+    # list of versions supported by this CustomResourceDefinition
   versions:
     - name: v1alpha1
       # Each version can be enabled/disabled by Served flag.
@@ -67,7 +67,7 @@ spec:
                   items:
                     type: object
                     properties:
-                      name: 
+                      name:
                         type: string
                       minMember:
                         type: integer
@@ -75,10 +75,10 @@ spec:
                         type: object
                         additionalProperties:
                           anyOf:
-                          - type: integer
-                          - type: string
+                            - type: integer
+                            - type: string
                           pattern: '^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$'
-                          x-kubernetes-int-or-string: true 
+                          x-kubernetes-int-or-string: true
                       nodeSelector:
                         type: object
                         additionalProperties:
@@ -98,7 +98,7 @@ spec:
                               type: string
                             tolerationSeconds:
                               format: int64
-                              type: integer             
+                              type: integer
             status:
               type: object
               properties:
@@ -110,8 +110,7 @@ spec:
                   type: string
                 lastupdate:
                   type: string
-  # subresources describes the subresources for custom resources.
+      # subresources describes the subresources for custom resources.
       subresources:
-    # status enables the status subresource.
+        # status enables the status subresource.
         status: {}
-

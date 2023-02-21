@@ -41,15 +41,15 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 
 ## Supported K8s versions 
 
-| K8s Version         |   Support?   |
-| ------------------- | :----------: |
-| 1.20.x (or earlier) |       X      |
-| 1.21.x              |       √      |
-| 1.22.x              |       √      |
-| 1.23.x              |       √      |
-| 1.24.x              |       √      |
-| 1.25.x              |       √      |
-| 1.26.x              |       √      |
+| K8s Version         | Support? |
+|---------------------|:--------:|
+| 1.20.x (or earlier) |    X     |
+| 1.21.x              |    √     |
+| 1.22.x              |    √     |
+| 1.23.x              |    √     |
+| 1.24.x              |    √     |
+| 1.25.x              |    √     |
+| 1.26.x              |    √     |
 
 ## Installing the chart
 ```
@@ -61,8 +61,9 @@ helm install yunikorn yunikorn/yunikorn
 The following table lists the configurable parameters of the YuniKorn chart and their default values:
 
 | Parameter                                       | Description                                                 | Default                         |
-| ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
-| `imagePullSecrets`                              | Docker repository secrets                                   | ` `                             |
+|-------------------------------------------------|-------------------------------------------------------------|---------------------------------|
+| `imagePullSecrets`                              | Docker repository secrets                                   | `[]`                            |
+| `replicaCount`                                  | Scheduler replicas to be deployed                           | `1`                             |
 | `serviceAccount`                                | Service account name                                        | `yunikorn-admin`                |
 | `hostNetwork`                                   | Whether scheduler should run in the host network            | `false`                         |
 | `image.repository`                              | Scheduler image repository                                  | `apache/yunikorn`               |
@@ -114,7 +115,7 @@ In addition to these parameters, YuniKorn supports reading most of its runtime c
 The following configuration parameters are deprecated and will be ignored in a future release of YuniKorn:
 
 | Parameter                               | Description                                         | Replacement                                                       |
-| ----------------------------------------| --------------------------------------------------- | ----------------------------------------------------------------- |
+|-----------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
 | `operatorPlugins`                       | Scheduler operator plugins                          | `service.operatorPlugins` ConfigMap entry                         |
 | `placeholderImage`                      | Docker image of the placeholder pods                | `service.placeholderImage` ConfigMap entry                        |
 | `admissionController.processNamespaces` | List of namespace regexes to process (empty=ALL)    | `admissionController.filtering.processNamespaces` ConfigMap entry |
@@ -124,4 +125,3 @@ The following configuration parameters are deprecated and will be ignored in a f
 | `configuration`                         | YAML-formatted queue configuration                  | `queues.yaml` ConfigMap entry                                     |
 
 Currently, if both the deprecated parameter and the replacement ConfigMap entry are specified, the ConfigMap entry will take precedence.
-

@@ -28,7 +28,7 @@ spec:
   strategy:
     type: Recreate
   {{- end }}
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: yunikorn
@@ -45,11 +45,11 @@ spec:
       {{- if .Values.hostNetwork }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      {{- end }} 
+      {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- range .Values.imagePullSecrets }}
-      - name: {{ . }}
+        - name: {{ . }}
       {{- end }}
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount }}
@@ -99,8 +99,8 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: {{ .Values.web.resources.requests.memory }}
               cpu: {{ .Values.web.resources.requests.cpu }}
+              memory: {{ .Values.web.resources.requests.memory }}
             limits:
-              memory: {{ .Values.web.resources.limits.memory }}
               cpu: {{ .Values.web.resources.limits.cpu }}
+              memory: {{ .Values.web.resources.limits.memory }}

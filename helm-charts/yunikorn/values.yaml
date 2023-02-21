@@ -17,8 +17,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-imagePullSecrets:
+imagePullSecrets: []
+replicaCount: 1
 serviceAccount: yunikorn-admin
+hostNetwork: false
 
 image:
   repository: apache/yunikorn
@@ -58,10 +60,10 @@ admissionController:
   affinity: {}
   service:
     type: ClusterIP
-  processNamespaces: null # deprecated; use admissionController.processNamespaces in yunikornDefaults
-  bypassNamespaces: null  # deprecated; use admissionController.bypassNamespaces in yunikornDefaults
-  labelNamespaces: null   # deprecated; use admissionController.labelNamespaces in yunikornDefaults
-  noLabelNamespaces: null # deprecated; use admissionController.noLabelNamespaces in yunikornDefaults
+  processNamespaces: null # deprecated; use admissionController.filtering.processNamespaces in yunikornDefaults
+  bypassNamespaces: null  # deprecated; use admissionController.filtering.bypassNamespaces in yunikornDefaults
+  labelNamespaces: null   # deprecated; use admissionController.filtering.labelNamespaces in yunikornDefaults
+  noLabelNamespaces: null # deprecated; use admissionController.filtering.noLabelNamespaces in yunikornDefaults
 
 web:
   image:
@@ -70,11 +72,11 @@ web:
     pullPolicy: Always
   resources:
     requests:
-      memory: "100Mi"
-      cpu: "100m"
+      cpu: 100m
+      memory: 100Mi
     limits:
-      memory: "500Mi"
-      cpu: "200m"
+      cpu: 200m
+      memory: 500Mi
 
 service:
   type: ClusterIP
