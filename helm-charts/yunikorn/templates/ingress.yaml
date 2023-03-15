@@ -49,12 +49,12 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
-            pathType: {{ .Values.ingress.pathType }}
+            pathType: {{ $.Values.ingress.pathType }}
             backend:
               service:
                 name: yunikorn-service
                 port:
-                  number: {{ .Values.service.portWeb }}
+                  number: {{ $.Values.service.portWeb }}
         {{- end }}
   {{- end }}
 {{- end }}
