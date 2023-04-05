@@ -41,6 +41,9 @@ spec:
         app: yunikorn
         component: yunikorn-scheduler
         release: {{ .Release.Name }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.hostNetwork }}
       hostNetwork: true

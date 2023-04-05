@@ -43,6 +43,9 @@ spec:
         app: yunikorn
         component: yunikorn-admission-controller
         release: {{ .Release.Name }}
+        {{- with .Values.admissionController.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.admissionController.hostNetwork }}
       hostNetwork: true

@@ -64,6 +64,7 @@ admissionController:
   bypassNamespaces: null  # deprecated; use admissionController.filtering.bypassNamespaces in yunikornDefaults
   labelNamespaces: null   # deprecated; use admissionController.filtering.labelNamespaces in yunikornDefaults
   noLabelNamespaces: null # deprecated; use admissionController.filtering.noLabelNamespaces in yunikornDefaults
+  podLabels: {}
 
 web:
   image:
@@ -117,3 +118,5 @@ embedAdmissionController: true
 # When this flag is true, the scheduler will be deployed as Kubernetes scheduler plugin.
 # When this flag is false, the scheduler will be deployed as a standalone scheduler.
 enableSchedulerPlugin: false
+
+podLabels: {}
