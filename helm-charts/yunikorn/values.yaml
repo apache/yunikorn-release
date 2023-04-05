@@ -22,6 +22,8 @@ replicaCount: 1
 serviceAccount: yunikorn-admin
 hostNetwork: false
 
+priorityClassName: ""
+
 image:
   repository: apache/yunikorn
   tag: scheduler-latest
@@ -41,6 +43,7 @@ operatorPlugins: null  # deprecated; use service.operatorPlugins in yunikornDefa
 placeHolderImage: null # deprecated; use service.placeholderImage in yunikornDefaults
 
 admissionController:
+  priorityClassName: ""
   image:
     repository: apache/yunikorn
     tag: admission-latest

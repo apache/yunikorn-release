@@ -86,6 +86,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `admissionController.tolerations`               | Admission controller deployment tolerations                 | `[]`                            |
 | `admissionController.affinity`                  | Admission controller deployment affinity                    | `{}`                            |
 | `admissionController.service.type`              | Admission controller service type                           | `ClusterIP`                     |
+| `admissionController.priorityClassName`         | Admission controller pod priority                           | `""`                            |
+| `priorityClassName`                             | Scheduler pod priority                                      | `""`                            |
 | `service.type`                                  | Scheduler service type                                      | `ClusterIP`                     |
 | `service.port`                                  | Port of the scheduler service                               | `9080`                          |
 | `service.portWeb`                               | Port of the web application service                         | `9889`                          |
@@ -106,6 +108,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `tolerations`                                   | Scheduler deployment tolerations                            | `[]`                            |
 | `affinity`                                      | Scheduler deployment affinity                               | `{}`                            |
 | `yunikornDefaults`                              | Data for the `yunikorn-defaults` ConfigMap                  | `{}`                            |
+
 
 These parameters can be passed in via helm's `--set` and `--values (-f)` options, such as `--set resources.requests.cpu=2000m` or `-f myvalues.yaml`.
 
