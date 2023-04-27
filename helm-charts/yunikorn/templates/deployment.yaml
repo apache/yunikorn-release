@@ -90,12 +90,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
           resources:
-            requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+            {{- toYaml .Values.resources | nindent 12 }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
@@ -104,9 +99,4 @@ spec:
               containerPort: {{ .Values.service.portWeb }}
               protocol: TCP
           resources:
-            requests:
-              cpu: {{ .Values.web.resources.requests.cpu }}
-              memory: {{ .Values.web.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.web.resources.limits.cpu }}
-              memory: {{ .Values.web.resources.limits.memory }}
+            {{- toYaml .Values.web.resources | nindent 12 }}
