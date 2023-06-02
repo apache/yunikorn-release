@@ -15,6 +15,183 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+
+Release Notes - Apache YuniKorn - Version 1.3.0
+
+** Sub-task
+    * [YUNIKORN-1176] - Add Chinese translation for user guide rest apis documents
+    * [YUNIKORN-1249] - Upgrade ginkgo from v1 to v2
+    * [YUNIKORN-1383] - [website] REST API doc changes in Yunikorn Website
+    * [YUNIKORN-1462] - Add design document to website
+    * [YUNIKORN-1467] - Implement core preemption logic
+    * [YUNIKORN-1538] - Add resource fairness test suites
+    * [YUNIKORN-1542] - Use ensure and restore config wrappers across all test suites
+    * [YUNIKORN-1549] - Introduce a config to specify what attribute to use as instance type
+    * [YUNIKORN-1550] - pass k8s node labels as attributes not json
+    * [YUNIKORN-1568] - Placement rules should be validated during config update
+    * [YUNIKORN-1576] - Add PreemptionPredicates function to SI
+    * [YUNIKORN-1583] - Verify_Multiple_TaskGroups_Nodes test is flaky
+    * [YUNIKORN-1584] - Verify_Annotation_TaskGroup_Def is flaky
+    * [YUNIKORN-1585] -   Verify_Multiple_TaskGroups_Nodes distribution result is flaky 
+    * [YUNIKORN-1601] - Shim: Implement preemption predicate handling
+    * [YUNIKORN-1612] - publish quota enforcement design doc
+    * [YUNIKORN-1641] - Queue tracker object is not cleaned up when a queue is deleted
+    * [YUNIKORN-1646] - QueueTracker: extract common code from increaseTrackedResource/decreaseTrackedResource and remove getRunningApplications()
+    * [YUNIKORN-1649] - Use Junit reporter in all suites
+    * [YUNIKORN-1669] - Pass the node attributes to the webapp
+    * [YUNIKORN-1678] - Add instance type support to doc.
+    * [YUNIKORN-1679] - Re-write event storage from map to slice
+    * [YUNIKORN-1689] - Document preemption configuration on website
+    * [YUNIKORN-1701] - Make simple preemptor cluster agnostic
+    * [YUNIKORN-1719] - Improve the performance of Application.sortRequests()
+    * [YUNIKORN-1720] - Improve the performance of node.preAllocateCheck()
+    * [YUNIKORN-1723] - Remove string comparison from hasReadyCondition() function
+    * [YUNIKORN-1739] - Add e2e test to test originator pod will control all other placeholders.
+    * [YUNIKORN-1742] - Add new methods to MockScheduler to handle Kubernetes objects
+    * [YUNIKORN-1743] - Enable predicates for MockScheduler 
+    * [YUNIKORN-1745] - Add implementation to MockedAPIProvider.AddEventHandler()
+    * [YUNIKORN-1746] - Improve the performance of nodeInfoListerImpl.List()
+    * [YUNIKORN-1747] - Improve the performance of HavePodsWithAffinityList() and HavePodsWithRequiredAntiAffinityList()
+    * [YUNIKORN-1756] - Document support for generating unique application id
+    * [YUNIKORN-1763] - Documentation: Toggle for adding default queue in admission controller
+    * [YUNIKORN-1764] - Don't copy resource object in Node.preAllocateCheck()
+    * [YUNIKORN-1770] - Avoid resource clone in Application.tryNodes()
+
+
+
+** Bug
+    * [YUNIKORN-154] - Clean up non-apache dockerhub images
+    * [YUNIKORN-1404] - e2e: don't delete individual pods when jobs are submitted
+    * [YUNIKORN-1555] - Completed Spark applications are recovered/remain as New
+    * [YUNIKORN-1562] - plugin mode: remove status update completely
+    * [YUNIKORN-1569] - Admission controller cannot update CronJobs
+    * [YUNIKORN-1577] - Fix linespace control on ingress
+    * [YUNIKORN-1590] - REST interface always shows incorrect placeholder info
+    * [YUNIKORN-1593] - Fix typo in site docs
+    * [YUNIKORN-1597] - Gang scheduling: application might not transition to Running after recovery
+    * [YUNIKORN-1600] - Fix typo and formatting in site docs
+    * [YUNIKORN-1618] - Data race in TestStateTimeOut
+    * [YUNIKORN-1622] - K8shim: Race in allocate vs pod delete
+    * [YUNIKORN-1627] - Admission controller triggers infinite recreation of ReplicaSet objects
+    * [YUNIKORN-1632] - Yunikorn fails to account for the max number of pods on a node
+    * [YUNIKORN-1635] - Range scoping issue in Ingress
+    * [YUNIKORN-1642] - Scheduler recovery failed due to listing operation timeout
+    * [YUNIKORN-1658] - autoscaling is not triggered for requests with unlimited resources
+    * [YUNIKORN-1662] - remove wget from e2e test script
+    * [YUNIKORN-1663] - remove sudo from e2e script
+    * [YUNIKORN-1666] - update REST util for e2e test to use new object layout
+    * [YUNIKORN-1670] - Application recovery can fail if app is rejected
+    * [YUNIKORN-1675] - Makefile targets for run / run_plugin are incorrect
+    * [YUNIKORN-1676] - E2E: Spark test times out
+    * [YUNIKORN-1684] - Configured queues got removed automatically after startup
+    * [YUNIKORN-1685] - Preemption doesn't trigger if pod requests resources not mentioned in quota
+    * [YUNIKORN-1698] - Missing namespace permissions for admission controller
+    * [YUNIKORN-1700] - Fix the wrong objects comparing in the Yunikorn-core sorts.go
+    * [YUNIKORN-1704] - Rejected applications block recovery during startup
+    * [YUNIKORN-1707] - Admission controller should mark pods in non-labeled namespaces
+    * [YUNIKORN-1708] - Filtered owner references for placeholder pods.
+    * [YUNIKORN-1712] - Fix allocatedResource and availableResource should be updated at the sametime for ReplaceAllocation
+    * [YUNIKORN-1714] - Fatal error: concurrent write/read when calling Queue.RemoveApplication()
+    * [YUNIKORN-1722] - excessive resource clone calls in calculateNodesResourceUsage
+    * [YUNIKORN-1726] - Remove duplicate pages in v1.2.0
+    * [YUNIKORN-1731] - Allow service account user and group names in filters
+    * [YUNIKORN-1732] - Build fails due to brittle SHA calculation
+    * [YUNIKORN-1734] - Missing headers in REST response
+    * [YUNIKORN-1737] - Originator flag for AllocationAskDAOInfo don't assign for construct in getAllocationAskDAO
+    * [YUNIKORN-1754] - Data race in TestStoreWithLimitedSize
+    * [YUNIKORN-1757] - Placement Rules: fix complex example
+    * [YUNIKORN-1775] - Admission cluster role doesn't have enough permission to run admission
+
+
+** New Feature
+    * [YUNIKORN-1029] - [Umbrella] Add Chinese translation for documents
+    * [YUNIKORN-1385] - To provide visibility to application's aggregated resource consumption
+    * [YUNIKORN-1647] - Dynamic namespace support in Admission controller
+
+
+** Improvement
+    * [YUNIKORN-249] - Simplify scheduling queue headroom tests
+    * [YUNIKORN-959] - Simplify partition info in the REST call
+    * [YUNIKORN-1273] - Add option to have unique application ids in a namespace
+    * [YUNIKORN-1310] - Fix Flaky E2E Admission Controller test suite runs
+    * [YUNIKORN-1461] - [Umbrella] Preemption support
+    * [YUNIKORN-1526] - support K8s pod overhead
+    * [YUNIKORN-1527] - Add website build to PR workflow
+    * [YUNIKORN-1530] - remove log spew in schedulerplugin
+    * [YUNIKORN-1535] - Use scratch base image for admission and scheduler docker images
+    * [YUNIKORN-1536] - Avoid spurious Twistlock flags when scanning web package
+    * [YUNIKORN-1543] - Add KubeConf and ApacheCon talks to passed events
+    * [YUNIKORN-1548] - [Umbrella] Revamp E2E test - Phase 2
+    * [YUNIKORN-1551] - remove unused parameter from ClusterContext.addNode()
+    * [YUNIKORN-1553] - updateAllocatedAndPendingResourceMetrics should support all queue types
+    * [YUNIKORN-1558] - Simplifying formatMemory function in util
+    * [YUNIKORN-1559] - rethink QOS BestEffort pod scheduling
+    * [YUNIKORN-1565] - [Umbrella] Node attribute related improvement and bug fix.
+    * [YUNIKORN-1570] - Document changes from YUNIKORN-959
+    * [YUNIKORN-1582] - Log level in REST API doc
+    * [YUNIKORN-1595] - postTaskAllocated uses same event details for different things 
+    * [YUNIKORN-1604] - document k8shim cache dump as part of state dump
+    * [YUNIKORN-1609] - Make API factory and Informer timeouts configurable
+    * [YUNIKORN-1611] - Update the new entry into the REST interface document
+    * [YUNIKORN-1629] - Add unit tests for few node functions in pkg/cache/context.go
+    * [YUNIKORN-1630] - Update scheduler-load.yaml and scheduler.yaml
+    * [YUNIKORN-1637] - Skip the spark installation if spark is installed
+    * [YUNIKORN-1650] - Add setting for default queue in admission controller
+    * [YUNIKORN-1652] - move PKI code into the admission controller
+    * [YUNIKORN-1653] - Use enum instead of defined values for tri-state
+    * [YUNIKORN-1654] - document dynamic namespace processing functionality
+    * [YUNIKORN-1672] - Use go webserver instead of nginx
+    * [YUNIKORN-1677] - move to simple go based web server for e2e tests
+    * [YUNIKORN-1680] - Add priorityClassName to helm chart's pods
+    * [YUNIKORN-1681] - Add ability to attach custom labels to pods
+    * [YUNIKORN-1683] - Add more information to BuildInfo
+    * [YUNIKORN-1690] - remove redundant if else in sorter
+    * [YUNIKORN-1694] - Update go.mod to 1.20
+    * [YUNIKORN-1705] - Remove timeout from informer sync in admission controller
+    * [YUNIKORN-1711] - Helm charts: Allow more flexible resource spec
+    * [YUNIKORN-1725] - Describe the make json-server in the README.md
+    * [YUNIKORN-1735] - REST API for specific node
+    * [YUNIKORN-1736] - Add some examples for authz use cases
+    * [YUNIKORN-1738] - Update angular to 16
+    * [YUNIKORN-1755] - Update Spark examples to Spark 3
+    * [YUNIKORN-1772] - Simplify the cache Context.SelectApplications function
+
+** Test
+    * [YUNIKORN-1605] - Add unit tests for preempted placeholders
+
+
+** Task
+    * [YUNIKORN-1414] - Adding Chinese translations of  Sorting Policies 
+    * [YUNIKORN-1423] - Update README.md in placement examples that how to update configuration
+    * [YUNIKORN-1472] - Replacement for gorilla/mux
+    * [YUNIKORN-1478] - Move to go v1.20
+    * [YUNIKORN-1506] - Adding Chinese translation of Gang scheduling
+    * [YUNIKORN-1512] - Adding Chinese translation of Translation
+    * [YUNIKORN-1515] - Adding Chinese translation of Scheduler Rest API
+    * [YUNIKORN-1516] - Adding Chinese translation of System Rest API
+    * [YUNIKORN-1554] - update project member list
+    * [YUNIKORN-1557] - expose build info in web UI
+    * [YUNIKORN-1563] - Update golang.org/x/net for CVE-2022-41717
+    * [YUNIKORN-1572] - update roadmap for 1.3.0 to reflect the sync
+    * [YUNIKORN-1579] - Upgrade github.com/google/btree to latest version
+    * [YUNIKORN-1580] - Upgrade github.com/looplab/fsm to stable version
+    * [YUNIKORN-1581] - upgrade to gotest.tools/v3
+    * [YUNIKORN-1587] - document resource quota annotations
+    * [YUNIKORN-1589] - Fix formatting issues in helm chart
+    * [YUNIKORN-1614] - Update jira account request process
+    * [YUNIKORN-1625] - Adding a document of setting prometheus in the user guide
+    * [YUNIKORN-1636] - visualize the endpoint healthcheck in the UI
+    * [YUNIKORN-1638] - Updating REST API in the json-db
+    * [YUNIKORN-1639] - Add a command to the Makefile to start json-server
+    * [YUNIKORN-1644] - remove commented out services
+    * [YUNIKORN-1651] - Upgrade golang dependencies for CVEs
+    * [YUNIKORN-1660] - Documentation: add more realistic examples and use cases
+    * [YUNIKORN-1671] - Remove unused API timeout configuration
+    * [YUNIKORN-1674] - Remove nginx references from yunikorn-web
+    * [YUNIKORN-1750] - Remove sprintf from logging calls
+    * [YUNIKORN-1751] - Update json-server to 0.17.3
+    * [YUNIKORN-1753] - Adding a document of integrate prometheus and grafana
+    * [YUNIKORN-1762] - Adding dashboard for monitoring yunikorn on Grafana 
+    * [YUNIKORN-1768] - Update core and SI reference in master
+    * [YUNIKORN-1769] - Update json-db to show different queue usage
+
