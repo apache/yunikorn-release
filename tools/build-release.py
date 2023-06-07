@@ -83,6 +83,9 @@ def build_release(email_address):
         sha[name] = download_sourcecode(release_base, repo_meta)
         update_make_version(name, os.path.join(release_base, alias), version)
 
+    # update required Golang, NodeJS and Angular versions
+    update_required_versions(release_base, repo_list)
+
     # update the sha for all repos in the build scripts
     # must be run after all repos have been checked out
     update_sha(release_base, repo_list, sha)
@@ -276,6 +279,62 @@ def update_sha(release_base, repo_list, sha):
         }
         if switcher.get(repo_name) is not None:
             switcher.get(repo_name)(repo_name, os.path.join(release_base, repo_meta["alias"]), sha)
+
+
+# update required Golang version in the README.md
+def update_required_go_version(base_path, local_repo_path):
+    print("updating required go version")
+    go_version_file = os.path.join(local_repo_path, ".go_version")
+    if not os.path.isfile(go_version_file):
+        fail("k8shim repo .go_version does not exist")
+    with open(go_version_file) as f:
+        go_version = f.readline().strip()
+    if not go_version:
+        fail("k8shim repo .go_version is empty")
+    print(f" - go version:  {go_version}")
+    replace(os.path.join(base_path, "README.md"), 'Go 1.16', 'Go ' + go_version)
+
+
+# update required Node.js and angular versions in the README.md
+def update_required_node_and_angular_versions(base_path, local_repo_path):
+    print("updating required Node.js version")
+    nvmrc_file = os.path.join(local_repo_path, ".nvmrc")
+    if not os.path.isfile(nvmrc_file):
+        fail("web repo .nvmrc does not exist")
+    with open(nvmrc_file) as f:
+        node_version = f.readline().strip()
+    if not node_version:
+        fail("web repo .nvmrc is empty")
+    print(f" - node version:  {node_version}")
+    replace(os.path.join(base_path, "README.md"), 'Node.js 16.14.2', 'Node ' + node_version)
+
+    print("updating required Angular version")
+    package_json_file = os.path.join(local_repo_path, "package.json")
+    if not os.path.isfile(package_json_file):
+        fail("web repo package.json does not exist")
+    with open(package_json_file) as f:
+        try:
+            data = json.load(f)
+        except json.JSONDecodeError:
+            fail("load web package.json: unexpected json decode failure")
+    angular_version_match = re.search("\d+\.\d+\.\d+", data.get("dependencies", {}).get("@angular/core", ""))
+    if not angular_version_match:
+        fail("web repo package.json: unexpected @angular/core version")
+    angular_version = angular_version_match.group()
+    print(f" - angular version:  {angular_version}")
+    replace(os.path.join(base_path, "README.md"), 'Angular CLI 13.3.0', 'Angular CLI ' + angular_version)
+
+
+# update required versions in the README.md
+def update_required_versions(release_base, repo_list):
+    switcher = {
+        "yunikorn-k8shim": update_required_go_version,
+        "yunikorn-web": update_required_node_and_angular_versions,
+    }
+    for repo_meta in repo_list:
+        repo_name = repo_meta["name"]
+        if switcher.get(repo_name) is not None:
+            switcher.get(repo_name)(release_base, os.path.join(release_base, repo_meta["alias"]))
 
 
 # Write the checksum for the source code tarball to file
