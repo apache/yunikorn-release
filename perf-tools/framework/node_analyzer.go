@@ -23,9 +23,9 @@ import (
 
 	"github.com/apache/yunikorn-core/pkg/common/resources"
 	"github.com/apache/yunikorn-release/perf-tools/utils"
+	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
 	"go.uber.org/zap"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -172,10 +172,8 @@ func ParseResourceFromResourceList(resourceList *v1.ResourceList) *resources.Res
 	resourceMap := make(map[string]resources.Quantity)
 	for name, value := range *resourceList {
 		switch name {
-		case v1.ResourceMemory:
-			resourceMap[resources.MEMORY] = resources.Quantity(value.ScaledValue(resource.Mega))
 		case v1.ResourceCPU:
-			resourceMap[resources.VCORE] = resources.Quantity(value.MilliValue())
+			resourceMap[siCommon.CPU] = resources.Quantity(value.MilliValue())
 		default:
 			resourceMap[name.String()] = resources.Quantity(value.Value())
 		}
