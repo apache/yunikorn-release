@@ -27,7 +27,7 @@ import sys
 # Supported host architectures for executables and docker images
 # Mapped to the correct settings in the Makefile
 architecture = {"x86_64": "amd64",
-                "aarch64": "arm64v8"}
+                "aarch64": "arm64"}
 # Make targets for the shim repo to generate the images
 targets = {"adm_image": "admission",
            "sched_image": "scheduler",
@@ -172,6 +172,8 @@ def build_manifest(manifest, version):
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
         print(" - image:    %s" % image_name)
+        # image_manifest = create_image_name(manifest, version, manifestmap[arch])
+        # print(" - image manifest:    %s" % image_manifest)
         # temporary push to create tag to allow manifest build
         # https://github.com/docker/cli/issues/3350
         push_image(cmd, image_name)
