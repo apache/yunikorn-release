@@ -73,7 +73,9 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `pluginImage.tag`                               | Scheduler plugin image tag                                  | `scheduler-plugin-latest`       |
 | `pluginImage.pullPolicy`                        | Scheduler plugin image pull policy                          | `Always`                        |
 | `podLabels`                                     | Scheduler pod labels                                        | `{}`                            |
+| `podAnnotations`                                | Scheduler pod annotations                                   | `{}`                            |
 | `admissionController.podLabels`                 | Admission controller pod labels                             | `{}`                            |
+| `admissionController.podAnnotations`            | Admission controller pod annotations                        | `{}`                            |
 | `admissionController.replicaCount`              | Admission controller replicas to be deployed                | `1`                             |
 | `admissionController.serviceAccount`            | Admission controller service account name                   | `yunikorn-admission-controller` |
 | `admissionController.image.repository`          | Admission controller image repository                       | `apache/yunikorn`               |

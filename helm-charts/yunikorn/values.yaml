@@ -68,6 +68,7 @@ admissionController:
   labelNamespaces: null   # deprecated; use admissionController.filtering.labelNamespaces in yunikornDefaults
   noLabelNamespaces: null # deprecated; use admissionController.filtering.noLabelNamespaces in yunikornDefaults
   podLabels: {}
+  podAnnotations: {}
 
 web:
   image:
@@ -123,3 +124,4 @@ embedAdmissionController: true
 enableSchedulerPlugin: false
 
 podLabels: {}
+podAnnotations: {}
