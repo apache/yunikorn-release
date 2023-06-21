@@ -27,7 +27,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5
 	go.uber.org/zap v1.24.0
 	gonum.org/v1/plot v0.9.0
-	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools v2.2.0+incompatible
 	k8s.io/api v0.20.11
 	k8s.io/apimachinery v0.20.11
@@ -72,6 +72,7 @@ require (
 	google.golang.org/grpc v1.27.1 // indirect
 	google.golang.org/protobuf v1.26.0-rc.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 	k8s.io/klog/v2 v2.4.0 // indirect
 	k8s.io/utils v0.0.0-20201110183641-67b214c5f920 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
