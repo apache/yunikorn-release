@@ -46,6 +46,10 @@ spec:
         {{- with .Values.admissionController.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      annotations:
+        {{- with .Values.admissionController.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.admissionController.hostNetwork }}
       hostNetwork: true
