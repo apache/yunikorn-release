@@ -28,7 +28,7 @@ spec:
   strategy:
     type: Recreate
   {{- end }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: yunikorn

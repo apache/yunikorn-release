@@ -18,7 +18,6 @@
 # Declare variables to be passed into your templates.
 
 imagePullSecrets: []
-replicaCount: 1
 serviceAccount: yunikorn-admin
 hostNetwork: false
 
