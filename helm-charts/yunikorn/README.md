@@ -63,7 +63,6 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | Parameter                                       | Description                                                 | Default                         |
 |-------------------------------------------------|-------------------------------------------------------------|---------------------------------|
 | `imagePullSecrets`                              | Docker repository secrets                                   | `[]`                            |
-| `replicaCount`                                  | Scheduler replicas to be deployed                           | `1`                             |
 | `serviceAccount`                                | Service account name                                        | `yunikorn-admin`                |
 | `hostNetwork`                                   | Whether scheduler should run in the host network            | `false`                         |
 | `image.repository`                              | Scheduler image repository                                  | `apache/yunikorn`               |
