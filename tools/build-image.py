@@ -201,7 +201,7 @@ def build_image(base_dir, image, arch, version):
     my_env["VERSION"] = version      # force version, just be safe
     my_env["HOST_ARCH"] = arch       # the architecture override
     my_env["REGISTRY"] = repository  # repository override (test only)
-    command = [cmd, image]
+    command = [cmd, "clean", image]
     # build the image using make
     retcode = subprocess.call(command, cwd=base_dir, env=my_env, stdout=subprocess.DEVNULL)
     if retcode:
