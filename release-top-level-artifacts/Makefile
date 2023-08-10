@@ -52,3 +52,15 @@ test:
 .PHONY: arch
 arch:
 	@eval "$(MAKE) -C $(SHIM_DIR) arch"
+
+.PHONY: clean
+clean:
+	$(MAKE) -C $(CORE_DIR) clean
+	$(MAKE) -C $(SHIM_DIR) clean
+	$(MAKE) -C $(WEB_DIR) clean
+
+.PHONY: distclean
+distclean:
+	$(MAKE) -C $(CORE_DIR) distclean
+	$(MAKE) -C $(SHIM_DIR) distclean
+	$(MAKE) -C $(WEB_DIR) distclean
