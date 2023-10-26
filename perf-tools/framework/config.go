@@ -20,7 +20,7 @@ package framework
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	apiv1 "k8s.io/api/core/v1"
 
@@ -46,7 +46,7 @@ type CommonConfig struct {
 }
 
 func InitConfig(configFile string) (*Config, error) {
-	yamlContent, err := ioutil.ReadFile(configFile)
+	yamlContent, err := os.ReadFile(configFile)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to read config file: %s ", err.Error())
 	}
