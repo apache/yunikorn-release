@@ -23,9 +23,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/yunikorn-core/pkg/common/resources"
 	"github.com/apache/yunikorn-release/perf-tools/constants"
 	"github.com/apache/yunikorn-release/perf-tools/utils"
+	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
 	v1 "k8s.io/api/core/v1"
 
 	"github.com/apache/yunikorn-release/perf-tools/framework"
@@ -99,10 +99,10 @@ func (nfs *NodeFairnessScenario) Run(results *utils.Results) {
 		var resourceUnit string
 		ykResourceName := testCase.ResourceName
 		if testCase.ResourceName == v1.ResourceMemory.String() {
-			resourceUnit = "Mi"
+			resourceUnit = ""
 		} else if testCase.ResourceName == v1.ResourceCPU.String() {
 			resourceUnit = "m"
-			ykResourceName = resources.VCORE
+			ykResourceName = siCommon.CPU
 		}
 		totalAllocatableResourceValue, ok := totalAllocatableResource.Resources[ykResourceName]
 		if !ok {
