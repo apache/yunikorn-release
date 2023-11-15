@@ -15,6 +15,292 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.4.0
+
+** Sub-task
+    * [YUNIKORN-325] - Add a chart to display node resource utilization summary
+    * [YUNIKORN-1471] - Add e2e tests for preemption
+    * [YUNIKORN-1575] - Ability to specify guaranteedResources via namespace annotations
+    * [YUNIKORN-1607] - Configuration processing should support limit hierarchical quota check.
+    * [YUNIKORN-1643] - Doc need to change for new limit wildcard interpretation syntax rule check.
+    * [YUNIKORN-1656] - Extend si.EventRecord type
+    * [YUNIKORN-1657] - Create design document
+    * [YUNIKORN-1659] - Documentation: add real life preemption examples
+    * [YUNIKORN-1687] - Add E2E test for User & Group Based Quota Enforcement
+    * [YUNIKORN-1716] - Improve the performance of baseNodeCollection.getNodeIteratorInternal()
+    * [YUNIKORN-1744] - Enable recovery for MockScheduler
+    * [YUNIKORN-1748] - Create test case which measures binding throughput using MockScheduler
+    * [YUNIKORN-1774] - Event cache: misc cleanup
+    * [YUNIKORN-1783] - Application: maintain sorted state of requests instead of sorting
+    * [YUNIKORN-1793] - Handle placement rule and queue changes during initialisation (core)
+    * [YUNIKORN-1794] - Define new messages in SI to support init per object
+    * [YUNIKORN-1797] - Implement scoped logging API
+    * [YUNIKORN-1799] - Create basic ringbuffer implementation
+    * [YUNIKORN-1800] - Extend Application event wrapper with new events
+    * [YUNIKORN-1801] - Add allocation events
+    * [YUNIKORN-1802] - Add node events
+    * [YUNIKORN-1803] - Add queue events
+    * [YUNIKORN-1804] - Add REST endpoint for batch event retrieval
+    * [YUNIKORN-1805] - Create smoke test to validate application tracking via REST interface
+    * [YUNIKORN-1806] - Add new configuration entries
+    * [YUNIKORN-1807] - Remove error check from createEventRecord()
+    * [YUNIKORN-1814] - Remove manager#cleaner method
+    * [YUNIKORN-1824] - Document configuration changes for scoped logging
+    * [YUNIKORN-1825] - Core: Convert to scoped logging
+    * [YUNIKORN-1826] - Shim: Convert to scoped logging
+    * [YUNIKORN-1827] - Add core.scheduler.application.usage logger
+    * [YUNIKORN-1830] - Add reservation/unreservation events
+    * [YUNIKORN-1833] - Rationalize event verification in partition_test.go
+    * [YUNIKORN-1839] - Core: remove deprecated log.Logger() implementation
+    * [YUNIKORN-1843] - Shim: Remove deprecated log.Logger() function
+    * [YUNIKORN-1845] - Handle nil logger handle properly
+    * [YUNIKORN-1846] - Rewrite event verification in application_test.go
+    * [YUNIKORN-1859] - Add "omitempty" to json REST object definition
+    * [YUNIKORN-1860] - Update webapp to handle missing entries
+    * [YUNIKORN-1861] - Add "omitempty" to k8shim cache dump
+    * [YUNIKORN-1863] - Remove unused code in processUserConfig and processGroupConfig
+    * [YUNIKORN-1864] - Apply wild card group limit settings for users without any matching group
+    * [YUNIKORN-1871] - Improving test coverage for whole user/group enforcement feature
+    * [YUNIKORN-1881] - Improve the performance of tryPlaceholderAllocate
+    * [YUNIKORN-1882] - Further performance improvements on HavePodsWithAffinityList() and HavePodsWithRequiredAntiAffinityList()
+    * [YUNIKORN-1883] - Allow nodes to be created as unschedulable
+    * [YUNIKORN-1886] - Optimize scheduling cycle if there's no placeholder allocation or reservation
+    * [YUNIKORN-1887] - SI: Add tag for application recovered flag
+    * [YUNIKORN-1888] - Allow allocations to be added to existing nodes
+    * [YUNIKORN-1893] - Group tracker decrease resource usage incorrectly
+    * [YUNIKORN-1895] - SI: Add RejectedAllocations to AllocationResponse
+    * [YUNIKORN-1899] - Handle config reload in the event code
+    * [YUNIKORN-1915] - Rename CreateAndSetEventSystem() and reduce code duplication
+    * [YUNIKORN-1917] - Align maxApplications and resource tracking resolution logic
+    * [YUNIKORN-1920] - headroom calculation fails if parent has usage and max set
+    * [YUNIKORN-1930] - Don't send all node events to the shim
+    * [YUNIKORN-1936] - Auto scaling logic should consider the user  based quota
+    * [YUNIKORN-1937] - Extract URL query properly in getEvents()
+    * [YUNIKORN-1940] - Remove getChildQueuePath method
+    * [YUNIKORN-1942] - Null Batch API Response when we reset ring buffer size
+    * [YUNIKORN-1944] - Wildcard user limit settings are not honoured by applications
+    * [YUNIKORN-1945] - Add missing application state transition event
+    * [YUNIKORN-1947] - Add missing states Expired and Resuming
+    * [YUNIKORN-1965] - Display a unique id on the REST interface when returning events
+    * [YUNIKORN-1973] - Queue Limits configuration at same level should not compare each other
+    * [YUNIKORN-1986] - canRunApp should be called from tryReservedAllocate also
+    * [YUNIKORN-2012] - group quota is not considered during pod scheduling
+    * [YUNIKORN-2074] - Remove scheduler state machine
+    * [YUNIKORN-2077] - Cleanup scheduler event interface in shim
+    * [YUNIKORN-2080] - Remove Scheduler section from Object States design doc
+    * [YUNIKORN-2100] - Merge functionality of node coordinator into context
+    * [YUNIKORN-2105] - Branching and tagging for 1.4
+    * [YUNIKORN-2114] - User / Group Manager uses read lock when updating attributes
+    * [YUNIKORN-2134] - Use nil resource instead of NewResource()
+    * [YUNIKORN-2139] - Move queuepath split from user and group trackers to manager.go
+
+
+
+** Bug
+    * [YUNIKORN-1699] - Support Kubernetes 1.27
+    * [YUNIKORN-1788] - Fix UI styling after Angular 16 update
+    * [YUNIKORN-1810] - Wrong architecture name of Yunikorn images
+    * [YUNIKORN-1811] - Flaky tests TestPlaceholderSmallerThanReal and TestPlaceholderSmallerMulti
+    * [YUNIKORN-1816] - Fixed placement rule no longer works due to incorrect validation
+    * [YUNIKORN-1838] - Helm chart should not support replicaCount for scheduler
+    * [YUNIKORN-1856] - Pod creation fails in certain cases when generateUniqueAppId is enabled
+    * [YUNIKORN-1874] - Data race: unlocked access in Context.updatePodCondition()
+    * [YUNIKORN-1889] - Remove instanceType from scheduling cycle
+    * [YUNIKORN-1890] - newReservedAllocation should create a reserved allocation
+    * [YUNIKORN-1898] - Cannot set guaranteed resources for a child when they are not defined for the parent queue.
+    * [YUNIKORN-1908] - Support GPU in placeholders
+    * [YUNIKORN-1910] - Empty config gets error
+    * [YUNIKORN-1921] - Gang Scheduled Placeholder Pods Don't Inherit PriorityClasses
+    * [YUNIKORN-1927] - Fix make failures
+    * [YUNIKORN-1933] - Verify_allow_preemption_tag e2e test is flaky
+    * [YUNIKORN-1946] - Flaky test TestPlaceholderAllocationTracking
+    * [YUNIKORN-1951] - Queues with only max resource set shouldn't trigger preemption
+    * [YUNIKORN-1953] - Can't use Priority directly in placeholder pods
+    * [YUNIKORN-1959] - [Yunikorn] Config validation is not failing for '0' max-application and max-resources in Limit Object
+    * [YUNIKORN-1966] - Increase auto-publish timeout in github action
+    * [YUNIKORN-1968] - Update "Run NVIDIA GPU Jobs in workload"
+    * [YUNIKORN-1970] - Fix outdated metrics document
+    * [YUNIKORN-1976] - Fix incorrect downloads link
+    * [YUNIKORN-1979] - Correct misspelled ApplicationID
+    * [YUNIKORN-1980] - deprecated log REST calls to return 410 (Gone)
+    * [YUNIKORN-1993] - Race between allocation removal and Completed state change
+    * [YUNIKORN-1994] - Queue metrics not updated correctly on container release
+    * [YUNIKORN-1998] - Stale AdmissionControllerConf was used in e2e test
+    * [YUNIKORN-2010] - Yunikorn web shows negative number of applications in application history
+    * [YUNIKORN-2011] - Incorrect link in Kubernetes Shim Design
+    * [YUNIKORN-2025] - Mismatched running container count if preemption was triggered
+    * [YUNIKORN-2031] - metric yunikorn_root_.*_resource{state="pending"} is inaccurate
+    * [YUNIKORN-2043] - SimplePreemptor e2e test doesn’t really wait for pod’s Killing event
+    * [YUNIKORN-2046] - Upgrade golang.org/x/net for CVEs
+    * [YUNIKORN-2047] - Remove duplicate colour codes in app state donut
+    * [YUNIKORN-2048] - Invalid URL detected in dev_guide
+    * [YUNIKORN-2053] - Core: Fix dependency in Makefile
+    * [YUNIKORN-2054] - Shim: Fix dependencies in Makefile
+    * [YUNIKORN-2059] - the debug-level log of "wild card quota exceeded" is always "false"
+    * [YUNIKORN-2065] - Fail logs are not reported correctly in some e2e test
+    * [YUNIKORN-2067] - Test_With_Spark_Jobs e2e test wait for app state Running after Spark job completed
+    * [YUNIKORN-2068] - Deadlock when evaluating nodes for preemption
+    * [YUNIKORN-2070] - E2e tests for gang_scheduling failed due to containers init were OOM-Killed
+    * [YUNIKORN-2073] - event spew caused by sendAppDoesNotFitEvent()
+    * [YUNIKORN-2075] - upgrade google.golang.org/grpc from 1.56.0 to 1.56.3
+    * [YUNIKORN-2085] - CurrentPriority field missing from Queues API response when pedding application exists
+    * [YUNIKORN-2086] - Add scrollbar to application donut graph
+    * [YUNIKORN-2087] - reinstate node utilisation rest endpoint
+    * [YUNIKORN-2095] - sync grpc releases between repositories
+    * [YUNIKORN-2141] - Should not preempt placeholders which has been released
+    * [YUNIKORN-2150] - Node resource utilization chart does not render properly
+
+
+** New Feature
+    * [YUNIKORN-1628] - [Umbrella] YuniKorn application traceability
+    * [YUNIKORN-1823] - [UMBRELLA] Scoped logging
+
+
+** Improvement
+    * [YUNIKORN-108] - Only memory and vcore is displayed on the web UI
+    * [YUNIKORN-592] - Move test code out of utils.go
+    * [YUNIKORN-1403] - CalculateAbsUsedCapacity: overflow unit tests
+    * [YUNIKORN-1648] - Fix ginkgo v2 upgrade warnings.
+    * [YUNIKORN-1655] - factor out the domain from annotations, use constant
+    * [YUNIKORN-1740] - [Umbrella] MockScheduler improvements
+    * [YUNIKORN-1771] - Validate configured default queue name
+    * [YUNIKORN-1773] - [Umbrella] Preemption cleanup
+    * [YUNIKORN-1777] - [Umbrella] State initialisation simplification (phase 1)
+    * [YUNIKORN-1780] - Document application resource usage report
+    * [YUNIKORN-1789] - update build tool versions in release README
+    * [YUNIKORN-1790] - TestTryAllocatePreemptNode: flaky test
+    * [YUNIKORN-1791] - strip build paths in production code
+    * [YUNIKORN-1808] - Update gang examples
+    * [YUNIKORN-1809] - Fix queue config doc to not to use fraction in resource spec
+    * [YUNIKORN-1812] - Update release procedure
+    * [YUNIKORN-1821] - Fix shell script in authz use cases
+    * [YUNIKORN-1822] - Update the link to use cases document
+    * [YUNIKORN-1829] - Add pod annotations to the Helm chart
+    * [YUNIKORN-1831] - Incorrect key name used for user info in pod annotation in user guide example
+    * [YUNIKORN-1844] - Implement PreEnqueue scheduling hook
+    * [YUNIKORN-1847] - Log failed health checks individually
+    * [YUNIKORN-1848] - Report resource used by preempted pods in the app summary
+    * [YUNIKORN-1855] - Fix error comment in scheduler_cache_test.go
+    * [YUNIKORN-1862] - Shim: Use privately installed build tools
+    * [YUNIKORN-1865] - Shim: Update build process to follow standard conventions
+    * [YUNIKORN-1868] - Core: Update build process to follow standard conventions
+    * [YUNIKORN-1869] - Shim: Update depguard config
+    * [YUNIKORN-1870] - Core: Update depguard config
+    * [YUNIKORN-1873] - Web: Use standard build conventions in Makefile
+    * [YUNIKORN-1875] - Need compression method for queue config larger than 1MB size
+    * [YUNIKORN-1877] - Add additional cases of preemption to the e2e test
+    * [YUNIKORN-1880] - Ensure release build script calls clean for each image build
+    * [YUNIKORN-1894] - k8s.gcr.io Redirect to registry.k8s.io
+    * [YUNIKORN-1902] - Remove Application CRD
+    * [YUNIKORN-1903] - Add unit tests for GetConfiguration* common/utils.go
+    * [YUNIKORN-1905] - instance type cleanup
+    * [YUNIKORN-1906] - remove unused queueName parameter
+    * [YUNIKORN-1909] - e2e test for taskgroups with limited resources
+    * [YUNIKORN-1914] - Change display for resource lists
+    * [YUNIKORN-1923] - expose pending resources for the application in web UI
+    * [YUNIKORN-1924] - Last time app changed is always n/a
+    * [YUNIKORN-1925] - Add K8s 1.28 to the e2e test matrix
+    * [YUNIKORN-1931] - Improve placeholder name generation
+    * [YUNIKORN-1932] - Ignore not-started app when reporting app summary
+    * [YUNIKORN-1948] - Introduce a command to validate the content of a given queue config file
+    * [YUNIKORN-1949] - Move to go 1.21
+    * [YUNIKORN-1955] - Update Deploy to Kubernetes document
+    * [YUNIKORN-1958] - Fix link to merge script
+    * [YUNIKORN-1960] - Add updating DOAP file to release tasks
+    * [YUNIKORN-1972] - Update the "recordings" link in the yunikorn-core README.md
+    * [YUNIKORN-1974] - Move to Node.js 18
+    * [YUNIKORN-1982] - Enable manual triggering for GitHub CI
+    * [YUNIKORN-1983] - Add config to statedump
+    * [YUNIKORN-1984] - Expose "extra configs" in the REST response
+    * [YUNIKORN-1985] - possible log spew in application object in tryAllocate()
+    * [YUNIKORN-1989] - Update the help message in the queue_app metric
+    * [YUNIKORN-1991] - Fix wrong log key in Application
+    * [YUNIKORN-1992] - Use standard .gz extension for compressed configmap entries
+    * [YUNIKORN-2004] - Fix wrong interface in comment
+    * [YUNIKORN-2009] - Placeholder pods should be created with limits
+    * [YUNIKORN-2013] - Remove deprecated log REST calls in document
+    * [YUNIKORN-2018] - Update full state dump REST API doc
+    * [YUNIKORN-2019] - Remove redundant informer call in spark.go ServiceInit
+    * [YUNIKORN-2041] - Update set log level doc
+    * [YUNIKORN-2044] - remove GetQueueInfo function
+    * [YUNIKORN-2045] - unify DeepEqual
+    * [YUNIKORN-2049] - Fix incorrect placement rule examples
+    * [YUNIKORN-2052] - Log additional information on preemption
+    * [YUNIKORN-2055] - Upgrade Angular to 16.2.10
+    * [YUNIKORN-2071] - Remove updateAllocatedAndPendingResourceMetrics()
+    * [YUNIKORN-2082] - Make unique applicationIDs generated by YUNIKORN-1273 be reproducible
+    * [YUNIKORN-2083] - Scheduler in standard mode should be able to handle pods with no applicationID defined
+    * [YUNIKORN-2084] - Remove = in web dockerfile
+    * [YUNIKORN-2091] - Remove obsolete Application CRD manager code
+    * [YUNIKORN-2092] - Remove Spark Operator AppManager
+    * [YUNIKORN-2093] - Remove unnecessary e2e_test condition in makefile
+    * [YUNIKORN-2094] - Add install kind cluster option to  run-e2e-test script
+    * [YUNIKORN-2096] - Add how to run a specified e2e test in the e2e README
+    * [YUNIKORN-2107] - Allow preemption to be disabled globally
+    * [YUNIKORN-2110] - Fix typo in yunikorn-k8shim github action file
+    * [YUNIKORN-2112] - Add the install cluster section in the e2e README
+    * [YUNIKORN-2113] - Bump tools/kubectl to 1.27.7
+    * [YUNIKORN-2122] - remove QueueDAOInfo and QueueCapacity
+    * [YUNIKORN-2125] - Remove literals from handlers_test.go
+    * [YUNIKORN-2129] - Remove github.com/GoogleCloudPlatform/spark-on-k8s-operator
+    * [YUNIKORN-2137] - Remove defer cleanup in checkLimits
+
+** Test
+    * [YUNIKORN-1796] - Some e2e test cases update a modified resource and get conflict error
+    * [YUNIKORN-1867] - Add e2e test for priority.offset priority
+    * [YUNIKORN-1935] - Add Gang Scheduling with Priority e2e test case
+    * [YUNIKORN-1952] - Verify_allow_preemption_tag e2e test doesn't really rely on annotation on PriorityClass
+
+
+** Task
+    * [YUNIKORN-889] - Update protobuf and scheduler interface build
+    * [YUNIKORN-1039] - add e2e test that uses volumes
+    * [YUNIKORN-1626] - Listing Yunikorn metrics revealed in the prometheus
+    * [YUNIKORN-1695] - Add KubeCon talk to events
+    * [YUNIKORN-1776] - Update roadmap for 1.4
+    * [YUNIKORN-1785] - update go.mod in release repo
+    * [YUNIKORN-1792] - fix asf.yaml layout
+    * [YUNIKORN-1818] - Update developer guide about deployment
+    * [YUNIKORN-1819] - Update yaml dependency
+    * [YUNIKORN-1820] - update protobuf & grpc dependencies
+    * [YUNIKORN-1837] - Upgrade ngx-spinner to 16.0.2
+    * [YUNIKORN-1840] - Update Kubernetes dependency to 1.27.3
+    * [YUNIKORN-1841] - Document supported Kubernetes releases for YuniKorn 1.4
+    * [YUNIKORN-1842] - Optimize updatePVCRefCounts
+    * [YUNIKORN-1850] - E2E: Remove unused UID field in e2e SleepPodConfig
+    * [YUNIKORN-1852] - Remove namespace from bootstrap function call
+    * [YUNIKORN-1853] - de-duplicate build info init and storage
+    * [YUNIKORN-1854] - Sync grpc and protobuf dependency
+    * [YUNIKORN-1857] - [UMBRELLA] use "omitempty" in json REST object definition
+    * [YUNIKORN-1876] - Update docs to reflect changes in build environment setup
+    * [YUNIKORN-1879] - Remove obsolete build targets referencing pkg/simulation
+    * [YUNIKORN-1884] - Fix documentation for allow-preemption flag
+    * [YUNIKORN-1885] - Allow Go compiler release candidates in version check
+    * [YUNIKORN-1904] - Remove Application CRD from helm chart
+    * [YUNIKORN-1912] - Upgrade golang dependencies for CVEs
+    * [YUNIKORN-1913] - Fix unit display in web UI
+    * [YUNIKORN-1918] - Remove UpdateSchedulerConfig from core
+    * [YUNIKORN-1926] - Fix typos ApplicationID in UpdateContainerSchedulingStateRequest
+    * [YUNIKORN-1954] - Remove KeyAllowPreemption tag
+    * [YUNIKORN-1971] - Update linter configuration
+    * [YUNIKORN-2014] - Add `Extra` field example to `/ws/v1/config` result
+    * [YUNIKORN-2015] - Separate application and container metric in queue metric
+    * [YUNIKORN-2029] - Remove deprecated functions
+    * [YUNIKORN-2032] - update cluster API document
+    * [YUNIKORN-2034] - fix partition api example inside scheduler document
+    * [YUNIKORN-2051] - Fix lint error from staticcheck
+    * [YUNIKORN-2056] - Update go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp package
+    * [YUNIKORN-2058] - Potential data race function EventSystemImpl.reloadConfig
+    * [YUNIKORN-2060] - The yaml example of placement rules in README is invalid
+    * [YUNIKORN-2076] - remove refs to deprecated io/ioutil
+    * [YUNIKORN-2079] - Add pull request template for yunikorn-release
+    * [YUNIKORN-2090] - Fix typo in yunikorn-scheduler-interface (ALlocationAsk -> AllocationAsk)
+    * [YUNIKORN-2097] - Fix typo in yunikorn-site (_UpdatedApplication _message -> _UpdatedApplication_ message)
+    * [YUNIKORN-2101] - Move to the latest 1.27.7 release
+    * [YUNIKORN-2108] - Document preemption.enabled setting
+    * [YUNIKORN-2109] - Mark service.operatorPlugins configuration as deprecated
+    * [YUNIKORN-2120] - Fix incorrect error message when check maxApplications in configValidator
+    * [YUNIKORN-2121] - Fix typo in comment in queue.go
+    * [YUNIKORN-2146] - placeholder replacement should skip preempted placeholders
+    * [YUNIKORN-2148] - bump grpc/otelgrpc for CVE-2023-47108
+
