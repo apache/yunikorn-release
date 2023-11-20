@@ -36,12 +36,13 @@ shim layer and adopt to different ResourceManager implementation including Apach
 
 ## Feature highlights
 
-- App-aware scheduling
+- Gang scheduling
+- Application and queue aware preemption 
 - Hierarchy Resource Queues
+- Application aware scheduling
 - Job Ordering and Queuing
-- Resource fairness
-- Resource Reservation
-- Throughput
+- High throughput scheduling
+- Default Kubernetes workload compatible (daemonsets, jobs, deployments etc)
 
 Read the complete list of features from [here](https://yunikorn.apache.org/docs/get_started/core_features).
 
@@ -64,12 +65,14 @@ YuniKorn has builtin web UIs for queue hierarchies and apps. See below:
 | 1.18.x              |         0.10.0         |    0.11.0     |
 | 1.19.x              |         0.11.0         |     1.0.0     |
 | 1.20.x              |         0.12.1         |     1.2.0     |
-| 1.21.x              |         0.12.1         |       -       |
-| 1.22.x              |         0.12.2         |       -       |
-| 1.23.x              |         0.12.2         |       -       |
+| 1.21.x              |         0.12.1         |     1.3.0     |
+| 1.22.x              |         0.12.2         |     1.3.0     |
+| 1.23.x              |         0.12.2         |     1.3.0     |
 | 1.24.x              |         1.0.0          |       -       |
 | 1.25.x              |         1.2.0          |       -       |
 | 1.26.x              |         1.2.0          |       -       |
+| 1.27.x              |         1.4.0          |       -       |
+| 1.28.x              |         1.4.0          |       -       |
 
 ## Useful links
 
