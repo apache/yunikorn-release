@@ -92,11 +92,19 @@ spec:
             - name: admission-controller-secrets
               mountPath: /run/secrets/webhook
               readOnly: true
+          {{- if .Values.enableGoCoverDir }}
+            - name: go-cover-dir
+              mountPath: /go-cover-dir/
+          {{- end }}
           env:
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          {{- if .Values.enableGoCoverDir }}
+            - name: GOCOVERDIR
+              value: /go-cover-dir
+          {{- end }}
           ports:
             - containerPort: 9089
               name: webhook-api
@@ -118,4 +126,10 @@ spec:
         - name: admission-controller-secrets
           secret:
             secretName: admission-controller-secrets
+      {{- if .Values.enableGoCoverDir }}
+        - name: go-cover-dir
+          hostPath:
+            path: /go-cover-dir/
+            type: DirectoryOrCreate
+      {{- end }}
 {{ end }}

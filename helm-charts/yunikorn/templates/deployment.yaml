@@ -93,6 +93,13 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          {{- if .Values.enableGoCoverDir }}
+            - name: GOCOVERDIR
+              value: /go-cover-dir
+          volumeMounts:
+            - name: go-cover-dir
+              mountPath: /go-cover-dir/
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: yunikorn-scheduler-web
@@ -104,3 +111,10 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
+      {{- if .Values.enableGoCoverDir }}
+      volumes:
+        - name: go-cover-dir
+          hostPath:
+            path: /go-cover-dir/
+            type: DirectoryOrCreate
+      {{- end }}

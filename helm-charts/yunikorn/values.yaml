@@ -124,3 +124,5 @@ enableSchedulerPlugin: false
 
 podLabels: {}
 podAnnotations: {}
+
+enableGoCoverDir: false
