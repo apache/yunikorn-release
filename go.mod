@@ -18,7 +18,7 @@
 
 module github.com/apache/yunikorn-release
 
-go 1.20
+go 1.21
 
 require (
 	github.com/TaoYang526/goutils v0.0.0-20210209083921-039008f0a57d
