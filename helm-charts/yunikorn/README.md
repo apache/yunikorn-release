@@ -18,26 +18,25 @@
 # Apache YuniKorn - A Universal Scheduler
 
 Apache YuniKorn is a light-weight, universal resource scheduler for container orchestrator systems.
-It was created to achieve fine-grained resource sharing for various workloads efficiently on a large scale, multi-tenant,
-and cloud-native environment. YuniKorn brings a unified, cross-platform, scheduling experience for mixed workloads that consist
-of stateless batch workloads and stateful services. 
+It was created to achieve fine-grained resource sharing for various workloads efficiently on a large scale, multi-tenant, and cloud-native environment. YuniKorn brings a unified, cross-platform, scheduling experience for mixed workloads that consist of AI, Machine Learning, stateless batch workloads and stateful services. 
 
-YuniKorn now supports K8s and can be deployed as a custom K8s scheduler. YuniKorn's architecture design also allows adding different
-shim layer and adopt to different ResourceManager implementation including Apache Hadoop YARN, or any other systems. 
+YuniKorn now supports K8s and can be deployed as a custom K8s scheduler. YuniKorn's architecture design also allows adding different shim layer and adopt to different ResourceManager implementation including Apache Hadoop YARN, or any other systems. 
 
 ## Feature highlights
 
-- Features to support both batch jobs and long-running/stateful services.
-- Hierarchy queues with min/max resource quotas.
+- Features to support both AI, Machine Learning or batch jobs and long-running/stateful services.
+- Hierarchical queues with guaranteed/maximum resource quotas and applications.
+- User and group quotas configurable for each  queue with maximum applicatins and resources.
 - Resource fairness between queues, users and apps.
+- Scheduling policies configurable per queue: FIFO, priority and state based.
 - Cross-queue preemption based on fairness.
 - Automatically map incoming container requests to queues by policies. 
 - Node partition: partition cluster to sub-clusters with dedicated quota/ACL management.
 - Fully compatible with K8s predicates, events, PV/PVC and admin commands.
-- Supports to work with [Cluster AutoScaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) to drive cluster scales up and down. 
+- Support for [Cluster AutoScaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) and [Karpenter](https://karpenter.sh/) to drive cluster scale up and down. 
 
 ## Deployment model
-YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/yunikorn) on an existing K8s cluster. It can be deployed with or without the admission controller. When the admission controller is enabled, YuniKorn will be the primary scheduler that takes over the resource scheduling (the admission controller runs a mutation webhook that automatically mutates pod spec's schedulerName to yunikorn); when it is disabled, user needs to manually change the schedulerName to `yunikorn` in order to get apps scheduled by YuniKorn.
+YuniKorn can be deployed with [helm-charts](https://artifacthub.io/packages/helm/yunikorn/yunikorn) on an existing K8s cluster. It can be deployed with or without the admission controller. When the admission controller is enabled, YuniKorn will be the primary scheduler that takes over the resource scheduling (the admission controller runs a mutation webhook that automatically mutates pod spec's schedulerName to yunikorn); when it is disabled, user needs to manually change the schedulerName to `yunikorn` in order to get apps scheduled by YuniKorn.
 
 ## Supported K8s versions 
 
@@ -48,6 +47,8 @@ YuniKorn can be deployed with [helm-charts](https://hub.helm.sh/charts/yunikorn/
 | 1.25.x              |    √     |
 | 1.26.x              |    √     |
 | 1.27.x              |    √     |
+| 1.28.x              |    √     |
+| 1.29.x              |    √     |
 
 ## Installing the chart
 ```
