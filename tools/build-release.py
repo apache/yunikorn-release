@@ -96,7 +96,38 @@ def build_release(email_address):
     # build the helm package
     call_helm(staging_dir, release_base, version, email_address)
 
-    # generate source code tarball
+    # Ensure release dirs are clean (and generate build.date files)
+    clean_release(release_base)
+
+    # generate staging source code tarball
+    tarball_name = release_package_name + "-staging.tar.gz"
+    tarball_path = os.path.join(staging_dir, tarball_name)
+    print("creating tarball %s" % tarball_path)
+    with tarfile.open(tarball_path, "w:gz") as tar:
+        tar.add(os.path.join(release_base, "LICENSE"), arcname=release_package_name + "/LICENSE")
+        tar.add(os.path.join(release_base, "NOTICE"), arcname=release_package_name + "/NOTICE")
+        tar.add(release_base, arcname=release_package_name, filter=exclude_files)
+
+    # generate yunikorn-web reproducible binaries
+    web_hashes_amd64 = build_web_and_generate_hashes(staging_dir, release_package_name, "x86_64")
+    web_hashes_arm64 = build_web_and_generate_hashes(staging_dir, release_package_name, "aarch64")
+
+    # generate yunikorn-k8shim reproducible binaries
+    shim_hashes_amd64 = build_shim_and_generate_hashes(staging_dir, release_package_name, "x86_64")
+    shim_hashes_arm64 = build_shim_and_generate_hashes(staging_dir, release_package_name, "aarch64")
+
+    # merge hashes
+    hashes_amd64 = "\n".join([shim_hashes_amd64, web_hashes_amd64])
+    hashes_arm64 = "\n".join([shim_hashes_arm64, web_hashes_arm64])
+
+    # remove staging tarball
+    os.remove(tarball_path)
+
+    # update reproducible build information in README
+    go_version = get_go_version()
+    update_reproducible_build_info(release_base, go_version, hashes_amd64, hashes_arm64)
+
+    # generate final source code tarball
     tarball_name = release_package_name + ".tar.gz"
     tarball_path = os.path.join(staging_dir, tarball_name)
     print("creating tarball %s" % tarball_path)
@@ -203,6 +234,74 @@ def download_sourcecode(base_path, repo_meta):
     update_dep_ref(name, os.path.join(base_path, alias))
     return sha
 
+# Run distclean on the source code path
+def clean_release(local_repo_path):
+    print("ensuring local source repo is clean")
+    path = os.getcwd()
+    os.chdir(local_repo_path)
+    retcode = subprocess.call(['make', 'distclean'])
+    if retcode:
+        fail("failed to clean staging repo")
+    os.chdir(path)
+
+# Unpack tarball into tmp dir 
+def unpack_staging_tarball(staging_dir, dest_dir, release_name):
+    path = os.getcwd()
+    os.chdir(staging_dir)
+    retcode = subprocess.call(['rm', '-rf', dest_dir])
+    if retcode:
+        fail("failed to clean dest dir")
+    retcode = subprocess.call(['mkdir', dest_dir])
+    if retcode:
+        fail("failed to create dest dir")
+    os.chdir(dest_dir)
+    retcode = subprocess.call(['tar', 'xf', os.path.join(staging_dir, "%s-staging.tar.gz" % release_name)])
+    if retcode:
+        fail("failed to unpack tarball")
+    os.chdir(path)
+
+# Generate binaries for yunikorn-web and compute checksums
+def build_web_and_generate_hashes(staging_dir, release_name, arch):
+    print("generating reproducible build artifacts for yunikorn-web (%s)" % arch)
+    path = os.getcwd()
+    tmp_dir = os.path.join(staging_dir, "tmp")
+    release_dir = os.path.join(tmp_dir, release_name)
+    unpack_staging_tarball(staging_dir, tmp_dir, release_name)
+    web_dir = os.path.join(release_dir, "web")
+    os.chdir(web_dir)
+    retcode = subprocess.call(['make', 'HOST_ARCH=' + arch, 'build_server_prod'])
+    if retcode:
+        fail("failed to build yunikorn-web (%s)" % arch)
+    hash = get_checksum("build/prod/yunikorn-web", "yunikorn-web")
+    os.chdir(staging_dir)
+    retcode = subprocess.call(['rm', '-rf', 'tmp'])
+    if retcode:
+        fail("failed to clean temp dir")
+    os.chdir(path)
+    return hash
+
+# Generate binaries for yunikorn-k8shim and compute checksums
+def build_shim_and_generate_hashes(staging_dir, release_name, arch):
+    print("generating reproducible build artifacts for yunikorn-k8shim (%s)" % arch)
+    path = os.getcwd()
+    tmp_dir = os.path.join(staging_dir, "tmp")
+    release_dir = os.path.join(tmp_dir, release_name)
+    unpack_staging_tarball(staging_dir, tmp_dir, release_name)
+    shim_dir = os.path.join(release_dir, "k8shim")
+    os.chdir(shim_dir)
+    retcode = subprocess.call(['make', 'HOST_ARCH=' + arch, 'scheduler', 'plugin', 'admission'])
+    if retcode:
+        fail("failed to build yunikorn-k8shim (%s)" % arch)
+    adm_hash = get_checksum("build/bin/yunikorn-admission-controller", "yunikorn-admission-controller")
+    scheduler_hash = get_checksum("build/bin/yunikorn-scheduler", "yunikorn-scheduler")
+    plugin_hash = get_checksum("build/bin/yunikorn-scheduler-plugin", "yunikorn-scheduler-plugin")
+    hash = "\n".join([adm_hash, scheduler_hash, plugin_hash])
+    os.chdir(staging_dir)
+    retcode = subprocess.call(['rm', '-rf', 'tmp'])
+    if retcode:
+        fail("failed to clean temp dir")
+    os.chdir(path)
+    return hash
 
 # K8shim depends on yunikorn-core and scheduler-interface
 def update_dep_ref_k8shim(local_repo_path):
@@ -301,6 +400,14 @@ def update_required_go_version(base_path, local_repo_path):
     print(f" - go version:  {go_version}")
     replace(os.path.join(base_path, "README.md"), 'Go 1.16', 'Go ' + go_version)
 
+# update reproducible build information in README
+def update_reproducible_build_info(base_path, go_version, hashes_amd64, hashes_arm64):
+    print("recording go compiler used for reproducible builds")
+    replace(os.path.join(base_path, "README.md"), '@GO_VERSION@', go_version)
+    print("recording build artifact hashes (amd64)")
+    replace(os.path.join(base_path, "README.md"), '@AMD64_BINARIES@', hashes_amd64)
+    print("recording build artifact hashes (arm64)")
+    replace(os.path.join(base_path, "README.md"), '@ARM64_BINARIES@', hashes_arm64)
 
 # update required Node.js and angular versions in the README.md
 def update_required_node_and_angular_versions(base_path, local_repo_path):
@@ -364,6 +471,19 @@ def write_checksum(tarball_file, tarball_name):
     sha_file.close()
     print("sha512 checksum: %s" % sha)
 
+# Generate a checksum for a file
+def get_checksum(file_path, file_name):
+    print("generating sha512 checksum for %s" % file_name)
+    h = hashlib.sha512()
+    # read the file and generate the sha
+    with open(file_path, 'rb') as file:
+        while True:
+            data = file.read(65536)
+            if not data:
+                break
+            h.update(data)
+    sha = h.hexdigest()
+    return "%s  %s" % (sha, file_name)
 
 # Sign the source archive if an email is provided
 def call_gpg(tarball_file, email_address):
@@ -379,6 +499,14 @@ def call_gpg(tarball_file, email_address):
     if retcode:
         fail("failed to create gpg signature")
 
+# Determine the specific go compiler in use
+def get_go_version():
+    command = ['go', 'env', 'GOVERSION']
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode:
+        fail("failed to get go version")
+    output = re.sub(r'^go', r'', result.stdout.strip())
+    return output
 
 # Package the helm chart and sign if an email is provided
 def call_helm(staging_dir, base_path, version, email_address):
