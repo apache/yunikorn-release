@@ -210,12 +210,15 @@ def update_dep_ref_k8shim(local_repo_path):
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
         fail("k8shim go.mod does not exist")
-    with open(mod_file, "a") as file_object:
-        file_object.write("\n")
-        file_object.write("replace github.com/apache/yunikorn-core => ../core \n")
-        file_object.write(
-            "replace github.com/apache/yunikorn-scheduler-interface => ../scheduler-interface \n")
-
+    path = os.getcwd()
+    os.chdir(local_repo_path)
+    command = ['go', 'mod', 'edit']
+    command.extend(['-replace', 'github.com/apache/yunikorn-core=../core'])
+    command.extend(['-replace', 'github.com/apache/yunikorn-scheduler-interface=../scheduler-interface'])
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("failed to update k8shim go.mod references")
+    os.chdir(path)
 
 # core depends on scheduler-interface
 def update_dep_ref_core(local_repo_path):
@@ -223,10 +226,14 @@ def update_dep_ref_core(local_repo_path):
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
         fail("core go.mod does not exist")
-    with open(mod_file, "a") as file_object:
-        file_object.write("\n")
-        file_object.write(
-            "replace github.com/apache/yunikorn-scheduler-interface => ../scheduler-interface \n")
+    path = os.getcwd()
+    os.chdir(local_repo_path)
+    command = ['go', 'mod', 'edit']
+    command.extend(['-replace', 'github.com/apache/yunikorn-scheduler-interface=../scheduler-interface'])
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("failed to update core go.mod references")
+    os.chdir(path)
 
 
 # update go mod in the repos
