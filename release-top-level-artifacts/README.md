@@ -102,11 +102,28 @@ Open `helm-charts/yunikorn/values.yaml` and replace the docker image information
 For more instructions, please refer to [User Guide](https://yunikorn.apache.org/docs/).
 
 ## Deploying a convenience build
-Apache YuniKorn provides a convenience release with pre-build docker images and helm charts.
+Apache YuniKorn provides a convenience release with pre-built Docker images and Helm charts.
 These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are
 located in the [User Guide](https://yunikorn.apache.org/docs/).
 
-The convenience build images are multi architecture images. Supported architectures are  `amd64` and `arm64v8`.
+The convenience build images are multi-architecture images. Supported architectures are `amd64` and `arm64`.
+
+## Reproducible builds
+Building YuniKorn from source generates reproducible build artifacts which
+depend only on the version of YuniKorn built and the go compiler version used.
+
+This release was compiled by the official release manager using Go version `@GO_VERSION@`
+and generated binary artifacts with the following SHA-512 checksums:
+
+### linux/amd64
+```
+@AMD64_BINARIES@
+```
+
+### linux/arm64
+```
+@ARM64_BINARIES@
+```
 
 ## Testing the build
 Running the unit tests is supported via the make command.
@@ -133,3 +150,4 @@ Running unit tests adds the following requirements:
 * json-server
 
 Please check the [documentation](https://yunikorn.apache.org/docs/) for further details.
+
