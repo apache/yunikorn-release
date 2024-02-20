@@ -106,7 +106,7 @@ Apache YuniKorn provides a convenience release with pre-built Docker images and 
 These can be accessed via the [downloads page](https://yunikorn.apache.org/community/download) and instructions are
 located in the [User Guide](https://yunikorn.apache.org/docs/).
 
-The convenience build images are multi-architecture images. Supported architectures are `amd64` and `arm64v8`.
+The convenience build images are multi-architecture images. Supported architectures are `amd64` and `arm64`.
 
 ## Reproducible builds
 Building YuniKorn from source generates reproducible build artifacts which
@@ -120,7 +120,7 @@ and generated binary artifacts with the following SHA-512 checksums:
 @AMD64_BINARIES@
 ```
 
-### linux/arm64v8
+### linux/arm64
 ```
 @ARM64_BINARIES@
 ```
