@@ -19,18 +19,8 @@
 package utils
 
 import (
-	"go.uber.org/zap/zapcore"
-
 	"github.com/apache/yunikorn-core/pkg/log"
 	"go.uber.org/zap"
 )
 
-var Logger *zap.Logger
-
-func init() {
-	Logger = log.Logger()
-}
-
-func SetLogLevel(level int) {
-	log.InitAndSetLevel(zapcore.Level(level))
-}
+var Logger *zap.Logger = log.Log(log.Test)
