@@ -44,6 +44,7 @@ const (
 type CommandLineConfig struct {
 	ConfigFilePath string
 	ScenarioNames  string
+	LogLevel       int
 }
 
 var commandLineConfig *CommandLineConfig
@@ -54,14 +55,18 @@ func init() {
 		"absolute path to the config file for performance tests")
 	scenarioNames := flag.String("scenarios", "",
 		"The comma separated names of scenarios which are expected to run")
+	logLevel := flag.Int("logLevel", DefaultLoggingLevel,
+		"logging level, available range [-1, 5], from DEBUG to FATAL.")
 	flag.Parse()
 	commandLineConfig = &CommandLineConfig{
 		ConfigFilePath: *configFile,
 		ScenarioNames:  *scenarioNames,
+		LogLevel:       *logLevel,
 	}
 }
 
 func main() {
+	utils.SetLogLevel(commandLineConfig.LogLevel)
 	configFilePath := commandLineConfig.ConfigFilePath
 	if configFilePath == "" {
 		err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
