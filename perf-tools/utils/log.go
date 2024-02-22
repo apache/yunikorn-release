@@ -19,18 +19,16 @@
 package utils
 
 import (
-	"go.uber.org/zap/zapcore"
+	"strconv"
 
 	"github.com/apache/yunikorn-core/pkg/log"
 	"go.uber.org/zap"
 )
 
-var Logger *zap.Logger
-
-func init() {
-	Logger = log.Logger()
-}
+var Logger *zap.Logger = log.Log(log.Test)
 
 func SetLogLevel(level int) {
-	log.InitAndSetLevel(zapcore.Level(level))
+	log.UpdateLoggingConfig(map[string]string{
+		"log.level": strconv.Itoa(level),
+	})
 }
