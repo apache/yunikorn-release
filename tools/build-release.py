@@ -104,8 +104,6 @@ def build_release(email_address):
     tarball_path = os.path.join(staging_dir, tarball_name)
     print("creating tarball %s" % tarball_path)
     with tarfile.open(tarball_path, "w:gz") as tar:
-        tar.add(os.path.join(release_base, "LICENSE"), arcname=release_package_name + "/LICENSE")
-        tar.add(os.path.join(release_base, "NOTICE"), arcname=release_package_name + "/NOTICE")
         tar.add(release_base, arcname=release_package_name, filter=exclude_files)
 
     # generate yunikorn-web reproducible binaries
@@ -132,8 +130,6 @@ def build_release(email_address):
     tarball_path = os.path.join(staging_dir, tarball_name)
     print("creating tarball %s" % tarball_path)
     with tarfile.open(tarball_path, "w:gz") as tar:
-        tar.add(os.path.join(release_base, "LICENSE"), arcname=release_package_name + "/LICENSE")
-        tar.add(os.path.join(release_base, "NOTICE"), arcname=release_package_name + "/NOTICE")
         tar.add(release_base, arcname=release_package_name, filter=exclude_files)
     write_checksum(tarball_path, tarball_name)
     if email_address:
