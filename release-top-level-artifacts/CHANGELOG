@@ -127,6 +127,7 @@ Release Notes - Apache YuniKorn - Version 1.5.0
     * [YUNIKORN-2441] - Wildcard limits are not applied to the root tracker during creation
     * [YUNIKORN-2447] - Failed to build web docker image
     * [YUNIKORN-2456] - Remove weak ciphers from TLS
+    * [YUNIKORN-2463] - Tarball created from yunikorn-release can't build images
 
 
 ** New Feature
