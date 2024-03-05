@@ -108,23 +108,6 @@ located in the [User Guide](https://yunikorn.apache.org/docs/).
 
 The convenience build images are multi-architecture images. Supported architectures are `amd64` and `arm64`.
 
-## Reproducible builds
-Building YuniKorn from source generates reproducible build artifacts which
-depend only on the version of YuniKorn built and the go compiler version used.
-
-This release was compiled by the official release manager using Go version `@GO_VERSION@`
-and generated binary artifacts with the following SHA-512 checksums:
-
-### linux/amd64
-```
-@AMD64_BINARIES@
-```
-
-### linux/arm64
-```
-@ARM64_BINARIES@
-```
-
 ## Testing the build
 Running the unit tests is supported via the make command.
 It will run the tests for all parts of YuniKorn in order:
