@@ -128,6 +128,8 @@ Release Notes - Apache YuniKorn - Version 1.5.0
     * [YUNIKORN-2447] - Failed to build web docker image
     * [YUNIKORN-2456] - Remove weak ciphers from TLS
     * [YUNIKORN-2463] - Tarball created from yunikorn-release can't build images
+    * [YUNIKORN-2465] - Remove Task objects from the shim upon pod completion
+    * [YUNIKORN-2467] - Remove AllocationAsk from the core when a pod is completed
 
 
 ** New Feature
@@ -223,7 +225,6 @@ Release Notes - Apache YuniKorn - Version 1.5.0
     * [YUNIKORN-2415] - Remove Chinese meeting
     * [YUNIKORN-2416] - Cleanup replace directives
     * [YUNIKORN-2418] - Improve readability of Features documentation
-    * [YUNIKORN-2419] - [UMBRELLA] Generate reproducible binaries
     * [YUNIKORN-2425] - Release build script should use "go mod" instead of manual replacements
     * [YUNIKORN-2426] - Remove /ws/v1/periodicstatedump
     * [YUNIKORN-2427] - Use r-lock instead of rw-lock in user_tracker.go#getGroupForApp
@@ -247,3 +248,5 @@ Release Notes - Apache YuniKorn - Version 1.5.0
     * [YUNIKORN-2165] - Replace web UI screenshots on site
     * [YUNIKORN-2255] - Minor updates on who-we-are page
     * [YUNIKORN-2417] - Build against Kubernetes 1.29.2
+    * [YUNIKORN-2468] - Remove language around reproducible builds from README
+    * [YUNIKORN-2469] - Upgrade google.golang.org/protobuf to v1.33.0
