@@ -265,7 +265,7 @@ def build_web_and_generate_hashes(staging_dir, release_name, arch):
     unpack_staging_tarball(staging_dir, tmp_dir, release_name)
     web_dir = os.path.join(release_dir, "web")
     os.chdir(web_dir)
-    retcode = subprocess.call(['make', 'HOST_ARCH=' + arch, 'build_server_prod'])
+    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'build_server_prod'])
     if retcode:
         fail("failed to build yunikorn-web (%s)" % arch)
     hash = get_checksum("build/prod/yunikorn-web", "yunikorn-web")
@@ -285,7 +285,7 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     unpack_staging_tarball(staging_dir, tmp_dir, release_name)
     shim_dir = os.path.join(release_dir, "k8shim")
     os.chdir(shim_dir)
-    retcode = subprocess.call(['make', 'HOST_ARCH=' + arch, 'scheduler', 'plugin', 'admission'])
+    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'scheduler', 'plugin', 'admission'])
     if retcode:
         fail("failed to build yunikorn-k8shim (%s)" % arch)
     adm_hash = get_checksum("build/bin/yunikorn-admission-controller", "yunikorn-admission-controller")
