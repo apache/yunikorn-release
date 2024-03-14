@@ -230,7 +230,7 @@ entries:
       version: 1.4.0
     - apiVersion: v1
       appVersion: 1.5.0
-      created: "2024-03-14T14:00:00.000000+8:00"
+      created: "2024-03-14T14:00:00.000000+08:00"
       description: YuniKorn scheduler for Kubernetes
       digest: 251c4c7375d20efd66870813ac557cac3a7f775c58e7ec45a4faedfb401adff2
       home: https://yunikorn.apache.org
@@ -247,4 +247,4 @@ entries:
       urls:
         - https://github.com/apache/yunikorn-release/releases/download/v1.5.0/yunikorn-1.5.0.tgz
       version: 1.5.0
-generated: "2024-03-14T14:00:00.000000+8:00"
+generated: "2024-03-14T14:00:00.000000+08:00"
