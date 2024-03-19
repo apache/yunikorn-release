@@ -40,7 +40,8 @@ All dependencies are included in the image.
 NOTE: the scheduler can be used without a web UI build or deployed.
 
 ## Building
-Run the `make` command to build docker images.
+Run the `make` command to build docker images. To generate verifiable, reproducible binaries,
+run `make REPRODUCIBLE_BUILDS=1`
 
 ```shell script
 make
@@ -107,6 +108,28 @@ These can be accessed via the [downloads page](https://yunikorn.apache.org/commu
 located in the [User Guide](https://yunikorn.apache.org/docs/).
 
 The convenience build images are multi-architecture images. Supported architectures are `amd64` and `arm64`.
+
+## Reproducible builds
+Building YuniKorn from source generates reproducible build artifacts which
+depend only on the version of YuniKorn built and the go compiler version used.
+
+This release was compiled by the official release manager using Go version `@GO_VERSION@`
+and generated binary artifacts with the following SHA-512 checksums:
+
+### linux/amd64
+```
+@AMD64_BINARIES@
+```
+
+### linux/arm64
+```
+@ARM64_BINARIES@
+```
+
+To verify your own binaries, be sure to execute your build in reproducible mode:
+```shell script
+make REPRODUCIBLE_BUILDS=1
+```
 
 ## Testing the build
 Running the unit tests is supported via the make command.
