@@ -60,7 +60,7 @@ helm install yunikorn yunikorn/yunikorn
 The following table lists the configurable parameters of the YuniKorn chart and their default values:
 
 | Parameter                                       | Description                                                 | Default                         |
-|-------------------------------------------------|-------------------------------------------------------------|---------------------------------|
+| ----------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
 | `imagePullSecrets`                              | Docker repository secrets                                   | `[]`                            |
 | `serviceAccount`                                | Service account name                                        | `yunikorn-admin`                |
 | `hostNetwork`                                   | Whether scheduler should run in the host network            | `false`                         |
@@ -106,6 +106,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `web.resources.limits.memory`                   | Web app memory resource limit                               | `500Mi`                         |
 | `embedAdmissionController`                      | Flag for enabling/disabling the admission controller        | `true`                          |
 | `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode           | `false`                         |
+| `enableWebService`                              | Flag for enabling/disabling web service                     | `true`                          |
 | `nodeSelector`                                  | Scheduler deployment nodeSelector(s)                        | `{}`                            |
 | `tolerations`                                   | Scheduler deployment tolerations                            | `[]`                            |
 | `affinity`                                      | Scheduler deployment affinity                               | `{}`                            |

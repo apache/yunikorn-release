@@ -95,6 +95,7 @@ spec:
                   fieldPath: metadata.namespace
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.enableWebService }}
         - name: yunikorn-scheduler-web
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
@@ -104,3 +105,4 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
+        {{- end }}

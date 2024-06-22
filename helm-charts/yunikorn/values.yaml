@@ -122,5 +122,9 @@ embedAdmissionController: true
 # When this flag is false, the scheduler will be deployed as a standalone scheduler.
 enableSchedulerPlugin: false
 
+# When this flag is true, the web service will be deployed.
+# When this flag is false, the web service will not be deployed.
+enableWebService: true
+
 podLabels: {}
 podAnnotations: {}
