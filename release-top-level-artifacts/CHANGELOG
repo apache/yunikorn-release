@@ -15,38 +15,33 @@
 # limitations under the License.
 #
 
+Release Notes - Apache YuniKorn - Version 1.5.2
 
-Release Notes - Apache YuniKorn - Version 1.5.1
-
-** Sub-task
-    * [YUNIKORN-2543] - Fix locking in RMProxy
-    * [YUNIKORN-2545] - Eliminate multiple lock calls from Queue
-    * [YUNIKORN-2548] - Potential deadlock during concurrent bottom-up/top-down queue traversal
-    * [YUNIKORN-2550] - Fix locking in PartitionContext
-    * [YUNIKORN-2552] - Recursive locking when sending remove queue event
-    * [YUNIKORN-2553] - [core] Enable deadlock detection during unit tests
-    * [YUNIKORN-2563] - [shim] Enable deadlock detection during unit tests
 
 
 
 ** Bug
-    * [YUNIKORN-2520] - PVC errors in AssumePod() are not handled properly
-    * [YUNIKORN-2521] - Scheduler deadlock
-    * [YUNIKORN-2562] - Nil pointer panic in Application.ReplaceAllocation()
-    * [YUNIKORN-2574] - totalPartitionResource should not be mutated with AddTo/SubFrom
-    * [YUNIKORN-2600] - Update K8s dependency to 1.29.4
+    * [YUNIKORN-2230] - Placement rule does not behave as expected
+    * [YUNIKORN-2621] - CSINode informer is not started
+    * [YUNIKORN-2629] - Adding a node can result in a deadlock
+    * [YUNIKORN-2632] - Data race in IncAllocatedResource
+    * [YUNIKORN-2637] - finalizePods should ignore pods like registerPods does
+    * [YUNIKORN-2642] - Don't set resources on the recovery queue
+    * [YUNIKORN-2646] - Deadlock detected during preemption
+    * [YUNIKORN-2661] - Fix hard-coded boolean in setLimit
+    * [YUNIKORN-2665] - Gang app originator pod changes after restart
+    * [YUNIKORN-2703] - Core: Fallback to default queue if no placement rules match
 
 
 
 
 ** Improvement
-    * [YUNIKORN-2539] - Add optional deadlock detection
-    * [YUNIKORN-2541] - Fix CVE-2023-45288
-    * [YUNIKORN-2554] - Remove "rules" field from PartitionContext
-    * [YUNIKORN-2591] - Document placement rules always
+    * [YUNIKORN-2630] - Release context lock in shim when processing config in the core
+    * [YUNIKORN-2704] - Event publish errors out when predicates fail
+    * [YUNIKORN-2705] - DOAP is malformed
+    * [YUNIKORN-2711] - Skip setting the queue name to default queue in the shim
 
 
 
 ** Task
-    * [YUNIKORN-2595] - Fix download page links
-    * [YUNIKORN-2596] - Enhance layout for release announcements
+    * [YUNIKORN-2672] - Upgrade to K8s 1.29.6
