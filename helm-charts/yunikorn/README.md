@@ -87,6 +87,7 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `admissionController.nodeSelector`              | Admission controller deployment nodeSelector(s)             | `{}`                            |
 | `admissionController.tolerations`               | Admission controller deployment tolerations                 | `[]`                            |
 | `admissionController.affinity`                  | Admission controller deployment affinity                    | `{}`                            |
+| `admissionController.topologySpreadConstraints` | Admission controller deployment topology spread constraints | `[]`                            |
 | `admissionController.service.type`              | Admission controller service type                           | `ClusterIP`                     |
 | `admissionController.priorityClassName`         | Admission controller pod priority                           | `""`                            |
 | `priorityClassName`                             | Scheduler pod priority                                      | `""`                            |

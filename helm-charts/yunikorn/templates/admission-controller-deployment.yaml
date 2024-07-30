@@ -77,6 +77,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.admissionController.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: yunikorn-admission-controller
           image: "{{ .Values.admissionController.image.repository }}:{{ .Values.admissionController.image.tag }}"
