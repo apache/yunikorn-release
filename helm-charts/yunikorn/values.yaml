@@ -60,6 +60,7 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  topologySpreadConstraints: []
   service:
     type: ClusterIP
   processNamespaces: null # deprecated; use admissionController.filtering.processNamespaces in yunikornDefaults
