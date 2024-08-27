@@ -25,12 +25,12 @@ priorityClassName: ""
 
 image:
   repository: apache/yunikorn
-  tag: scheduler-latest
+  tag: scheduler-{version}
   pullPolicy: Always
 
 pluginImage:
   repository: apache/yunikorn
-  tag: scheduler-plugin-latest
+  tag: scheduler-plugin-{version}
   pullPolicy: Always
 
 nodeSelector: {}
@@ -45,7 +45,7 @@ admissionController:
   priorityClassName: ""
   image:
     repository: apache/yunikorn
-    tag: admission-latest
+    tag: admission-{version}
     pullPolicy: Always
   replicaCount: 1
   serviceAccount: yunikorn-admission-controller
@@ -72,7 +72,7 @@ admissionController:
 web:
   image:
     repository: apache/yunikorn
-    tag: web-latest
+    tag: web-{version}
     pullPolicy: Always
   resources:
     requests:

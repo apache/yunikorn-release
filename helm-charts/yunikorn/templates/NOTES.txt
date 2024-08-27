@@ -1,0 +1,5 @@
+YuniKorn components installed with the following image tags:
+- Scheduler:             {{ .Values.image.tag }}
+- Scheduler Plugin:      {{ .Values.pluginImage.tag }}
+- Admission Controller:  {{ .Values.admissionController.image.tag }}
+- Web UI:                {{ .Values.web.image.tag }}
