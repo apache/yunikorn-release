@@ -25,7 +25,7 @@
       "name": "yunikorn-web",
       "alias": "web",
       "description": "the scheduler web UI",
-      "tag": "v1.6.0-1",
+      "tag": "v1.6.0-2",
       "repository": "https://github.com/apache/yunikorn-web"
     }
   ]
