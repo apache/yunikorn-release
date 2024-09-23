@@ -303,5 +303,5 @@ entries:
       name: yunikorn
       urls:
         - https://github.com/apache/yunikorn-release/releases/download/v1.6.0/yunikorn-1.6.0.tgz
-      version: 1.6.2     0
+      version: 1.6.0
 generated: "2024-09-20T12:00:00.000000+01:00"
