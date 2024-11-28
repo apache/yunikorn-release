@@ -128,3 +128,6 @@ enableWebService: true
 
 podLabels: {}
 podAnnotations: {}
+podSecurityContext: {}
+schedulerSecurityContext: {}
+webSecurityContext: {}
