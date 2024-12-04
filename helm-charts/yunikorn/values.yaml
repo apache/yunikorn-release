@@ -131,3 +131,5 @@ podAnnotations: {}
 podSecurityContext: {}
 schedulerSecurityContext: {}
 webSecurityContext: {}
+admissionPodSecurityContext: {}
+admissionContainerSecurityContext: {}

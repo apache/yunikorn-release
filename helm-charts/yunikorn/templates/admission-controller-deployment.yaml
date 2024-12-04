@@ -51,6 +51,10 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.admissionPodSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.admissionController.hostNetwork }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -88,6 +92,10 @@ spec:
             limits:
               cpu: {{ .Values.admissionController.resources.limits.cpu }}
               memory: {{ .Values.admissionController.resources.limits.memory }}
+          {{- with .Values.admissionContainerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: admission-controller-secrets
               mountPath: /run/secrets/webhook
