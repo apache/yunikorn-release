@@ -97,6 +97,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: GOMEMLIMIT
+              value: "{{ .Values.goMemoryLimit }}"
+            - name: GOGC
+              value: "{{ .Values.goGC }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.schedulerSecurityContext }}
@@ -111,6 +115,11 @@ spec:
             - name: http2
               containerPort: {{ .Values.service.portWeb }}
               protocol: TCP
+          env:
+            - name: GOMEMLIMIT
+              value: "{{ .Values.web.goMemoryLimit }}"
+            - name: GOGC
+              value: "{{ .Values.web.goGC }}"
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
           {{- with .Values.webSecurityContext }}

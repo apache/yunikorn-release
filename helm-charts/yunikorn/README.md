@@ -86,6 +86,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `admissionController.resources.requests.memory` | Admission controller memory resource requests               | `500Mi`                         |
 | `admissionController.resources.limits.cpu`      | Admission controller CPU resource limit                     | `500m`                          |
 | `admissionController.resources.limits.memory`   | Admission controller memory resource limit                  | `500Mi`                         |
+| `admissionController.goMemoryLimit`             | Admission controller memory limit (GOMEMLIMIT)              | `200MiB`                        |
+| `admissionController.goGC`                      | Admission controller GC threshold (GOGC)                    | `100`                           |
 | `admissionController.nodeSelector`              | Admission controller deployment nodeSelector(s)             | `{}`                            |
 | `admissionController.tolerations`               | Admission controller deployment tolerations                 | `[]`                            |
 | `admissionController.affinity`                  | Admission controller deployment affinity                    | `{}`                            |
@@ -99,6 +101,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `resources.requests.memory`                     | Memory resource requests                                    | `1Gi`                           |
 | `resources.limits.cpu`                          | CPU resource limit                                          | `4`                             |
 | `resources.limits.memory`                       | Memory resource limit                                       | `2Gi`                           |
+| `goMemoryLimit`                                 | Memory limit (GOMEMLIMIT)                                   | `1536MiB`                       |
+| `goGC`                                          | GC threshold (GOGC)                                         | `100`                           |
 | `web.image.repository`                          | Web app image repository                                    | `apache/yunikorn`               |
 | `web.image.tag`                                 | Web app image tag                                           | `web-latest`                    |
 | `web.image.pullPolicy`                          | Web app image pull policy                                   | `Always`                        |
@@ -106,6 +110,8 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `web.resources.requests.memory`                 | Web app memory resource requests                            | `100Mi`                         |
 | `web.resources.limits.cpu`                      | Web app CPU resource limit                                  | `200m`                          |
 | `web.resources.limits.memory`                   | Web app memory resource limit                               | `500Mi`                         |
+| `web.goMemoryLimit`                             | Web app memory limit (GOMEMLIMIT)                           | `200MiB`                        |
+| `web.goGC`                                      | Web app GC threshold (GOGC)                                 | `100`                           |
 | `embedAdmissionController`                      | Flag for enabling/disabling the admission controller        | `true`                          |
 | `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode           | `false`                         |
 | `enableWebService`                              | Flag for enabling/disabling web service                     | `true`                          |

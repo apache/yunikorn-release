@@ -57,6 +57,8 @@ admissionController:
     limits:
       cpu: 500m
       memory: 500Mi
+  goMemoryLimit: 200MiB
+  goGC: 100
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -81,6 +83,8 @@ web:
     limits:
       cpu: 200m
       memory: 500Mi
+  goMemoryLimit: 200MiB
+  goGC: 100
 
 service:
   type: ClusterIP
@@ -104,6 +108,14 @@ resources:
   limits:
     cpu: 4
     memory: 2Gi
+
+# Go memory limit (GOMEMLIMIT) for the scheduler. This should be updated in tandem with
+# resources.limits.memory to avoid OOMKilled scenarios.
+goMemoryLimit: 1536MiB
+
+# Go garbage-collection threshold (GOGC) as a percentage of freshly allocated data to
+# live data remaining after the previous GC.
+goGC: 100
 
 # Bootstrap configuration for YuniKorn - will be rendered into yunikorn-defaults ConfigMap.
 # Any valid options for YuniKorn may be specified here.
