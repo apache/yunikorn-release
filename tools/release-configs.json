@@ -14,7 +14,7 @@
       "name": "yunikorn-k8shim",
       "alias": "k8shim",
       "description": "the scheduler shim for K8s",
-      "tag": "v1.6.1-2",
+      "tag": "v1.6.1-3",
       "repository": "https://github.com/apache/yunikorn-k8shim"
     },
     {
@@ -28,7 +28,7 @@
       "name": "yunikorn-web",
       "alias": "web",
       "description": "the scheduler web UI",
-      "tag": "v1.6.1-1",
+      "tag": "v1.6.1-2",
       "repository": "https://github.com/apache/yunikorn-web"
     }
   ]
