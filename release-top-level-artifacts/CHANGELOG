@@ -36,4 +36,5 @@ Release Notes - Apache YuniKorn - Version 1.6.1
     * [YUNIKORN-3005] - Increase decreaseTrackedResource test coverage
 
 ** Task
+    * [YUNIKORN-2953] - Placeholder release count incorrect
     * [YUNIKORN-3002] - Update Go dependencies for CVE fixes
