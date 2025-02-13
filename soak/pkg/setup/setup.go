@@ -19,8 +19,8 @@ package setup
 import (
 	"fmt"
 	"github.com/apache/yunikorn-core/pkg/log"
-		"github.com/apache/yunikorn-release/soak/pkg/constants"
-"github.com/apache/yunikorn-release/soak/pkg/framework"
+	"github.com/apache/yunikorn-release/soak/pkg/constants"
+	"github.com/apache/yunikorn-release/soak/pkg/framework"
 	"go.uber.org/zap"
 	"os"
 	"os/exec"
@@ -56,10 +56,10 @@ func setK8sContext() error {
 }
 
 func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
-    if err := setK8sContext(); err != nil {
-        logger.Fatal("failed to set kubernetes context", zap.Error(err))
-        return err
-    }
+	if err := setK8sContext(); err != nil {
+		logger.Fatal("failed to set kubernetes context", zap.Error(err))
+		return err
+	}
 
 	logger.Info("Scheduler details",
 		zap.String("VcoreRequests", *scheduler.VcoreRequests),
@@ -96,16 +96,16 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 		cmd := exec.Command("helm", args...)
 
 		logger.Info("Helm command to be executed",
-		   zap.String("command", fmt.Sprintf("helm %s", strings.Join(args, " "))))
+			zap.String("command", fmt.Sprintf("helm %s", strings.Join(args, " "))))
 
 		output, err := cmd.CombinedOutput()
 		if err != nil {
-		   return fmt.Errorf("helm upgrade failed: %v", err)
+			return fmt.Errorf("helm upgrade failed: %v", err)
 		}
 
 		logger.Info("Helm upgrade successful",
-		   zap.String("command", fmt.Sprintf("helm %s", strings.Join(args, " "))),
-		   zap.String("output", string(output)))
+			zap.String("command", fmt.Sprintf("helm %s", strings.Join(args, " "))),
+			zap.String("output", string(output)))
 	}
 
 	if scheduler.Path != nil {
@@ -122,7 +122,7 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 		logger.Info("Kubectl apply successful", zap.String("output", strings.TrimSpace(string(kubectlOutput))))
 	}
 
-    return nil
+	return nil
 }
 
 func setNodeScalePerConfig(node framework.TemplateFields) error {
@@ -142,33 +142,33 @@ func setNodeScalePerConfig(node framework.TemplateFields) error {
 	}
 	desiredCount := *node.DesiredCount
 
-    for i := 0; i < desiredCount; i++ {
-        currentNodeName := fmt.Sprintf("kwok-node-%d", i)
-        nodeContent := strings.ReplaceAll(string(templateContent), "kwok-node-i", currentNodeName)
+	for i := 0; i < desiredCount; i++ {
+		currentNodeName := fmt.Sprintf("kwok-node-%d", i)
+		nodeContent := strings.ReplaceAll(string(templateContent), "kwok-node-i", currentNodeName)
 
-        tmpfile, err := os.CreateTemp("", "node-*.yaml")
-        if err != nil {
-            return fmt.Errorf("failed to create temp file: %v", err)
-        }
-        defer os.Remove(tmpfile.Name()) // Clean up
+		tmpfile, err := os.CreateTemp("", "node-*.yaml")
+		if err != nil {
+			return fmt.Errorf("failed to create temp file: %v", err)
+		}
+		defer os.Remove(tmpfile.Name()) // Clean up
 
-        if _, err := tmpfile.WriteString(nodeContent); err != nil {
-            return fmt.Errorf("failed to write to temp file: %v", err)
-        }
-        if err := tmpfile.Close(); err != nil {
-            return fmt.Errorf("failed to close temp file: %v", err)
-        }
+		if _, err := tmpfile.WriteString(nodeContent); err != nil {
+			return fmt.Errorf("failed to write to temp file: %v", err)
+		}
+		if err := tmpfile.Close(); err != nil {
+			return fmt.Errorf("failed to close temp file: %v", err)
+		}
 
-        cmd := exec.Command("kubectl", "apply", "-f", tmpfile.Name())
-        output, err := cmd.CombinedOutput()
-        if err != nil {
-            return fmt.Errorf("failed to apply node configuration: %v", err)
-        }
+		cmd := exec.Command("kubectl", "apply", "-f", tmpfile.Name())
+		output, err := cmd.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("failed to apply node configuration: %v", err)
+		}
 
-        logger.Info("Applied node configuration",
-            zap.String("nodeName", currentNodeName),
-            zap.String("output", string(output)))
-    }
+		logger.Info("Applied node configuration",
+			zap.String("nodeName", currentNodeName),
+			zap.String("output", string(output)))
+	}
 
-    return nil
+	return nil
 }
