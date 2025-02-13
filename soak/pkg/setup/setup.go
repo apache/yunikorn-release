@@ -19,8 +19,8 @@ package setup
 import (
 	"fmt"
 	"github.com/apache/yunikorn-core/pkg/log"
-	"github.com/apache/yunikorn-release/soak/constants"
-	"github.com/apache/yunikorn-release/soak/pkg/framework"
+		"github.com/apache/yunikorn-release/soak/pkg/constants"
+"github.com/apache/yunikorn-release/soak/pkg/framework"
 	"go.uber.org/zap"
 	"os"
 	"os/exec"
