@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"github.com/apache/yunikorn-core/pkg/log"
 	"github.com/apache/yunikorn-release/soak/constants"
-	"github.com/apache/yunikorn-release/soak/framework"
+	"github.com/apache/yunikorn-release/soak/pkg/framework"
 	"go.uber.org/zap"
 	"os"
 	"os/exec"
@@ -30,7 +30,7 @@ import (
 
 var logger *zap.Logger = log.Log(log.Test)
 
-func SetK8sContext() error {
+func setK8sContext() error {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return fmt.Errorf("failed to get home directory: %v", err)
@@ -47,17 +47,16 @@ func SetK8sContext() error {
 	logger.Info("Kubectl context switch output", zap.String("output", strings.TrimSpace(string(contextOutput))))
 
 	currentContextCmd := exec.Command("kubectl", "config", "current-context")
-	currentContextOutput, err := currentContextCmd.CombinedOutput()
+	_, err = currentContextCmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("failed to get current context: %v, output: %s", err, string(currentContextOutput))
+		return fmt.Errorf("failed to get current context: %v", err)
 	}
-	logger.Info("Current kubectl context", zap.String("context", strings.TrimSpace(string(currentContextOutput))))
 
 	return nil
 }
 
-func UpgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
-    if err := SetK8sContext(); err != nil {
+func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
+    if err := setK8sContext(); err != nil {
         logger.Fatal("failed to set kubernetes context", zap.Error(err))
         return err
     }
@@ -69,26 +68,30 @@ func UpgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 		zap.String("MemoryLimits", *scheduler.MemoryLimits),
 		zap.String("path", *scheduler.Path))
 
-	if scheduler.VcoreRequests != nil || scheduler.MemoryRequests != nil || scheduler.VcoreLimits != nil || scheduler.MemoryLimits != nil {
-		args := []string{
-			"upgrade",
-			"yunikorn",
-			"yunikorn/yunikorn",
-			"-n", "yunikorn",
-		}
+	args := []string{
+		"upgrade",
+		"yunikorn",
+		"yunikorn/yunikorn",
+		"-n", "yunikorn",
+	}
 
-		if scheduler.VcoreRequests != nil {
-			args = append(args, "--set", fmt.Sprintf("resources.requests.cpu=%s", *scheduler.VcoreRequests))
-		}
-		if scheduler.MemoryRequests != nil {
-			args = append(args, "--set", fmt.Sprintf("resources.requests.memory=%s", *scheduler.MemoryRequests))
-		}
-		if scheduler.VcoreLimits != nil {
-			args = append(args, "--set", fmt.Sprintf("resources.limits.cpu=%s", *scheduler.VcoreLimits))
-		}
-		if scheduler.MemoryLimits != nil {
-			args = append(args, "--set", fmt.Sprintf("resources.limits.memory=%s", *scheduler.MemoryLimits))
-		}
+	var moreArgs []string
+
+	if scheduler.VcoreRequests != nil {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.cpu=%s", *scheduler.VcoreRequests))
+	}
+	if scheduler.MemoryRequests != nil {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.memory=%s", *scheduler.MemoryRequests))
+	}
+	if scheduler.VcoreLimits != nil {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.cpu=%s", *scheduler.VcoreLimits))
+	}
+	if scheduler.MemoryLimits != nil {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.memory=%s", *scheduler.MemoryLimits))
+	}
+
+	if len(moreArgs) > 0 {
+		args = append(args, moreArgs...)
 
 		cmd := exec.Command("helm", args...)
 
@@ -97,7 +100,7 @@ func UpgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 
 		output, err := cmd.CombinedOutput()
 		if err != nil {
-		   return fmt.Errorf("helm upgrade failed: %v, output: %s", err, string(output))
+		   return fmt.Errorf("helm upgrade failed: %v", err)
 		}
 
 		logger.Info("Helm upgrade successful",
@@ -122,8 +125,8 @@ func UpgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
     return nil
 }
 
-func SetNodeScalePerConfig(node framework.TemplateFields) error {
-	if err := SetK8sContext(); err != nil {
+func setNodeScalePerConfig(node framework.TemplateFields) error {
+	if err := setK8sContext(); err != nil {
 		logger.Fatal("failed to set kubernetes context", zap.Error(err))
 		return err
 	}
@@ -137,7 +140,7 @@ func SetNodeScalePerConfig(node framework.TemplateFields) error {
 	if err != nil {
 		return fmt.Errorf("failed to read template file: %v", err)
 	}
-    desiredCount := *node.DesiredCount
+	desiredCount := *node.DesiredCount
 
     for i := 0; i < desiredCount; i++ {
         currentNodeName := fmt.Sprintf("kwok-node-%d", i)
@@ -159,7 +162,7 @@ func SetNodeScalePerConfig(node framework.TemplateFields) error {
         cmd := exec.Command("kubectl", "apply", "-f", tmpfile.Name())
         output, err := cmd.CombinedOutput()
         if err != nil {
-            return fmt.Errorf("failed to apply node configuration: %v, output: %s", err, string(output))
+            return fmt.Errorf("failed to apply node configuration: %v", err)
         }
 
         logger.Info("Applied node configuration",

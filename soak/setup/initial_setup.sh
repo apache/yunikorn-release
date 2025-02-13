@@ -23,6 +23,7 @@ kind create cluster --name soak-test-cluster
 helm repo add yunikorn https://apache.github.io/yunikorn-release
 helm repo update
 kubectl create namespace yunikorn
+# TODO: allow to install a customized YuniKorn version to run the soak test
 helm install yunikorn yunikorn/yunikorn --namespace yunikorn
 
 ## Deploy kwok in a Cluster
