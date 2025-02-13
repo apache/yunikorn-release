@@ -117,7 +117,7 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 
 		kubectlOutput, err := kubectlCmd.CombinedOutput()
 		if err != nil {
-			return fmt.Errorf("kubectl apply failed: %v, output: %s", err, string(kubectlOutput))
+			return fmt.Errorf("kubectl apply failed: %v", err)
 		}
 		logger.Info("Kubectl apply successful", zap.String("output", strings.TrimSpace(string(kubectlOutput))))
 	}
