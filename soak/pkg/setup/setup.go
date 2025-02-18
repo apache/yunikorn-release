@@ -19,12 +19,13 @@ package setup
 import (
 	"fmt"
 	"github.com/apache/yunikorn-core/pkg/log"
+	"github.com/apache/yunikorn-release/soak/framework"
 	"github.com/apache/yunikorn-release/soak/pkg/constants"
-	"github.com/apache/yunikorn-release/soak/pkg/framework"
 	"go.uber.org/zap"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -55,18 +56,18 @@ func setK8sContext() error {
 	return nil
 }
 
-func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
+func upgradeSchedulerPerConfig(scheduler framework.SchedulerFields) error {
 	if err := setK8sContext(); err != nil {
 		logger.Fatal("failed to set kubernetes context", zap.Error(err))
 		return err
 	}
 
 	logger.Info("Scheduler details",
-		zap.String("VcoreRequests", *scheduler.VcoreRequests),
-		zap.String("MemoryRequests", *scheduler.MemoryRequests),
-		zap.String("VcoreLimits", *scheduler.VcoreLimits),
-		zap.String("MemoryLimits", *scheduler.MemoryLimits),
-		zap.String("path", *scheduler.Path))
+		zap.String("VcoreRequests", scheduler.VcoreRequests),
+		zap.String("MemoryRequests", scheduler.MemoryRequests),
+		zap.String("VcoreLimits", scheduler.VcoreLimits),
+		zap.String("MemoryLimits", scheduler.MemoryLimits),
+		zap.String("path", scheduler.Path))
 
 	args := []string{
 		"upgrade",
@@ -77,17 +78,17 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 
 	var moreArgs []string
 
-	if scheduler.VcoreRequests != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.cpu=%s", *scheduler.VcoreRequests))
+	if scheduler.VcoreRequests != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.cpu=%s", scheduler.VcoreRequests))
 	}
-	if scheduler.MemoryRequests != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.memory=%s", *scheduler.MemoryRequests))
+	if scheduler.MemoryRequests != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.memory=%s", scheduler.MemoryRequests))
 	}
-	if scheduler.VcoreLimits != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.cpu=%s", *scheduler.VcoreLimits))
+	if scheduler.VcoreLimits != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.cpu=%s", scheduler.VcoreLimits))
 	}
-	if scheduler.MemoryLimits != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.memory=%s", *scheduler.MemoryLimits))
+	if scheduler.MemoryLimits != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.memory=%s", scheduler.MemoryLimits))
 	}
 
 	if len(moreArgs) > 0 {
@@ -108,9 +109,9 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 			zap.String("output", string(output)))
 	}
 
-	if scheduler.Path != nil {
+	if scheduler.Path != "" {
 		kubectlArgs := []string{"apply"}
-		kubectlArgs = append(kubectlArgs, "-f", *scheduler.Path, "-n", "yunikorn")
+		kubectlArgs = append(kubectlArgs, "-f", scheduler.Path, "-n", "yunikorn")
 		kubectlCmd := exec.Command("kubectl", kubectlArgs...)
 		logger.Info("Kubectl command to be executed",
 			zap.String("command", fmt.Sprintf("kubectl %s", strings.Join(kubectlArgs, " "))))
@@ -125,22 +126,27 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 	return nil
 }
 
-func setNodeScalePerConfig(node framework.TemplateFields) error {
+func setNodeScalePerConfig(node framework.NodeFields) error {
 	if err := setK8sContext(); err != nil {
 		logger.Fatal("failed to set kubernetes context", zap.Error(err))
 		return err
 	}
 
 	logger.Info("Node details",
-		zap.String("path", *node.Path),
-		zap.Int("NodesDesiredCount", *node.DesiredCount),
-		zap.Int("maxCount", *node.MaxCount))
+		zap.String("path", node.Path),
+		zap.String("NodesDesiredCount", node.DesiredCount),
+		zap.String("maxCount", node.MaxCount))
 
-	templateContent, err := os.ReadFile("soak/templates/kwok-node-template.yaml")
+	templateContent, err := os.ReadFile(node.Path)
 	if err != nil {
-		return fmt.Errorf("failed to read template file: %v", err)
+		logger.Error("failed to read template file", zap.String("path", node.Path))
+		return err
 	}
-	desiredCount := *node.DesiredCount
+	desiredCount, err := strconv.Atoi(node.DesiredCount)
+	if err != nil {
+		logger.Error("failed to parse desired count",
+			zap.String("desiredCount", node.DesiredCount))
+	}
 
 	for i := 0; i < desiredCount; i++ {
 		currentNodeName := fmt.Sprintf("kwok-node-%d", i)
