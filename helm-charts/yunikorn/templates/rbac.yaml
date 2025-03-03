@@ -42,6 +42,11 @@ rules:
   - apiGroups: ["scheduling.k8s.io"]
     resources: ["priorityclasses"]
     verbs: ["get", "watch", "list"]
+  # Ensure permissions for volumeattachments as this was only added to the kube-scheduler role in v1.32.
+  # This is required here as long as we support executing on prior releases of Kubernetes.
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["volumeattachments"]
+    verbs: ["get", "watch", "list"]
   - apiGroups: [""]
     resources: ["pods"]
     verbs: ["get", "watch", "list", "create", "patch", "update", "delete"]
