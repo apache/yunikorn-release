@@ -34,9 +34,6 @@ metadata:
     "helm.sh/hook-weight": "1"
 rules:
   - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["get", "watch", "list"]
-  - apiGroups: [""]
     resources: ["namespaces"]
     verbs: ["get", "watch", "list"]
   - apiGroups: ["scheduling.k8s.io"]
