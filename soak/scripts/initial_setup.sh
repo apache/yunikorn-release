@@ -16,8 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Constants
+SOAK_TEST_CLUSTER='soak-test-cluster'
+
 # create a kind cluster
-kind create cluster --name soak-test-cluster
+kind create cluster --name $SOAK_TEST_CLUSTER
 
 # install YuniKorn scheduler on kind Cluster
 helm repo add yunikorn https://apache.github.io/yunikorn-release
@@ -26,7 +29,12 @@ kubectl create namespace yunikorn
 # TODO: allow to install a customized YuniKorn version to run the soak test
 helm install yunikorn yunikorn/yunikorn --namespace yunikorn
 
-## Deploy kwok in a Cluster
+# Deploy kwok in a Cluster
 helm repo add kwok https://kwok.sigs.k8s.io/charts/
 helm upgrade --namespace kube-system --install kwok kwok/kwok
 helm upgrade --install kwok kwok/stage-fast
+
+# Install Helm chart for autoscaler with Kwok provider
+helm repo add autoscaler https://kubernetes.github.io/autoscaler
+helm repo update
+helm upgrade --install autoscaler autoscaler/cluster-autoscaler --set cloudProvider=kwok --set "autoDiscovery.clusterName"="kind-${SOAK_TEST_CLUSTER}" --set "extraArgs.enforce-node-group-min-size"=true

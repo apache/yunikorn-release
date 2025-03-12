@@ -21,6 +21,7 @@ limitations under the License.
 - [Docker](https://docs.docker.com/get-docker/)
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 - [Kwok](https://kwok.sigs.k8s.io/docs/user/installation/)
+- [autoscaler](https://kubernetes.github.io/autoscaler)
 
 # set up initial soak test environment
 ```
