@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-workload
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      app: fake-pod
+  template:
+    metadata:
+      labels:
+        app: fake-pod
+        kwok-nodegroup: "kwok-node"
+        applicationId: "test-workload-queue-a"
+        queue: root.a
+    spec:
+      schedulerName: yunikorn
+      tolerations:
+        - effect: NoSchedule
+          key: kwok-provider
+          value: "true"
+      containers:
+        - name: fake-container
+          image: docker-upstream.apple.com/alpine:latest
+          command: ["sleep", "300"]
+          resources:
+            requests:
+              cpu: "30"
+              memory: "1Gi"
+            limits:
+              cpu: "30"
+              memory: "1Gi"
