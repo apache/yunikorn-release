@@ -177,7 +177,7 @@ func setAutoscalerPerConfig(node framework.NodeFields) error {
 	var autoscalerNodeList map[string]interface{}
 	err = yaml.Unmarshal(autoscalerConfigmap, &autoscalerNodeList)
 	if err != nil {
-		logger.Error("failed to parse result YAML", zap.Error(err))
+		logger.Error("failed to parse autoscalerConfigmap YAML", zap.Error(err))
 		return err
 	}
 	logger.Info("Autoscaler Node List", zap.Any("autoscalerNodeList", autoscalerNodeList))
@@ -186,36 +186,33 @@ func setAutoscalerPerConfig(node framework.NodeFields) error {
 	itemsSlice = append(itemsSlice, nodeTemplate)
 	autoscalerNodeList["items"] = itemsSlice
 
-	updatedResultContent, err := yaml.Marshal(autoscalerNodeList)
+	autoscalerNodeListYaml, err := yaml.Marshal(autoscalerNodeList)
 	if err != nil {
-		logger.Error("failed to convert updated result list to YAML", zap.Error(err))
+		logger.Error("failed to convert updated autoscalerNodeList to YAML", zap.Error(err))
 		return err
 	}
-	logger.Info("Encoded updatedResultContent", zap.Any("updatedResultContent", updatedResultContent))
+	logger.Info("Encoded autoscalerNodeListYaml", zap.Any("autoscalerNodeListYaml", autoscalerNodeListYaml))
 
-	updatedAutoscalerConfigmapTempFile, err := os.CreateTemp("", "updated-autoscaler-configmap-temp.yaml")
+	updatedAcCmTempFile, err := os.CreateTemp("", "updated-autoscaler-configmap-temp.yaml")
 	if err != nil {
 		logger.Error("failed to create updated-autoscaler-configmap-temp file", zap.Error(err))
 		return err
 	}
 
-	tempFilePath := updatedAutoscalerConfigmapTempFile.Name()
-	defer os.Remove(tempFilePath)
+	updatedAcCmTempFilePath := updatedAcCmTempFile.Name()
+	defer os.Remove(updatedAcCmTempFilePath)
 
-	if _, err = updatedAutoscalerConfigmapTempFile.Write(updatedResultContent); err != nil {
-		updatedAutoscalerConfigmapTempFile.Close()
-		logger.Error("failed to write to temporary file", zap.Error(err))
+	if _, err = updatedAcCmTempFile.Write(autoscalerNodeListYaml); err != nil {
+		updatedAcCmTempFile.Close()
+		logger.Error("failed to write to updated-autoscaler-configmap-temp file", zap.Error(err))
+		return err
+	}
+	if err = updatedAcCmTempFile.Close(); err != nil {
+		logger.Error("failed to close updated-autoscaler-configmap-temp file", zap.Error(err))
 		return err
 	}
 
-	if err = updatedAutoscalerConfigmapTempFile.Close(); err != nil {
-		logger.Error("failed to close temporary file", zap.Error(err))
-		return err
-	}
-
-	logger.Info("Created temporary file with updated configuration",
-		zap.String("tempFilePath", tempFilePath))
-
+	// Delete the default autoscaler configMap
 	deleteConfigMapCmd := exec.Command("kubectl", "delete", "cm", "kwok-provider-templates")
 	deleteConfigMapCmdOutput, err := deleteConfigMapCmd.CombinedOutput()
 	if err != nil {
@@ -224,8 +221,9 @@ func setAutoscalerPerConfig(node framework.NodeFields) error {
 	}
 	logger.Info(string(deleteConfigMapCmdOutput))
 
+	// Create a new autoscaler configMap
 	createConfigMapCmd := exec.Command("kubectl", "create", "cm", "kwok-provider-templates",
-		"--from-file=templates="+tempFilePath)
+		"--from-file=templates="+updatedAcCmTempFilePath)
 	createConfigMapCmdOutput, err := createConfigMapCmd.CombinedOutput()
 	if err != nil {
 		logger.Error("fail to create new configmap", zap.Error(err))
@@ -235,21 +233,12 @@ func setAutoscalerPerConfig(node framework.NodeFields) error {
 
 	// Restart the autoscaler pod after updating the configmap
 	restartAutoscalerPodCmd := exec.Command("kubectl", "rollout", "restart", "deployment", "autoscaler-kwok-cluster-autoscaler")
-	restartAutoscalerPodOutput, err := restartAutoscalerPodCmd.CombinedOutput()
+	restartAutoscalerPodCmdOutput, err := restartAutoscalerPodCmd.CombinedOutput()
 	if err != nil {
 		logger.Error("failed to restart autoscaler deployment", zap.Error(err))
 		return err
 	}
-	logger.Info("Restarted autoscaler deployment", zap.String("output", string(restartAutoscalerPodOutput)))
-
-	// Wait for the rollout to complete
-	RestartAutoscalerPodStatusCmd := exec.Command("kubectl", "rollout", "status", "deployment", "autoscaler-kwok-cluster-autoscaler")
-	RestartAutoscalerPodStatusOutput, err := RestartAutoscalerPodStatusCmd.CombinedOutput()
-	if err != nil {
-		logger.Error("failed to get rollout status", zap.Error(err))
-		// Not returning error here as the update might still be successful
-	}
-	logger.Info("Rollout status", zap.String("output", string(RestartAutoscalerPodStatusOutput)))
+	logger.Info("Restarted autoscaler deployment", zap.String("output", string(restartAutoscalerPodCmdOutput)))
 
 	logger.Info("Successfully set up kwok provider cluster autoscaler for desiredNodeCount and MaxNodeCount")
 
