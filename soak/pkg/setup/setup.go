@@ -19,9 +19,10 @@ package setup
 import (
 	"fmt"
 	"github.com/apache/yunikorn-core/pkg/log"
+	"github.com/apache/yunikorn-release/soak/framework"
 	"github.com/apache/yunikorn-release/soak/pkg/constants"
-	"github.com/apache/yunikorn-release/soak/pkg/framework"
 	"go.uber.org/zap"
+	"gopkg.in/yaml.v3"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -55,18 +56,18 @@ func setK8sContext() error {
 	return nil
 }
 
-func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
+func upgradeSchedulerPerConfig(scheduler framework.SchedulerFields) error {
 	if err := setK8sContext(); err != nil {
 		logger.Fatal("failed to set kubernetes context", zap.Error(err))
 		return err
 	}
 
 	logger.Info("Scheduler details",
-		zap.String("VcoreRequests", *scheduler.VcoreRequests),
-		zap.String("MemoryRequests", *scheduler.MemoryRequests),
-		zap.String("VcoreLimits", *scheduler.VcoreLimits),
-		zap.String("MemoryLimits", *scheduler.MemoryLimits),
-		zap.String("path", *scheduler.Path))
+		zap.String("VcoreRequests", scheduler.VcoreRequests),
+		zap.String("MemoryRequests", scheduler.MemoryRequests),
+		zap.String("VcoreLimits", scheduler.VcoreLimits),
+		zap.String("MemoryLimits", scheduler.MemoryLimits),
+		zap.String("path", scheduler.Path))
 
 	args := []string{
 		"upgrade",
@@ -77,17 +78,17 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 
 	var moreArgs []string
 
-	if scheduler.VcoreRequests != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.cpu=%s", *scheduler.VcoreRequests))
+	if scheduler.VcoreRequests != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.cpu=%s", scheduler.VcoreRequests))
 	}
-	if scheduler.MemoryRequests != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.memory=%s", *scheduler.MemoryRequests))
+	if scheduler.MemoryRequests != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.requests.memory=%s", scheduler.MemoryRequests))
 	}
-	if scheduler.VcoreLimits != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.cpu=%s", *scheduler.VcoreLimits))
+	if scheduler.VcoreLimits != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.cpu=%s", scheduler.VcoreLimits))
 	}
-	if scheduler.MemoryLimits != nil {
-		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.memory=%s", *scheduler.MemoryLimits))
+	if scheduler.MemoryLimits != "" {
+		moreArgs = append(moreArgs, "--set", fmt.Sprintf("resources.limits.memory=%s", scheduler.MemoryLimits))
 	}
 
 	if len(moreArgs) > 0 {
@@ -108,9 +109,9 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 			zap.String("output", string(output)))
 	}
 
-	if scheduler.Path != nil {
+	if scheduler.Path != "" {
 		kubectlArgs := []string{"apply"}
-		kubectlArgs = append(kubectlArgs, "-f", *scheduler.Path, "-n", "yunikorn")
+		kubectlArgs = append(kubectlArgs, "-f", scheduler.Path, "-n", "yunikorn")
 		kubectlCmd := exec.Command("kubectl", kubectlArgs...)
 		logger.Info("Kubectl command to be executed",
 			zap.String("command", fmt.Sprintf("kubectl %s", strings.Join(kubectlArgs, " "))))
@@ -125,50 +126,121 @@ func upgradeSchedulerPerConfig(scheduler framework.TemplateFields) error {
 	return nil
 }
 
-func setNodeScalePerConfig(node framework.TemplateFields) error {
+func setAutoscalerPerConfig(node framework.NodeFields) error {
 	if err := setK8sContext(); err != nil {
 		logger.Fatal("failed to set kubernetes context", zap.Error(err))
 		return err
 	}
 
 	logger.Info("Node details",
-		zap.String("path", *node.Path),
-		zap.Int("NodesDesiredCount", *node.DesiredCount),
-		zap.Int("maxCount", *node.MaxCount))
+		zap.String("path", node.Path),
+		zap.String("NodesDesiredCount", node.DesiredCount),
+		zap.String("maxCount", node.MaxCount))
 
-	templateContent, err := os.ReadFile("soak/templates/kwok-node-template.yaml")
+	templateContent, err := os.ReadFile(node.Path)
 	if err != nil {
-		return fmt.Errorf("failed to read template file: %v", err)
+		logger.Error("failed to read template file", zap.Error(err))
+		return err
 	}
-	desiredCount := *node.DesiredCount
 
-	for i := 0; i < desiredCount; i++ {
-		currentNodeName := fmt.Sprintf("kwok-node-%d", i)
-		nodeContent := strings.ReplaceAll(string(templateContent), "kwok-node-i", currentNodeName)
-
-		tmpfile, err := os.CreateTemp("", "node-*.yaml")
-		if err != nil {
-			return fmt.Errorf("failed to create temp file: %v", err)
-		}
-		defer os.Remove(tmpfile.Name()) // Clean up
-
-		if _, err := tmpfile.WriteString(nodeContent); err != nil {
-			return fmt.Errorf("failed to write to temp file: %v", err)
-		}
-		if err := tmpfile.Close(); err != nil {
-			return fmt.Errorf("failed to close temp file: %v", err)
-		}
-
-		cmd := exec.Command("kubectl", "apply", "-f", tmpfile.Name())
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("failed to apply node configuration: %v", err)
-		}
-
-		logger.Info("Applied node configuration",
-			zap.String("nodeName", currentNodeName),
-			zap.String("output", string(output)))
+	var nodeTemplate map[string]interface{}
+	err = yaml.Unmarshal(templateContent, &nodeTemplate)
+	if err != nil {
+		logger.Error("failed to parse template YAML", zap.Error(err))
+		return err
 	}
+
+	metadata, ok := nodeTemplate["metadata"].(map[string]interface{})
+	if !ok {
+		logger.Error("invalid metadata format in node template")
+		return fmt.Errorf("invalid metadata format in node template")
+	}
+
+	annotations, ok := metadata["annotations"].(map[string]interface{})
+	if !ok {
+		logger.Error("invalid annotations format in node template")
+		return fmt.Errorf("invalid annotations format in node template")
+	}
+
+	annotations["cluster-autoscaler.kwok.nodegroup/max-count"] = node.MaxCount
+	annotations["cluster-autoscaler.kwok.nodegroup/min-count"] = node.DesiredCount
+	annotations["cluster-autoscaler.kwok.nodegroup/desired-count"] = node.DesiredCount
+
+	autoscalerConfigmapPath := "../../templates/autoscaler-configmap.yaml"
+
+	autoscalerConfigmap, err := os.ReadFile(autoscalerConfigmapPath)
+	if err != nil {
+		logger.Error("failed to read autoscaler configmap template", zap.Error(err))
+		return err
+	}
+
+	var autoscalerNodeList map[string]interface{}
+	err = yaml.Unmarshal(autoscalerConfigmap, &autoscalerNodeList)
+	if err != nil {
+		logger.Error("failed to parse autoscalerConfigmap YAML", zap.Error(err))
+		return err
+	}
+	logger.Info("Autoscaler Node List", zap.Any("autoscalerNodeList", autoscalerNodeList))
+
+	var itemsSlice []interface{}
+	itemsSlice = append(itemsSlice, nodeTemplate)
+	autoscalerNodeList["items"] = itemsSlice
+
+	autoscalerNodeListYaml, err := yaml.Marshal(autoscalerNodeList)
+	if err != nil {
+		logger.Error("failed to convert updated autoscalerNodeList to YAML", zap.Error(err))
+		return err
+	}
+	logger.Info("Encoded autoscalerNodeListYaml", zap.Any("autoscalerNodeListYaml", autoscalerNodeListYaml))
+
+	updatedAcCmTempFile, err := os.CreateTemp("", "updated-autoscaler-configmap-temp.yaml")
+	if err != nil {
+		logger.Error("failed to create updated-autoscaler-configmap-temp file", zap.Error(err))
+		return err
+	}
+
+	updatedAcCmTempFilePath := updatedAcCmTempFile.Name()
+	defer os.Remove(updatedAcCmTempFilePath)
+
+	if _, err = updatedAcCmTempFile.Write(autoscalerNodeListYaml); err != nil {
+		updatedAcCmTempFile.Close()
+		logger.Error("failed to write to updated-autoscaler-configmap-temp file", zap.Error(err))
+		return err
+	}
+	if err = updatedAcCmTempFile.Close(); err != nil {
+		logger.Error("failed to close updated-autoscaler-configmap-temp file", zap.Error(err))
+		return err
+	}
+
+	// Delete the default autoscaler configMap
+	deleteConfigMapCmd := exec.Command("kubectl", "delete", "cm", "kwok-provider-templates")
+	deleteConfigMapCmdOutput, err := deleteConfigMapCmd.CombinedOutput()
+	if err != nil {
+		logger.Error("fail to delete configmap", zap.Error(err))
+		return err
+	}
+	logger.Info(string(deleteConfigMapCmdOutput))
+
+	// Create a new autoscaler configMap
+	createConfigMapCmd := exec.Command("kubectl", "create", "cm", "kwok-provider-templates",
+		"--from-file=templates="+updatedAcCmTempFilePath)
+	createConfigMapCmdOutput, err := createConfigMapCmd.CombinedOutput()
+	if err != nil {
+		logger.Error("fail to create new configmap", zap.Error(err))
+		return err
+	}
+	logger.Info(string(createConfigMapCmdOutput))
+
+	// Restart the autoscaler pod after updating the configmap
+	restartAutoscalerPodCmd := exec.Command("kubectl", "rollout", "restart", "deployment", "autoscaler-kwok-cluster-autoscaler")
+	restartAutoscalerPodCmdOutput, err := restartAutoscalerPodCmd.CombinedOutput()
+	if err != nil {
+		logger.Error("failed to restart autoscaler deployment", zap.Error(err))
+		return err
+	}
+	logger.Info("Restarted autoscaler deployment", zap.String("output", string(restartAutoscalerPodCmdOutput)))
+
+	logger.Info("Successfully set up kwok provider cluster autoscaler for desiredNodeCount and MaxNodeCount")
 
 	return nil
 }

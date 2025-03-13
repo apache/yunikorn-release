@@ -15,37 +15,7 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: Node
+items:
+kind: List
 metadata:
-  annotations:
-    cluster-autoscaler.kwok.nodegroup/max-count:
-    cluster-autoscaler.kwok.nodegroup/min-count:
-    cluster-autoscaler.kwok.nodegroup/desired-count:
-  labels:
-    beta.kubernetes.io/arch: amd64
-    beta.kubernetes.io/os: linux
-    kubernetes.io/arch: amd64
-    kubernetes.io/hostname: kwok-node
-    kwok-nodegroup: kwok-node
-    kubernetes.io/os: linux
-  name: kwok-node
-status:
-  allocatable:
-    cpu: 32
-    memory: 256Gi
-    pods: 110
-  capacity:
-    cpu: 32
-    memory: 256Gi
-    pods: 110
-  nodeInfo:
-    architecture: amd64
-    bootID: ""
-    containerRuntimeVersion: ""
-    kernelVersion: ""
-    kubeProxyVersion: fake
-    kubeletVersion: fake
-    machineID: ""
-    operatingSystem: linux
-    osImage: ""
-    systemUUID: ""
+  resourceVersion: ""

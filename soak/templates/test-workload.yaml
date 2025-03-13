@@ -14,38 +14,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Node
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  annotations:
-    cluster-autoscaler.kwok.nodegroup/max-count:
-    cluster-autoscaler.kwok.nodegroup/min-count:
-    cluster-autoscaler.kwok.nodegroup/desired-count:
-  labels:
-    beta.kubernetes.io/arch: amd64
-    beta.kubernetes.io/os: linux
-    kubernetes.io/arch: amd64
-    kubernetes.io/hostname: kwok-node
-    kwok-nodegroup: kwok-node
-    kubernetes.io/os: linux
-  name: kwok-node
-status:
-  allocatable:
-    cpu: 32
-    memory: 256Gi
-    pods: 110
-  capacity:
-    cpu: 32
-    memory: 256Gi
-    pods: 110
-  nodeInfo:
-    architecture: amd64
-    bootID: ""
-    containerRuntimeVersion: ""
-    kernelVersion: ""
-    kubeProxyVersion: fake
-    kubeletVersion: fake
-    machineID: ""
-    operatingSystem: linux
-    osImage: ""
-    systemUUID: ""
+  name: test-workload
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      app: fake-pod
+  template:
+    metadata:
+      labels:
+        app: fake-pod
+        kwok-nodegroup: "kwok-node"
+        applicationId: "test-workload-queue-a"
+        queue: root.a
+    spec:
+      schedulerName: yunikorn
+      tolerations:
+        - effect: NoSchedule
+          key: kwok-provider
+          value: "true"
+      containers:
+        - name: fake-container
+          image: docker-upstream.apple.com/alpine:latest
+          command: ["sleep", "300"]
+          resources:
+            requests:
+              cpu: "30"
+              memory: "1Gi"
+            limits:
+              cpu: "30"
+              memory: "1Gi"
