@@ -18,6 +18,7 @@ package setup
 
 import (
 	"github.com/apache/yunikorn-release/soak/framework"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"testing"
 )
@@ -33,9 +34,7 @@ func TestSetAutoScalerPerConfig(t *testing.T) {
 		if len(test.Template.Node) > 0 {
 			for _, nodeTemplate := range test.Template.Node {
 				err := setAutoscalerPerConfig(nodeTemplate)
-				if err != nil {
-					t.Fatal(err)
-				}
+				assert.NoError(t, err)
 			}
 		}
 	}
