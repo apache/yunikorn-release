@@ -323,4 +323,23 @@ entries:
       urls:
         - https://github.com/apache/yunikorn-release/releases/download/v1.6.1/yunikorn-1.6.1.tgz
       version: 1.6.1
-generated: "2025-01-24T16:00:00.000000-06:00"
+    - apiVersion: v1
+      appVersion: 1.6.2
+      created: "2025-03-18T16:00:00.000000+11:00"
+      description: YuniKorn scheduler for Kubernetes
+      digest: f61302ddb6fbc9c35e3b85ca5029b5a760fdd6fbbf22370ba0146345ab4120b54
+      home: https://yunikorn.apache.org
+      icon: https://raw.githubusercontent.com/apache/yunikorn-site/master/static/img/logo/yunikorn_classic_logo.png
+      maintainers:
+        - email: dev@yunikorn.apache.org
+          name: Developers mailing list
+      sources:
+        - https://github.com/apache/yunikorn-core
+        - https://github.com/apache/yunikorn-k8shim
+        - https://github.com/apache/yunikorn-scheduler-interface
+        - https://github.com/apache/yunikorn-web
+      name: yunikorn
+      urls:
+        - https://github.com/apache/yunikorn-release/releases/download/v1.6.2/yunikorn-1.6.2.tgz
+      version: 1.6.2
+generated: "2025-03-18T16:00:00.000000+11:00"
