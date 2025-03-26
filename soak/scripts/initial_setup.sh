@@ -38,3 +38,8 @@ helm upgrade --install kwok kwok/stage-fast
 helm repo add autoscaler https://kubernetes.github.io/autoscaler
 helm repo update
 helm upgrade --install autoscaler autoscaler/cluster-autoscaler --set cloudProvider=kwok --set "autoDiscovery.clusterName"="kind-${SOAK_TEST_CLUSTER}" --set "extraArgs.enforce-node-group-min-size"=true
+
+# Install the perf-tests repository and compile the clusterloader2 binary
+git clone git@github.com:kubernetes/perf-tests.git
+cd perf-tests/clusterloader2
+go build -o clusterloader2 ./cmd
