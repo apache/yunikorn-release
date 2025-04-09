@@ -92,13 +92,3 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
-
-replace (
-	golang.org/x/crypto => golang.org/x/crypto v0.35.0
-	golang.org/x/lint => golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
-	golang.org/x/net => golang.org/x/net v0.32.0
-	golang.org/x/sys => golang.org/x/sys v0.30.0
-	golang.org/x/text => golang.org/x/text v0.22.0
-	golang.org/x/tools => golang.org/x/tools v0.30.0
-	google.golang.org/protobuf => google.golang.org/protobuf v1.36.5
-)
