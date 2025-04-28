@@ -15,20 +15,8 @@
 # limitations under the License.
 #
 
-Release Notes - Apache YuniKorn - Version 1.6.2
+
+Release Notes - Apache YuniKorn - Version 1.6.3
 
 ** Bug
-    * [YUNIKORN-3028] - Fix Chromium test failures on GitHub PRs
-    * [YUNIKORN-3036] - fix race prevention regression
-
-** Improvement
-    * [YUNIKORN-3024] - [shim] Update to go 1.23
-    * [YUNIKORN-3029] - [core] Update to go 1.23
-    * [YUNIKORN-3030] - [web] Update to go 1.23
-
-** Task
-    * [YUNIKORN-3040] - [SI] Update dependencies for CVE fixes
-    * [YUNIKORN-3041] - [Core] Update dependencies for CVE fixes
-    * [YUNIKORN-3042] - [Shim] Update dependencies for CVE fixes
-    * [YUNIKORN-3043] - [Web] Update go dependencies for CVE fixes
-
+    * [YUNIKORN-3004] - Lock User Trackers and Group Trackers map during delete operations
