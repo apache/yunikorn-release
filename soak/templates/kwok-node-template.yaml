@@ -18,9 +18,9 @@ apiVersion: v1
 kind: Node
 metadata:
   annotations:
-    cluster-autoscaler.kwok.nodegroup/max-count:
-    cluster-autoscaler.kwok.nodegroup/min-count:
-    cluster-autoscaler.kwok.nodegroup/desired-count:
+    cluster-autoscaler.kwok.nodegroup/max-count: {{$MAX_COUNT}}
+    cluster-autoscaler.kwok.nodegroup/min-count: {{$MIN_COUNT}}
+    cluster-autoscaler.kwok.nodegroup/desired-count: {{$DESIRED_COUNT}}
   labels:
     beta.kubernetes.io/arch: amd64
     beta.kubernetes.io/os: linux
@@ -31,13 +31,13 @@ metadata:
   name: kwok-node
 status:
   allocatable:
-    cpu: 32
+    cpu: "32"
     memory: 256Gi
-    pods: 110
+    pods: "110"
   capacity:
-    cpu: 32
+    cpu: "32"
     memory: 256Gi
-    pods: 110
+    pods: "110"
   nodeInfo:
     architecture: amd64
     bootID: ""

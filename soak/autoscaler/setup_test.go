@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-package setup
+package autoscaler
 
 import (
 	"github.com/apache/yunikorn-release/soak/framework"
@@ -24,18 +24,12 @@ import (
 )
 
 func TestSetAutoScalerPerConfig(t *testing.T) {
-	conf, err := framework.InitConfig("test_conf.yaml")
+	conf, err := framework.InitConfig("conf.yaml")
 	if err != nil {
-		logger.Fatal("failed to parse config", zap.Error(err))
+		log.Fatal("failed to parse config", zap.Error(err))
 	}
-	logger.Info("config successfully loaded", zap.Any("conf", conf))
-
-	for _, test := range conf.Tests {
-		if len(test.Template.Node) > 0 {
-			for _, nodeTemplate := range test.Template.Node {
-				err := setAutoscalerPerConfig(nodeTemplate)
-				assert.NoError(t, err)
-			}
-		}
-	}
+	log.Info("config successfully loaded", zap.Any("conf", conf))
+	a := New(conf)
+	err = a.setAutoscalerPerConfig()
+	assert.NoError(t, err)
 }

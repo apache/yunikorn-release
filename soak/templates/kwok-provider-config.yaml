@@ -1,0 +1,46 @@
+apiVersion: v1
+data:
+  config: |-
+    # if you see '\n' everywhere, remove all the trailing spaces
+    apiVersion: v1alpha1
+    readNodesFrom: configmap # possible values: [cluster,configmap]
+    nodegroups:
+      # to specify how to group nodes into a nodegroup
+      # e.g., you want to treat nodes with same instance type as a nodegroup
+      # node1: m5.xlarge
+      # node2: c5.xlarge
+      # node3: m5.xlarge
+      # nodegroup1: [node1,node3]
+      # nodegroup2: [node2]
+      fromNodeLabelKey: "kwok-nodegroup"
+      # you can either specify fromNodeLabelKey OR fromNodeAnnotation
+      # fromNodeAnnotation: "abc.domain.com/nodegroup"
+    nodes:
+      # gpuConfig:
+      #   # to tell kwok provider what label should be considered as GPU label
+      #   gpuLabelKey: "abc.domain.com/accelerator"
+      #   availableGPUTypes:
+      #     "nvidia-tesla-k80": {}
+      #     "nvidia-tesla-p100": {}
+    configmap:
+      name: kwok-provider-templates
+    kwok: {} # default: fetch latest release of kwok from github and install it
+    # # you can also manually specify which kwok release you want to install
+    # # for example:
+    # kwok:
+    #   release: v0.3.0
+    # # you can also disable installing kwok in CA code (and install your own kwok release)
+    # kwok:
+    #   install: false (true if not specified)
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: autoscaler
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2025-03-07T18:36:19Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: kwok-provider-config
+  namespace: default
+  resourceVersion: "3713"
+  uid: 6c058143-1de9-4f91-8944-51d59cdb17e1
