@@ -19,6 +19,11 @@
 
 trap "control" 2
 
+# Allow setting the remote
+REMOTE="${REMOTE:-origin}"
+# merging to master branch as the default
+COMMITBRANCH="${COMMITBRANCH:-master}"
+
 # handle interrupt and cleanup before exit
 function control() {
   echo "ctrl-c caught, aborting"
@@ -38,7 +43,6 @@ function abort() {
 # clean up temporary branches and back to checked out rev
 function cleanup() {
   echo "Restoring original checkout point: ${BRANCH}"
-
   git checkout "${BRANCH}" --quiet
   git branch -D "${PRBRANCH}" --quiet
   git branch -D "${MERGEBRANCH}" --quiet
@@ -53,7 +57,7 @@ function leave() {
   git branch -D "${PRBRANCH}" --quiet
   echo "Stopping before changed were pushed"
   echo ""
-  echo "Push changes using:               git push ${REMOTE} ${MERGEBRANCH}:${MASTER}"
+  echo "Push changes using:               git push ${REMOTE} ${MERGEBRANCH}:${COMMITBRANCH}"
   echo "Revert back to original branch:   git checkout ${BRANCH}"
   echo "Cleanup of the temporary branch:  git branch -D ${MERGEBRANCH}"
   if [ "${STASHED}" == "true" ]; then
@@ -62,7 +66,7 @@ function leave() {
 }
 
 # prompt for a continue response
-function continue_response() {
+function continue() {
   PS3=$1
   echo "$2"
   select _ in "yes" "no"; do
@@ -77,7 +81,7 @@ function continue_response() {
 
 # check the jira reference
 function check_jira() {
-  if ! grep -q '^\[YUNIKORN-[0-9]\+]' <<< "$1"
+  if ! grep -q '^\[YUNIKORN-[0-9]\+]' <<< $(echo $1)
   then
     echo "Subject does not contain a jira reference."
     echo "The subject line of the commit must follow the pattern:"
@@ -89,7 +93,7 @@ function check_jira() {
     echo "$1"
     echo "---"
     echo "Please fix the subject during the commit, press any key to continue"
-    read -r -n 1
+    read -n 1
   fi
 }
 
@@ -119,17 +123,14 @@ if [ $# -ne 1 ]; then
   echo "  ${NAME} PR-ID"
   echo "PR-ID: the numeric ID of the pull request, example 100"
   echo ""
-  echo "Change the remote used for git commands by setting the variable REMOTE"
-  echo "default is 'origin', example:"
-  echo "  REMOTE=apache ${NAME} 100"
+  echo "Variables to change remotes and branch to commit to:"
+  echo "  REMOTE,       default is 'origin'"
+  echo "  COMMITBRANCH, default is 'master'"
+  echo "example command line:"
+  echo "  REMOTE=apache COMMITBRANHC=branch-1.7 ${NAME} 100"
   exit 1
 fi
 
-# Allow setting the remote
-REMOTE="${REMOTE:-origin}"
-
-# merging to master branch only for now
-MASTER=master
 # assume a clean slate
 STASHED="false"
 # temporary branch IDs
@@ -162,7 +163,7 @@ check_branch "${PRBRANCH}"
 check_branch "${MERGEBRANCH}"
 
 # switch to a temp master
-git fetch "${REMOTE}" "${MASTER}":"${MERGEBRANCH}"
+git fetch "${REMOTE}" "${COMMITBRANCH}":"${MERGEBRANCH}"
 git checkout "${MERGEBRANCH}" --quiet
 
 # pull the PR down
@@ -176,12 +177,12 @@ fi
 # merge the PR
 if ! git merge --squash "${PRBRANCH}"
 then
-  if ! continue_response "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
+  if ! continue "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
   then
     echo "aborting"
     abort
   fi
-  if ! continue_response "continue? " "Please fix any conflicts and 'git add' conflicting files..."
+  if ! continue "continue? " "Please fix any conflicts and 'git add' conflicting files..."
   then
     echo "aborting"
     abort
@@ -227,7 +228,7 @@ if [ -n "${CONFLICT}" ]; then
 fi
 echo " committer:"$'\t'"${SIGNED}"
 
-if ! continue_response "Commit changes? " ""
+if ! continue "Commit changes? " ""
 then
   echo "aborting before commit"
   abort
@@ -240,9 +241,9 @@ then
   abort
 fi
 
-if continue_response "push change to ${MASTER}? " "Merge completed local ref: ${MERGEBRANCH}"
+if continue "push change to ${COMMITBRANCH}? " "Merge completed local ref: ${MERGEBRANCH}"
 then
-  if ! git push "${REMOTE}" "${MERGEBRANCH}":"${MASTER}"
+  if ! git push "${REMOTE}" "${MERGEBRANCH}":"${COMMITBRANCH}"
   then
     echo "Push failed"
     leave
