@@ -127,7 +127,7 @@ if [ $# -ne 1 ]; then
   echo "  REMOTE,       default is 'origin'"
   echo "  COMMITBRANCH, default is 'master'"
   echo "example command line:"
-  echo "  REMOTE=apache COMMITBRANHC=branch-1.7 ${NAME} 100"
+  echo "  REMOTE=apache COMMITBRANCH=branch-1.7 ${NAME} 100"
   exit 1
 fi
 
