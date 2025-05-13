@@ -89,12 +89,13 @@ type Threshold struct {
 }
 
 type TestCase struct {
-	Name      string         `yaml:"name,omitempty"`
-	Params    TestCaseParams `yaml:"params,omitempty"`
-	Schedule  string         `yaml:"schedule,omitempty"`
-	Runs      int            `yaml:"runs,omitempty"`
-	Labels    []string       `yaml:"labels,omitempty"`
-	Threshold Threshold      `yaml:"threshold,omitempty"`
+	Name                    string         `yaml:"name,omitempty"`
+	Params                  TestCaseParams `yaml:"params,omitempty"`
+	Schedule                string         `yaml:"schedule,omitempty"`
+	Runs                    int            `yaml:"runs,omitempty"`
+	Labels                  []string       `yaml:"labels,omitempty"`
+	Threshold               Threshold      `yaml:"threshold,omitempty"`
+	ClusterLoaderConfigPath string         `yaml:"clusterLoaderConfigPath,omitempty"`
 }
 
 type Test struct {

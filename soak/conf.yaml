@@ -1,4 +1,3 @@
-#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,150 +15,15 @@
 # limitations under the License.
 
 tests:
-- name: autoscaling
-  template:
-    kubeconfig:
-      path: ../templates/kubeconfig
-    node:
-      - path: ../templates/nodeGroupTemplates.yaml
-        maxCount: "$nodesMaxCount"
-        desiredCount: "$nodesDesiredCount"
-    job:
-      - path: ../templates/jobATemplate.yaml
-        count: "$numJobs"
-        podCount: "$numPods"
-        mode: "always" #one of ["always", "random-max-percent", "fixed-percent"]
-        value: "50" # when mode is "random-max-percent" or "fixed-percent"
-      - path: ../templates/jobBTemplate.yaml
-        count: "$numJobs"
-        podCount: "$numPods"
-    scheduler:
-      - path: ../templates/autoscaling-queues.yaml
-        vcoreRequests: 2
-        vcoreLimits: 2
-        memoryRequests: 16Gi
-        memoryLimits: 16Gi
-  testCases:
-    - name: "1000-nodes-cluster"
-      params:
-        nodesMaxCount: 1000
-        nodesDesiredCount: 20
-        numPods: 5000
-        numJobs: 200
-      schedule: once
-      labels: ["short"]
-      # labels: ["soak-test"]
-      threshold:
-        maxRuntime: "10m"
-        pendingPods: 0
-        metrics:
-          maxAllocationDelay: "5s"
-    - name: "5000-nodes-cluster"
-      params:
-        nodesMaxCount: 5000
-        nodesDesiredCount: 20
-        numPods: 20000
-        numJobs: 700
-      schedule: once
-      runs: 1
-      # labels: ["soak-test", "benchmark-test"]
-      labels: ["short"]
-      threshold:
-        maxRuntime: "60m"
-        pendingPods: 0
-        maxAllocationDelay: "20s"
-    - name: "300-nodes-cluster-schedule"
-      params:
-        nodesMaxCount: 300
-        nodesDesiredCount: 0
-        numPods: 2000
-        numJobs: 150
-      schedule: "*/15 * * * *"
-      runs: 10
-      #labels: ["soak-test"]
-      labels: ["super-long"]
-      threshold:
-        maxRuns: 10
-        pendingPods: 0
-        metrics:
-          maxAllocationDelay: "5s"
-- name: chaos-faults
-  template:
-    kubeconfig:
-      path: ../templates/kubeconfig
-    node:
-      - path: ../templates/nodeGroupTemplates.yaml
-        maxCount: "$nodesMaxCount"
-        desiredCount: "$nodesDesiredCount"
-    job:
-      - path: ../templates/jobATemplate.yaml
-        count: "$numJobs"
-        podCount: "$numPods"
-    choas:
-      - path: ../templates/chaos.yaml
-        count: "$numChaos"
-    scheduler:
-      - path: ../templates/chaos-queues.yaml
-        vcoreRequests: 2
-        vcoreLimits: 2
-        memoryRequests: 16Gi
-        memoryLimits: 16Gi
-  testCases:
-    - name: "1000-nodes-cluster"
-      params:
-        nodesMaxCount: 1000
-        nodesDesiredCount: 20
-        numPods: 5000
-        numJobs: 200
-        numChaos: 0
-      schedule: once
-      labels: ["short"]
-      # labels: ["soak-test", "benchmark-test", "integration-test"]
-      threshold:
-        maxRuntime: "10m"
-        pendingPods: 0
-        detectDeadlock: false
-        metrics:
-          schedulerRestarts: 0
-          maxAllocationDelay: "10s"
-    - name: "5000-nodes-cluster"
-      params:
-        nodesMaxCount: 5000
-        nodesDesiredCount: 20
-        numPods: 20000
-        numJobs: 700
-        numChaos: 200
-        schedule: once
-        runs: 1
-        labels: ["long"]
-        # labels: ["soak-test", "benchmark-test"]
-        threshold:
-          maxRuntime: "60m"
-          pendingPods: 0
-          detectDeadlock: true
-          metrics:
-            schedulerRestarts: 1
-            maxAllocationDelay: "60s"
-    - name: "300-nodes-cluster-schedule"
-      params:
-        nodesMaxCount: 300
-        nodesDesiredCount: 0
-        numPods: 2000
-        numJobs: 150
-        numChaos: 10
-      schedule: "*/15 * * * *"
-      runs: 10
-      # labels: ["soak-test"]
-      labels: ["super-long"]
-      threshold:
-        maxRuntime: "60m"
-        pendingPods: 0
-        detectDeadlock: true
-        metrics:
-          schedulerRestarts: 5
-          maxAllocationDelay: "60s"
-          prom:
-            - query: 'sum(rate(go_memstats_heap_inuse_bytes{service="yunikorn"}[60m])) by (service)'
-              expression: 'sprintf("%.0f", query_result / 1000000)'
-              value: '20'
-              op: '<='
+  - name: autoscaling
+    template:
+      node:
+        - path: ../../templates/kwok-node-template.yaml
+          maxCount: "10"
+          desiredCount: "5"
+      scheduler:
+        - path: ../../templates/autoscaling-queues.yaml
+          vcoreRequests: 2
+          vcoreLimits: 2
+          memoryRequests: 16Gi
+          memoryLimits: 16Gi

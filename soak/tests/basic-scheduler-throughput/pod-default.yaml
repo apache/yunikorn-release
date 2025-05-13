@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  generateName: pod-churn-
+  labels:
+    group: {{.Group}}  
+spec:
+  schedulerName: yunikorn
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kwok-nodegroup
+                operator: In
+                values:
+                - kind-worker
+                - kind-worker2
+  tolerations:
+    - key: "kwok-provider"
+      operator: "Exists"
+      effect: "NoSchedule" 
+  containers:
+  - image: registry.k8s.io/pause:3.9
+    name: pause
