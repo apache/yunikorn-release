@@ -76,6 +76,7 @@ YuniKorn has builtin web UIs for queue hierarchies and apps. See below:
 | 1.29.x              |         1.5.0          |       -       |
 | 1.30.x              |         1.6.0          |       -       |
 | 1.31.x              |         1.6.0          |       -       |
+| 1.32.x              |         1.7.0          |       -       |
 
 ## Useful links
 
