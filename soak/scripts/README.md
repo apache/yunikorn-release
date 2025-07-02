@@ -22,8 +22,22 @@ limitations under the License.
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 - [Kwok](https://kwok.sigs.k8s.io/docs/user/installation/)
 - [autoscaler](https://kubernetes.github.io/autoscaler)
+- [Go](https://golang.org/doc/install) (required for building clusterloader2)
+- [Git](https://git-scm.com/downloads) (required for cloning repositories)
 
-# set up initial soak test environment
+## Setup Scripts
+
+### Complete Initial Setup
+Sets up the entire soak test environment including YuniKorn, Kwok, autoscaler, and clusterloader2:
+```bash
+./soak/scripts/initial_setup.sh
 ```
-sh soak/setup/initial_setup.sh
+
+### Install clusterloader2 Only
+If you only need to install the clusterloader2 binary:
+```bash
+./soak/scripts/install_clusterloader2.sh
 ```
+### Manual clusterloader2 Installation
+If you prefer to install clusterloader2 manually, follow the official guide:
+https://github.com/kubernetes/perf-tests/blob/master/clusterloader2/docs/GETTING_STARTED.md#clusterloader2
