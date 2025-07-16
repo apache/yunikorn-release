@@ -15,6 +15,193 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.7.0
+
+** Sub-task
+    * [YUNIKORN-2349] - Allow changing the orientation of the queue graph
+    * [YUNIKORN-2350] - Add a toolbox for the queue SVG
+    * [YUNIKORN-2353] - Basic queue node fields
+    * [YUNIKORN-2354] - Add detailed queue information to new queue view 
+    * [YUNIKORN-2356] - Hover the queue node for more info
+    * [YUNIKORN-2360] - Click the queue node to view full information in the right sidebar
+    * [YUNIKORN-2753] - Update yunikorn-metrics grafana dashboard
+    * [YUNIKORN-2754] - Update grafana UI in yunikorn-metric docs 
+    * [YUNIKORN-2792] - Create design doc
+    * [YUNIKORN-2824] - Refactor preemption_test.go
+    * [YUNIKORN-2832] - [core] Add non-YuniKorn allocation tracking logic
+    * [YUNIKORN-2833] - [SI] Add new constants for non-YK allocation tracking 
+    * [YUNIKORN-2834] - [shim] Add non-YuniKorn allocation tracking logic
+    * [YUNIKORN-2848] - Refactor preemption_queue_test.go
+    * [YUNIKORN-2864] - Add e2e tests for InPlacePodVerticalScaling feature
+    * [YUNIKORN-2888] - [SI] Remove occupiedResources from NodeInfo
+    * [YUNIKORN-2896] - [shim] Remove occupiedResource handling logic
+    * [YUNIKORN-2897] - Health checker reports foreign allocation as orphan
+    * [YUNIKORN-2898] - [shim] Update core and SI dependency after YUNIKORN-2832
+    * [YUNIKORN-2924] - [core] Remove occupiedResource handling logic
+    * [YUNIKORN-2927] - Update MockScheduler test case with foreign pod resource update
+    * [YUNIKORN-2928] - [core] Update foreign pod resource usage
+    * [YUNIKORN-2931] - Create foreign pod e2e tests 
+    * [YUNIKORN-2935] - Only show children when the queueNode actually has children
+    * [YUNIKORN-2942] - Expose foreign allocations tags on the REST interface
+    * [YUNIKORN-2948] - Add MockScheduler test which verifies foreign pod tracking
+    * [YUNIKORN-2951] - Remove unnecessary locking from RequiredNodePreemptor
+    * [YUNIKORN-2976] - TryAllocate() can fail for DaemonSet pods if reservation already exists
+    * [YUNIKORN-2980] - DaemonSet preemption: don't flood the logs if victim selection fails
+    * [YUNIKORN-3010] - Environment setup with Kwok and Autoscaler
+    * [YUNIKORN-3023] - Framework Init
+    * [YUNIKORN-3052] - Integrate with cluster-autoscaler (kwok-provider) to set Node desiredCount and maxCount per Config
+    * [YUNIKORN-3053] - Support latest InPlacePodVerticalScaling spec
+    * [YUNIKORN-3054] - Refactor persistent_volume E2E test suite structure
+    * [YUNIKORN-3056] - Refactor preemption E2E test suite structure
+    * [YUNIKORN-3057] - Refactor basic_scheduling E2E test suite structure
+    * [YUNIKORN-3061] - Refactor recovery_and_restart E2E test suite structure
+    * [YUNIKORN-3064] - Refactor user_group_limit E2E test suite structure
+    * [YUNIKORN-3071] - Disable queue UI v2 for release 1.7
+
+
+
+** Bug
+    * [YUNIKORN-2239] - Remove "Queue Name" from node view
+    * [YUNIKORN-2723] - Wordwrap queuename in QueuesV2 page
+    * [YUNIKORN-2772] - Scheduler restart does not preserve app start time
+    * [YUNIKORN-2825] - Fix the job name of pprof dashboard in Grafana dashboard
+    * [YUNIKORN-2859] - Add missing assertion in TestGetApplicationHandler
+    * [YUNIKORN-2874] - Cannot generate reproducible builds during release
+    * [YUNIKORN-2875] - E2E: Launch spark from official image to avoid client java dependency
+    * [YUNIKORN-2876] - Initialize queue metrics for app after queue is set
+    * [YUNIKORN-2890] - fix broken table in "Labels and Annotations in YuniKorn" page
+    * [YUNIKORN-2892] -  Log correct termination type when releasing task in shim
+    * [YUNIKORN-2901] - when creating new queues, queue name is used as queue path
+    * [YUNIKORN-2908] - Remove associated metrics when queue is removed
+    * [YUNIKORN-2910] - Data corruption due to insufficient shim context locking
+    * [YUNIKORN-2913] - Fix contrast issue in Applications view
+    * [YUNIKORN-2916] - Fix inconsistent resource bucketing in metrics
+    * [YUNIKORN-2923] - Fix invalid routerLink setting in header breadcrumb
+    * [YUNIKORN-2926] - Placeholder counters incorrect
+    * [YUNIKORN-2956] - Fix layout break on Queues v2 page
+    * [YUNIKORN-2966] - Not all tags are created for foreign allocations
+    * [YUNIKORN-2971] - Use FakeRecorder and MockedRecorder properly in the tests
+    * [YUNIKORN-2978] - Orphan allocations due to reservation host mismatch
+    * [YUNIKORN-2993] - YuniKorn UI not showing applications when stateLog not exist
+    * [YUNIKORN-3003] - Previously preempted allocations can be preempted again
+    * [YUNIKORN-3004] - Lock User Trackers and Group Trackers map during delete operations
+    * [YUNIKORN-3028] - Fix Chromium test failures on GitHub PRs
+    * [YUNIKORN-3036] - fix race prevention regression
+    * [YUNIKORN-3038] - Nil pointer dereference on GetQueuePath
+    * [YUNIKORN-3047] - fix: Fix problematic error returns 
+    * [YUNIKORN-3076] - Web UI Fails to Load Applications for Certain Queues on Heavily Loaded Clusters
+    * [YUNIKORN-3077] - Failed to execute command at "Loading your images" step in Docs
+    * [YUNIKORN-3084] - Fix Inconsistency in Allocation Removal from sortedRequests
+
+
+
+** New Feature
+    * [YUNIKORN-2791] - [Umbrella] Tracking non-Yunikorn allocations in the core
+    * [YUNIKORN-2886] - update Spark operator documentation for YuniKorn integration
+    * [YUNIKORN-3039] - Support pod level resources
+
+** Improvement
+    * [YUNIKORN-2153] - Refactor placement of predicateCheckResult
+    * [YUNIKORN-2289] - Isolate e2e tests in separate namespaces
+    * [YUNIKORN-2450] - Rename `updateLowestId` to `updateLowestID`, `TestLoggerIds` to `TestLoggerIDs`
+    * [YUNIKORN-2592] - Remove spurious log from partition on app addition
+    * [YUNIKORN-2609] - Improve visual style of the Web UI
+    * [YUNIKORN-2638] - Simplify finalizeNodes and finalizePods
+    * [YUNIKORN-2827] - Remove unused columns in Nodes view
+    * [YUNIKORN-2829] - Improve table layout for Applications
+    * [YUNIKORN-2844] - Inject event recorder externally
+    * [YUNIKORN-2845] - Remove SchedulerConf.TestMode
+    * [YUNIKORN-2850] - Watch configmap only in yunikorn's deployed namespace
+    * [YUNIKORN-2854] - Add queue maxRunningApps metrics
+    * [YUNIKORN-2855] - Handle nil properly in queue metrics
+    * [YUNIKORN-2861] - Angular upgrade to v18
+    * [YUNIKORN-2866] - [UMBRELLA] Support InPlacePodVerticalScaling (phase 2)
+    * [YUNIKORN-2878] - Restore status badge (readme)
+    * [YUNIKORN-2885] - Fix security vulnerabilities in dependencies
+    * [YUNIKORN-2887] - Optimize sortApplications function code
+    * [YUNIKORN-2889] - Fix redundant scrollbar & invalid `overflow` style setting
+    * [YUNIKORN-2893] - Apply "cancel-in-progress" feature for each PR in Github Action
+    * [YUNIKORN-2894] - Update KubeRay operator documentation for YuniKorn integration
+    * [YUNIKORN-2899] - Update node version to 20.17 and update packages
+    * [YUNIKORN-2903] - Fix the outdated token generation guide for accessing K8S dashboard
+    * [YUNIKORN-2904] - Add Helm download and usage links
+    * [YUNIKORN-2905] - Update deployment documentation for make image
+    * [YUNIKORN-2907] - Queue config processing log spew
+    * [YUNIKORN-2909] - Update the k8shim-application-state image
+    * [YUNIKORN-2911] - Add kind-e2e makefile target
+    * [YUNIKORN-2912] - CI: Remove "Restore cache failed" warning in yunikorn-core
+    * [YUNIKORN-2915] - Scheduling latency metric should update even if no scheduling occurs
+    * [YUNIKORN-2917] - Add additional buckets for latency histograms
+    * [YUNIKORN-2920] - Update goland ide setting images in docs
+    * [YUNIKORN-2921] - Update link for performance_tutorial docs
+    * [YUNIKORN-2925] - Remove internal objects from application REST response
+    * [YUNIKORN-2932] - Update local dashboard url in Dev Environment Setup
+    * [YUNIKORN-2936] - Access K8s dashboard by port-forwarding
+    * [YUNIKORN-2941] - Remove plugin mode from the install section of Getting Started
+    * [YUNIKORN-2943] - Fix typo in Prometheus monitoring guide
+    * [YUNIKORN-2944] - Update the k8shim-task-state image
+    * [YUNIKORN-2945] - Add punctuation for better clarity in Scheduler Configuration
+    * [YUNIKORN-2957] - Improve visual in dashboard page
+    * [YUNIKORN-2958] - Display foreign allocations on the web UI
+    * [YUNIKORN-2960] - Fix typos in Partition and Queue Configuration and App Placement Rules
+    * [YUNIKORN-2961] - Move node utilizations chart to dashboard page
+    * [YUNIKORN-2967] - Cleanup REST response headers
+    * [YUNIKORN-2968] - site commit build workflow should not fail on non content change
+    * [YUNIKORN-2969] - fix inconsistent layout in REST documentation
+    * [YUNIKORN-2970] - Don't display node attributes by default on the UI
+    * [YUNIKORN-2972] - Remove Resource object from user group REST API
+    * [YUNIKORN-2973] - Add ginkgo linter for e2e tests
+    * [YUNIKORN-2974] - Expose fencing details in the queue REST info
+    * [YUNIKORN-2977] - [Umbrella] DaemonSet preemption hardening
+    * [YUNIKORN-2982] - Send event when preemption occurs
+    * [YUNIKORN-2984] - Fix typos and add white background to priority tree image for better visibility in dark mode
+    * [YUNIKORN-2990] - Add support for securityContext in the helm charts
+    * [YUNIKORN-2991] - Ensure draining queues do not accept new applications
+    * [YUNIKORN-2994] - Fix typos and make some minor improvement in User Guide
+    * [YUNIKORN-2996] - Update build dependency to kubernetes v1.32.2
+    * [YUNIKORN-2999] - Bump e2e test for core to Kubernetes v1.32.0
+    * [YUNIKORN-3000] - Add support for setting GOGC / GOMEMLIMIT in Helm chart
+    * [YUNIKORN-3001] - Document new helm chart settings for GOGC / GOMEMLIMIT
+    * [YUNIKORN-3021] - Change default volume binding timeout to 10 minutes
+    * [YUNIKORN-3024] - [shim] Update to go 1.23
+    * [YUNIKORN-3027] - Add new build targets to generate instrumented binaries
+    * [YUNIKORN-3029] - [core] Update to go 1.23
+    * [YUNIKORN-3030] - [web] Update to go 1.23
+    * [YUNIKORN-3031] - Add support for .spec.schedulingGates
+    * [YUNIKORN-3033] - remove CRD entry from RBAC file
+    * [YUNIKORN-3060] - Update golangci-lint installation url in Coding Guidelines
+    * [YUNIKORN-3079] - Fix typos/punctuations in docs
+    * [YUNIKORN-3094] - Update the website to add new committer Junyan Ling
+
+** Test
+    * [YUNIKORN-2797] - Increase handlers.go test coverage
+    * [YUNIKORN-3005] - Increase decreaseTrackedResource test coverage
+    * [YUNIKORN-3016] - Cleanup cluster resources after persistent_volume e2e test failed
+    * [YUNIKORN-3065] - Add test for checkPodMetadataBeforeScheduling
+    * [YUNIKORN-3066] - Remove outdated note about inconsistent metadata pod rejection
+
+** Wish
+    * [YUNIKORN-2254] - Display MaxRunningApps and RunningApps on Queue View
+
+** Task
+    * [YUNIKORN-2773] - Update Document - Removal of default queue configuration
+    * [YUNIKORN-2811] - Warn if a pod has inconsistent metadata in the shim
+    * [YUNIKORN-2882] - Update supported versions
+    * [YUNIKORN-2953] - Placeholder release count incorrect
+    * [YUNIKORN-2965] - Move statedump to debug endpoint
+    * [YUNIKORN-2987] - Remove -installsuffix switch during build
+    * [YUNIKORN-2992] - Emit warning message in plugin mode
+    * [YUNIKORN-2995] - Update e2e test matrix to support v1.32.0
+    * [YUNIKORN-2997] - add unit test for tryPlaceholderAllocate
+    * [YUNIKORN-2998] - tryNodesNoReserve is not tested
+    * [YUNIKORN-3002] - Update Go dependencies for CVE fixes
+    * [YUNIKORN-3032] - Add explicit permission for storage.k8s.io/volumeattachments
+    * [YUNIKORN-3040] - [SI] Update dependencies for CVE fixes
+    * [YUNIKORN-3041] - [Core] Update dependencies for CVE fixes
+    * [YUNIKORN-3042] - [Shim] Update dependencies for CVE fixes
+    * [YUNIKORN-3043] - [Web] Update go dependencies for CVE fixes
+    * [YUNIKORN-3044] - Update helm chart README to reflect Kubernetes 1.32 support
+    * [YUNIKORN-3045] - Remove cluster role access for configmaps
+    * [YUNIKORN-3072] - Update web dependencies
+    * [YUNIKORN-3086] - Update docs to remove deprecated queue metrics
+
