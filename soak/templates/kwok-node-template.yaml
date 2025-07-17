@@ -18,9 +18,9 @@ apiVersion: v1
 kind: Node
 metadata:
   annotations:
-    cluster-autoscaler.kwok.nodegroup/max-count: {{$MAX_COUNT}}
-    cluster-autoscaler.kwok.nodegroup/min-count: {{$MIN_COUNT}}
-    cluster-autoscaler.kwok.nodegroup/desired-count: {{$DESIRED_COUNT}}
+    cluster-autoscaler.kwok.nodegroup/max-count: "{{DefaultParam "MAX_COUNT" "100"}}"
+    cluster-autoscaler.kwok.nodegroup/min-count: "{{DefaultParam "MIN_COUNT" "1"}}"
+    cluster-autoscaler.kwok.nodegroup/desired-count: "{{DefaultParam "DESIRED_COUNT" "10"}}"
   labels:
     beta.kubernetes.io/arch: amd64
     beta.kubernetes.io/os: linux

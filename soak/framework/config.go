@@ -25,7 +25,8 @@ import (
 )
 
 type KubeconfigFields struct {
-	Path string `yaml:"path,omitempty"`
+	Path    string `yaml:"path,omitempty"`
+	Context string `yaml:"context,omitempty"`
 }
 
 type NodeFields struct {
@@ -61,12 +62,7 @@ type Template struct {
 	Chaos      []ChaosFields     `yaml:"chaos,omitempty"`
 }
 
-type TestCaseParams struct {
-	NodeMaxCount      int `yaml:"nodeMaxCount,omitempty"`
-	NodesDesiredCount int `yaml:"nodesDesiredCount,omitempty"`
-	NumPods           int `yaml:"numPods,omitempty"`
-	NumJobs           int `yaml:"numJobs,omitempty"`
-}
+type TestCaseParams map[string]interface{}
 
 type Prom struct {
 	Query      string `yaml:"query,omitempty"`
