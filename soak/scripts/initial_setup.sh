@@ -17,7 +17,7 @@
 # limitations under the License.
 
 # Constants
-SOAK_TEST_CLUSTER='soak-test-cluster'
+SOAK_TEST_CLUSTER='kind'
 
 # create a kind cluster
 kind create cluster --name $SOAK_TEST_CLUSTER
@@ -38,3 +38,15 @@ helm upgrade --install kwok kwok/stage-fast
 helm repo add autoscaler https://kubernetes.github.io/autoscaler
 helm repo update
 helm upgrade --install autoscaler autoscaler/cluster-autoscaler --set cloudProvider=kwok --set "autoDiscovery.clusterName"="kind-${SOAK_TEST_CLUSTER}" --set "extraArgs.enforce-node-group-min-size"=true
+
+# Install clusterloader2 binary using dedicated script
+echo "Installing clusterloader2..."
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$SCRIPT_DIR/install_clusterloader2.sh"
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: clusterloader2 installation failed"
+    exit 1
+fi
+
+echo "clusterloader2 installation completed successfully!"
