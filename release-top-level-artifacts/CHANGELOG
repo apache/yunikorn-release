@@ -47,9 +47,6 @@ Release Notes - Apache YuniKorn - Version 1.7.0
     * [YUNIKORN-2951] - Remove unnecessary locking from RequiredNodePreemptor
     * [YUNIKORN-2976] - TryAllocate() can fail for DaemonSet pods if reservation already exists
     * [YUNIKORN-2980] - DaemonSet preemption: don't flood the logs if victim selection fails
-    * [YUNIKORN-3010] - Environment setup with Kwok and Autoscaler
-    * [YUNIKORN-3023] - Framework Init
-    * [YUNIKORN-3052] - Integrate with cluster-autoscaler (kwok-provider) to set Node desiredCount and maxCount per Config
     * [YUNIKORN-3053] - Support latest InPlacePodVerticalScaling spec
     * [YUNIKORN-3054] - Refactor persistent_volume E2E test suite structure
     * [YUNIKORN-3056] - Refactor preemption E2E test suite structure
@@ -135,6 +132,7 @@ Release Notes - Apache YuniKorn - Version 1.7.0
     * [YUNIKORN-2920] - Update goland ide setting images in docs
     * [YUNIKORN-2921] - Update link for performance_tutorial docs
     * [YUNIKORN-2925] - Remove internal objects from application REST response
+    * [YUNIKORN-2930] - Enhance Metrics for Scheduling Cycle Latency
     * [YUNIKORN-2932] - Update local dashboard url in Dev Environment Setup
     * [YUNIKORN-2936] - Access K8s dashboard by port-forwarding
     * [YUNIKORN-2941] - Remove plugin mode from the install section of Getting Started
@@ -204,4 +202,3 @@ Release Notes - Apache YuniKorn - Version 1.7.0
     * [YUNIKORN-3045] - Remove cluster role access for configmaps
     * [YUNIKORN-3072] - Update web dependencies
     * [YUNIKORN-3086] - Update docs to remove deprecated queue metrics
-
