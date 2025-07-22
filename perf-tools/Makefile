@@ -17,7 +17,8 @@
 
 .PHONY: build clean
 
-TARGET_DIR ?= target
+BASE_DIR ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+BUILD_DIR ?= ${BASE_DIR}/build
 BINARY_DIR ?= perf-tools-bin
 BINARY ?= perf-tools
 
@@ -25,15 +26,15 @@ GOOS ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
 
 build: clean
-	@mkdir ${TARGET_DIR}
-	@mkdir ${TARGET_DIR}/${BINARY_DIR}
-	@echo "[Action] mkdir target and bin directory"
-	@CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o ${TARGET_DIR}/${BINARY_DIR}/${BINARY} .
+	@mkdir ${BUILD_DIR}
+	@mkdir ${BUILD_DIR}/${BINARY_DIR}
+	@echo "[Action] mkdir build and bin directory"
+	@CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o ${BUILD_DIR}/${BINARY_DIR}/${BINARY} .
 	@echo "[Action] build binary"
-	@cp conf.yaml ${TARGET_DIR}/${BINARY_DIR}
+	@cp conf.yaml ${BUILD_DIR}/${BINARY_DIR}
 	@echo "[Action] copy binary and conf file to binary directory"
-	@tar -zcvf ${TARGET_DIR}/${BINARY_DIR}.tar.gz -C ${TARGET_DIR} ${BINARY_DIR}
-	@echo "[Action] generate binary package: ${TARGET_DIR}/${BINARY_DIR}.tar.gz"
+	@tar -zcvf ${BUILD_DIR}/${BINARY_DIR}.tar.gz -C ${BUILD_DIR} ${BINARY_DIR}
+	@echo "[Action] generate binary package: ${BUILD_DIR}/${BINARY_DIR}.tar.gz"
 
 clean:
-	@if [ -d "${TARGET_DIR}" ] ; then rm -rf ${TARGET_DIR} && echo "[Action] cleaned target directory" ; fi
+	@if [ -d "${BUILD_DIR}" ] ; then rm -rf ${BUILD_DIR} && echo "[Action] cleaned build directory" ; fi
