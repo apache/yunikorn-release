@@ -1,5 +1,8 @@
 .idea
 .DS_Store
+staging/
 staging/*
 staging/**
 target
+*.swp
+*.tmp
