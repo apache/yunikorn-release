@@ -18,7 +18,7 @@
 .PHONY: build clean
 
 BASE_DIR ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
-BUILD_DIR ?= ${BASE_DIR}/build
+BUILD_DIR ?= ${BASE_DIR}/build/perf-tools
 BINARY_DIR ?= perf-tools-bin
 BINARY ?= perf-tools
 
@@ -26,8 +26,7 @@ GOOS ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
 
 build: clean
-	@mkdir ${BUILD_DIR}
-	@mkdir ${BUILD_DIR}/${BINARY_DIR}
+	@mkdir -p ${BUILD_DIR}/${BINARY_DIR}
 	@echo "[Action] mkdir build and bin directory"
 	@CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o ${BUILD_DIR}/${BINARY_DIR}/${BINARY} .
 	@echo "[Action] build binary"
