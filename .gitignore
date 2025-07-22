@@ -6,3 +6,4 @@ staging/**
 target
 *.swp
 *.tmp
+/build/
