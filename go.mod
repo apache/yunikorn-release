@@ -20,8 +20,6 @@ module github.com/apache/yunikorn-release
 
 go 1.23.0
 
-toolchain go1.23.3
-
 require (
 	github.com/TaoYang526/goutils v0.0.0-20210209083921-039008f0a57d
 	github.com/apache/yunikorn-core v1.6.1
