@@ -4,5 +4,9 @@ staging/
 staging/*
 staging/**
 target
-*.swp
 *.tmp
+.build
+*.swp
+*.a
+/tools/
+/build/

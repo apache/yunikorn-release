@@ -158,71 +158,36 @@ endif
 	fi
 	@echo "  all OK"
 
+.PHONY: perf-tools
+perf-tools:
+	@echo "Running perf-tools"
+	@cd perf-tools && make build
+	@cd ../
+
 # Check that we use pseudo versions in master
 .PHONY: pseudo
 BRANCH := $(shell git branch --show-current)
-SI_REF := $(shell "$(GO)" list -m -f '{{ .Version }}' github.com/apache/yunikorn-scheduler-interface)
-SI_MATCH := $(shell expr "${SI_REF}" : "v0.0.0-")
+SI_REF   := $(shell "$(GO)" list -m -f '{{ .Version }}' github.com/apache/yunikorn-scheduler-interface)
+CORE_REF := $(shell "$(GO)" list -m -f '{{ .Version }}' github.com/apache/yunikorn-core)
+
+SI_MATCH   := $(shell expr "${SI_REF}"   : "v0.0.0-")
+CORE_MATCH := $(shell expr "${CORE_REF}" : "v0.0.0-")
+
+
 pseudo:
 	@echo "pseudo version check"
 	@if [ "${BRANCH}" = "master" ]; then \
-		if [ ${SI_MATCH} -ne 7 ]; then \
+		if [ $(SI_MATCH) -ne 7 ] || [ $(CORE_MATCH) -ne 7 ]; then \
 			echo "YuniKorn references MUST all be pseudo versions:" ; \
-			echo " SI ref: ${SI_REF}" ; \
-			exit 1; \
-		fi \
+			echo "  SI  ref: ${SI_REF}" ; \
+			echo "  Core ref: ${CORE_REF}" ; \
+			exit 1 ; \
+		fi ; \
 	fi
 	@echo "  all OK"
 
 # Build the example binaries for dev and test
-.PHONY: commands
-commands: build/simplescheduler build/schedulerclient build/queueconfigchecker
 
-build/simplescheduler: go.mod go.sum $(shell find cmd pkg)
-	@echo "building example scheduler"
-	@mkdir -p build
-	"$(GO)" build $(RACE) -a -ldflags '-extldflags "-static"' -o build/simplescheduler ./cmd/simplescheduler
-
-build/schedulerclient: go.mod go.sum $(shell find cmd pkg)
-	@echo "building example client"
-	@mkdir -p build
-	"$(GO)" build $(RACE) -a -ldflags '-extldflags "-static"' -o build/schedulerclient ./cmd/schedulerclient
-
-build/queueconfigchecker: go.mod go.sum $(shell find cmd pkg)
-	@echo "building queueconfigchecker"
-	@mkdir -p build
-	"$(GO)" build $(RACE) -a -ldflags '-extldflags "-static"' -o build/queueconfigchecker ./cmd/queueconfigchecker
-
-# Build binaries for dev and test
-.PHONY: build
-build: commands
-
-# Run the tests after building
-.PHONY: test
-test: export DEADLOCK_DETECTION_ENABLED = true
-test: export DEADLOCK_TIMEOUT_SECONDS = 10
-test: export DEADLOCK_EXIT = true
-test:
-	@echo "running unit tests"
-	@mkdir -p build
-	"$(GO)" clean -testcache
-	"$(GO)" test ./... $(RACE) -tags deadlock -coverprofile=build/coverage.txt -covermode=atomic
-	"$(GO)" vet $(REPO)...
-
-# Run benchmarks
-.PHONY: bench
-bench:
-	@echo "running benchmarks"
-	"$(GO)" clean -testcache
-	"$(GO)" test -v -run '^Benchmark' -bench . ./pkg/...
-
-# Generate FSM graphs (dot/png)
-.PHONY: fsm_graph
-fsm_graph:
-	@echo "generating FSM graphs"
-	"$(GO)" clean -testcache
-	"$(GO)" test -tags graphviz -run 'Test.*FsmGraph' ./pkg/scheduler/objects
-	scripts/generate-fsm-graph-images.sh
 
 # Remove generated build artifacts
 .PHONY: clean
