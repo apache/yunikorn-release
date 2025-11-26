@@ -33,4 +33,4 @@ jobs:
         with:
           fetch-depth: 2
       - name: Check license
-        run: ./check_license.sh
+        run: make license-check
