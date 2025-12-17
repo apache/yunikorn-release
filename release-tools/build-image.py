@@ -30,8 +30,7 @@ architecture = {"x86_64": "amd64",
                 "aarch64": "arm64"}
 # Make targets for the shim repo to generate the images
 targets = {"adm_image": "admission",
-           "sched_image": "scheduler",
-           "plugin_image": "scheduler-plugin"}
+           "sched_image": "scheduler"}
 # registry setting passed to Makefile to allow testing of the script
 repository = "apache"
 # authentication info for docker hub
