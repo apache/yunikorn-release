@@ -79,7 +79,6 @@ function run_detail() {
   echo "  Kind cluster config:     ${KIND_CONFIG}"
   echo "  Kubernetes image:        ${KIND_IMAGE}"
   echo "  Registry name:           ${REGISTRY}"
-  echo "  Plugin mode:             ${PLUGIN}"
   echo "  Executable Architecture: ${EXEC_ARCH}"
   echo "  Image Architecture:      ${DOCKER_ARCH}"
 }
@@ -89,17 +88,16 @@ function usage() {
   NAME=$(basename "$0")
   echo "You must enter exactly 1 command line argument"
   echo "  ${NAME} K8s-VERSION"
-  echo "K8s-VERSION: the numeric version of the K8s release, example: 1.22.4"
+  echo "K8s-VERSION: the numeric version of the K8s release, example: 1.33.4"
   echo
   echo "Overrides for settings via shell variables"
-  echo "  REGISTRY=local ${NAME} 1.22.4"
+  echo "  REGISTRY=local ${NAME} 1.33.4"
   echo
   echo "variable names with default values:"
   echo "  VERSION,      default: latest"
   echo "  REGISTRY,     default: 'apache'"
   echo "  KIND_CONFIG,  default: './kind.yaml'"
   echo "  HELMCHART,    default: './helm-charts/yunikorn'"
-  echo "  PLUGIN,       default: 'false'"
   echo "  HOST_ARCH,    default: '$(uname -m)'"
 }
 
@@ -139,7 +137,6 @@ VERSION="${VERSION:-latest}"
 REGISTRY="${REGISTRY:-apache}"
 KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
-PLUGIN="${PLUGIN:-false}"
 # load the docker architecture via make
 eval "$(make -s arch)"
 
@@ -177,12 +174,6 @@ if [ $? -eq 1 ]; then
 	echo "Pre-Loading ${SCHED_IMAGE} image failed, aborting"
   remove_cluster
 fi
-PLUGIN_IMAGE=scheduler-plugin-${DOCKER_ARCH}-${VERSION}
-kind load docker-image "${REGISTRY}"/yunikorn:"${PLUGIN_IMAGE}" --name yk8s >/dev/null 2>&1
-if [ $? -eq 1 ]; then
-	echo "Pre-Loading ${PLUGIN_IMAGE} image failed, aborting"
-  remove_cluster
-fi
 WEB_IMAGE=web-${DOCKER_ARCH}-${VERSION}
 kind load docker-image "${REGISTRY}"/yunikorn:"${WEB_IMAGE}" --name yk8s >/dev/null 2>&1
 if [ $? -eq 1 ]; then
@@ -207,16 +198,13 @@ helm install yunikorn "${HELMCHART}" --namespace yunikorn \
     --set image.repository="${REGISTRY}"/yunikorn \
     --set image.tag="${SCHED_IMAGE}" \
     --set image.pullPolicy=IfNotPresent \
-    --set pluginImage.repository="${REGISTRY}"/yunikorn \
-    --set pluginImage.tag="${PLUGIN_IMAGE}" \
-    --set pluginImage.pullPolicy=IfNotPresent \
     --set admissionController.image.repository="${REGISTRY}"/yunikorn \
     --set admissionController.image.tag="${ADM_IMAGE}" \
     --set admissionController.image.pullPolicy=IfNotPresent \
     --set web.image.repository="${REGISTRY}"/yunikorn \
     --set web.image.tag="${WEB_IMAGE}" \
     --set web.image.pullPolicy=IfNotPresent \
-    --set enableSchedulerPlugin="${PLUGIN}"
+    --set enableSchedulerPlugin="false"
 echo
 echo "Waiting for helm deployment to finish..."
 kubectl wait --for=condition=available --timeout=150s deployment/yunikorn-scheduler -n yunikorn
