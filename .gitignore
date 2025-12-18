@@ -7,3 +7,5 @@ helm-charts/*
 helm-charts/**
 staging/*
 staging/**
+perf-tools/*
+perf-tools/**
