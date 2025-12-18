@@ -32,6 +32,7 @@ Release Notes - Apache YuniKorn - Version 1.8.0
     * [YUNIKORN-3165] - Disable queue UI v2 for release 1.8
     * [YUNIKORN-3166] - update K8s versions in helm chart readme
     * [YUNIKORN-3187] - remove building plugin image from release tool
+    * [YUNIKORN-3189] - Fix release build for the k8shim
 
 
 
