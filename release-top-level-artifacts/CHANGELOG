@@ -15,6 +15,95 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.8.0
+
+** Sub-task
+    * [YUNIKORN-3062] - Refactor restart_changed_config E2E test suite structure
+    * [YUNIKORN-3095] - Add a template processor for cluster loader and node template config files in the framework
+    * [YUNIKORN-3140] - Quota change through preemption config changes
+    * [YUNIKORN-3141] - Evaluate Preemption possibilities through preconditions
+    * [YUNIKORN-3142] - Calculate Preemptable Resource for leaf Queue with same resource types
+    * [YUNIKORN-3143] - Victim ordering and selection
+    * [YUNIKORN-3146] - Preempt victims
+    * [YUNIKORN-3149] - Implement "best effort" approach for preempt victims
+    * [YUNIKORN-3150] - Trigger preemption from scheduling cycle
+    * [YUNIKORN-3155] - Leaf Queue Selection process when parent queue quota lowers
+    * [YUNIKORN-3157] - Calculate Preemptable Resource for leaf Queue with different resource types
+    * [YUNIKORN-3165] - Disable queue UI v2 for release 1.8
+    * [YUNIKORN-3166] - update K8s versions in helm chart readme
+    * [YUNIKORN-3187] - remove building plugin image from release tool
+
+
+
+** Bug
+    * [YUNIKORN-3059] - Remove spark operator from scheduler RBAC
+    * [YUNIKORN-3076] - Web UI Fails to Load Applications for Certain Queues on Heavily Loaded Clusters
+    * [YUNIKORN-3090] - Duplicate labels prometheus metrics
+    * [YUNIKORN-3092] - Reservations can permanently block nodes, leading to preemption failure and a stuck scheduler state
+    * [YUNIKORN-3111] - Limit event size to 1024
+    * [YUNIKORN-3123] - Add retry logic to AssumePod to prevent PV races
+    * [YUNIKORN-3127] - Flaky test TestApplicationHistoryTracking
+    * [YUNIKORN-3129] - Search engine is broken for documentation website
+    * [YUNIKORN-3139] - Preemption throughput constrained by incorrect counter decrement logic
+    * [YUNIKORN-3170] - Upgrade website to React 19
+    * [YUNIKORN-3176] - Update Go compiler in web repo
+    * [YUNIKORN-3177] - Angular CVEs
+
+
+
+** New Feature
+    * [YUNIKORN-656] - LDAP resolver for group resolution
+
+** Improvement
+    * [YUNIKORN-2057] - FindQueueByAppID is slow
+    * [YUNIKORN-2428] - [Umbrella] User and group quota enforcement - Phase 3
+    * [YUNIKORN-2828] - Restore lower table view for allocations in the Applications page
+    * [YUNIKORN-2900] - chore: solve broken anchors
+    * [YUNIKORN-3020] - Add preemption and priority settings example for Restful API doc
+    * [YUNIKORN-3034] - Update go.mod in yunikorn-release
+    * [YUNIKORN-3035] - Add build tool automation to release repo
+    * [YUNIKORN-3060] - Update golangci-lint installation url in Coding Guidelines
+    * [YUNIKORN-3073] - Upgrade webapp to angular 20
+    * [YUNIKORN-3079] - Fix typos/punctuations in docs
+    * [YUNIKORN-3083] - Fix typo in docs
+    * [YUNIKORN-3085] - Fix typo in docs
+    * [YUNIKORN-3099] - Update metric document on behalf of YUNIKORN-2930
+    * [YUNIKORN-3110] - [shim] Inpod-vertical-scaling e2e test enhancement
+    * [YUNIKORN-3115] - Skip scheduling application if too many pods are unschedulable
+    * [YUNIKORN-3116] - Yunikorn CVE fixes
+    * [YUNIKORN-3125] - Show allocation name and resource usage in the core when handling non-YK pods
+    * [YUNIKORN-3131] - Improve DaemonSet preemption diagnostic messages
+    * [YUNIKORN-3135] - Foreign pods: don't send update if resource doesn't change
+    * [YUNIKORN-3138] - Update Go version to 1.25
+    * [YUNIKORN-3148] - Incorrect headroom calculation when collecting outstanding requests
+    * [YUNIKORN-3151] - Remove extra text from license
+    * [YUNIKORN-3188] - Skip ph released allocations in daemon set preemption
+
+
+
+** Task
+    * [YUNIKORN-2929] -  Implement Skip Allocation Check for Unsuccessful Pods
+    * [YUNIKORN-3074] - Upgrade Golangci-lint to version 2.x
+    * [YUNIKORN-3080] - Add branch commits to merge script
+    * [YUNIKORN-3081] - Remove pods get from admission controller cluster role
+    * [YUNIKORN-3087] - Remove deprecated "subsystem metrics" code
+    * [YUNIKORN-3091] - Update K8s dependency to 1.33
+    * [YUNIKORN-3104] - Update the copyright years in NOTICE files to 2025
+    * [YUNIKORN-3107] - Decrease K8s versions in e2e test matrix and disable tests for plugin mode
+    * [YUNIKORN-3108] - Update release documentation to reference new release-tools directory
+    * [YUNIKORN-3114] - change yaml package
+    * [YUNIKORN-3126] - Update the pnpm and angular cli vesions that get  installed
+    * [YUNIKORN-3144] - Update go repro version for image builds
+    * [YUNIKORN-3145] - update go and yunikorn references in release repo
+    * [YUNIKORN-3156] - Update K8s dependency to 1.34
+    * [YUNIKORN-3159] - Update the copyright years in NOTICE files to 2025
+    * [YUNIKORN-3160] - Upgrade to docusaurus 3.9
+    * [YUNIKORN-3161] - Update Go depenedencies for CVE fixes
+    * [YUNIKORN-3162] - Update the website to add new committer Mit Desai
+    * [YUNIKORN-3171] - Upgrade dependencies for yunikorn site
+    * [YUNIKORN-3172] - Web UI: dependency updates for CVEs
+    * [YUNIKORN-3175] - Update core/SI dependency in the shim
+    * [YUNIKORN-3178] - Use linter 2.x in the webapp module
+    * [YUNIKORN-3179] - Upgrade linter to 2.7.0
+    * [YUNIKORN-3181] - dependabot marked high CVE in yunikorn-web
+
