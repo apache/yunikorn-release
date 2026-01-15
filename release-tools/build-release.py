@@ -285,13 +285,12 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     unpack_staging_tarball(staging_dir, tmp_dir, release_name)
     shim_dir = os.path.join(release_dir, "k8shim")
     os.chdir(shim_dir)
-    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'scheduler', 'plugin', 'admission'])
+    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'scheduler', 'admission'])
     if retcode:
         fail("failed to build yunikorn-k8shim (%s)" % arch)
     adm_hash = get_checksum("build/bin/yunikorn-admission-controller", "yunikorn-admission-controller")
     scheduler_hash = get_checksum("build/bin/yunikorn-scheduler", "yunikorn-scheduler")
-    plugin_hash = get_checksum("build/bin/yunikorn-scheduler-plugin", "yunikorn-scheduler-plugin")
-    hash = "\n".join([adm_hash, scheduler_hash, plugin_hash])
+    hash = "\n".join([adm_hash, scheduler_hash])
     os.chdir(staging_dir)
     retcode = subprocess.call(['rm', '-rf', 'tmp'])
     if retcode:
