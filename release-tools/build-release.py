@@ -62,7 +62,7 @@ def build_release(email_address):
     print(" - main version: %s" % version)
     print(" - release package name: %s" % release_package_name)
 
-    staging_dir = os.path.join(os.path.dirname(tools_dir), "staging")
+    staging_dir = os.path.join(os.path.dirname(tools_dir), "build", "staging")
     release_base = os.path.join(staging_dir, release_package_name)
     release_top_path = os.path.join(os.path.dirname(tools_dir), "release-top-level-artifacts")
     helm_chart_path = os.path.join(os.path.dirname(tools_dir), "helm-charts")
