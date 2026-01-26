@@ -20,6 +20,7 @@ Release Notes - Apache YuniKorn - Version 1.8.0
 ** Sub-task
     * [YUNIKORN-3062] - Refactor restart_changed_config E2E test suite structure
     * [YUNIKORN-3095] - Add a template processor for cluster loader and node template config files in the framework
+    * [YUNIKORN-3134] - Create design doc
     * [YUNIKORN-3140] - Quota change through preemption config changes
     * [YUNIKORN-3141] - Evaluate Preemption possibilities through preconditions
     * [YUNIKORN-3142] - Calculate Preemptable Resource for leaf Queue with same resource types
@@ -31,8 +32,15 @@ Release Notes - Apache YuniKorn - Version 1.8.0
     * [YUNIKORN-3157] - Calculate Preemptable Resource for leaf Queue with different resource types
     * [YUNIKORN-3165] - Disable queue UI v2 for release 1.8
     * [YUNIKORN-3166] - update K8s versions in helm chart readme
+    * [YUNIKORN-3167] - Final tagging for 1.8.0
+    * [YUNIKORN-3168] - Release notes for 1.8.0
+    * [YUNIKORN-3169] - Update website for 1.8.0
+    * [YUNIKORN-3182] - Handle queues when some other queue in the same hierarchy in going through preemption
     * [YUNIKORN-3187] - remove building plugin image from release tool
     * [YUNIKORN-3189] - Fix release build for the k8shim
+    * [YUNIKORN-3191] - Remove plugin binary build from release tool
+    * [YUNIKORN-3193] - Separate delay from quota change from preemption delay
+    * [YUNIKORN-3202] - End user documentation for quota preemption
 
 
 
@@ -54,15 +62,19 @@ Release Notes - Apache YuniKorn - Version 1.8.0
 
 ** New Feature
     * [YUNIKORN-656] - LDAP resolver for group resolution
+    * [YUNIKORN-3133] - [Umbrella] Quota change enforcement via preemption
 
 ** Improvement
     * [YUNIKORN-2057] - FindQueueByAppID is slow
     * [YUNIKORN-2428] - [Umbrella] User and group quota enforcement - Phase 3
     * [YUNIKORN-2828] - Restore lower table view for allocations in the Applications page
+    * [YUNIKORN-2872] - Preemption Hardening Phase 2
     * [YUNIKORN-2900] - chore: solve broken anchors
+    * [YUNIKORN-2959] - Roadmap page is not up to date with current release
     * [YUNIKORN-3020] - Add preemption and priority settings example for Restful API doc
     * [YUNIKORN-3034] - Update go.mod in yunikorn-release
     * [YUNIKORN-3035] - Add build tool automation to release repo
+    * [YUNIKORN-3037] - [shim] Update to go 1.23
     * [YUNIKORN-3060] - Update golangci-lint installation url in Coding Guidelines
     * [YUNIKORN-3073] - Upgrade webapp to angular 20
     * [YUNIKORN-3079] - Fix typos/punctuations in docs
@@ -78,7 +90,9 @@ Release Notes - Apache YuniKorn - Version 1.8.0
     * [YUNIKORN-3138] - Update Go version to 1.25
     * [YUNIKORN-3148] - Incorrect headroom calculation when collecting outstanding requests
     * [YUNIKORN-3151] - Remove extra text from license
+    * [YUNIKORN-3153] - Remove SparkOpeartor Resources from RBAC
     * [YUNIKORN-3188] - Skip ph released allocations in daemon set preemption
+    * [YUNIKORN-3190] - Fix race condition occurring between released and preempted allocations
 
 
 
@@ -101,10 +115,12 @@ Release Notes - Apache YuniKorn - Version 1.8.0
     * [YUNIKORN-3160] - Upgrade to docusaurus 3.9
     * [YUNIKORN-3161] - Update Go depenedencies for CVE fixes
     * [YUNIKORN-3162] - Update the website to add new committer Mit Desai
+    * [YUNIKORN-3164] - [UMBRELLA] YuniKorn 1.8.0 release efforts
     * [YUNIKORN-3171] - Upgrade dependencies for yunikorn site
     * [YUNIKORN-3172] - Web UI: dependency updates for CVEs
     * [YUNIKORN-3175] - Update core/SI dependency in the shim
     * [YUNIKORN-3178] - Use linter 2.x in the webapp module
     * [YUNIKORN-3179] - Upgrade linter to 2.7.0
     * [YUNIKORN-3181] - dependabot marked high CVE in yunikorn-web
-
+    * [YUNIKORN-3195] - update angular for security fixes
+    * [YUNIKORN-3198] - CVE: update dependencies for site build
