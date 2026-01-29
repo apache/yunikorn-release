@@ -57,6 +57,7 @@ Release Notes - Apache YuniKorn - Version 1.8.0
     * [YUNIKORN-3170] - Upgrade website to React 19
     * [YUNIKORN-3176] - Update Go compiler in web repo
     * [YUNIKORN-3177] - Angular CVEs
+    * [YUNIKORN-3214] - Web UI not functional in 1.8.0-RC1
 
 
 
