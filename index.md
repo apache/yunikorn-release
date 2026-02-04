@@ -32,7 +32,7 @@ and cloud-native environment. YuniKorn brings a unified, cross-platform, schedul
 of stateless batch workloads and stateful services. 
 
 YuniKorn now supports K8s and can be deployed as a custom K8s scheduler. YuniKorn's architecture design also allows adding different
-shim layer and adopt to different ResourceManager implementation including Apache Hadoop YARN, or any other systems. 
+shim layer and adopt a different ResourceManager implementation including Apache Hadoop YARN, or any other systems. 
 
 ## Feature highlights
 
@@ -48,7 +48,7 @@ Read the complete list of features from [here](https://yunikorn.apache.org/docs/
 
 ## Web UI
 
-YuniKorn has builtin web UIs for queue hierarchies and apps. See below:
+YuniKorn has a builtin web UI for queue hierarchies applications and nodes. See below:
 
 ![Web-UI](https://raw.githubusercontent.com/apache/yunikorn-site/master/docs/assets/yk-ui-screenshots.gif)
 
@@ -87,4 +87,3 @@ YuniKorn has builtin web UIs for queue hierarchies and apps. See below:
 - [Performance](https://yunikorn.apache.org/docs/performance/evaluate_perf_function_with_kubemark)
 - [Get involved](https://yunikorn.apache.org/community/get_involved)
 - [Other resources](https://yunikorn.apache.org/community/events)
-
