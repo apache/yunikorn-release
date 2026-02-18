@@ -122,9 +122,10 @@ goGC: 100
 # Example:
 # yunikornDefaults:
 #   service.placeholderImage: registry.k8s.io/pause:3.7
-#
+#   service.placeholderRunAsUser: 65534
+#   service.placeholderRunAsGroup: 65534
+#   service.placeholderFsGroup: 65534
 yunikornDefaults: {}
-
 # When this flag is true, the admission controller will be installed along with the scheduler.
 # When this flag is false, the admission controller will not be installed.
 # Once the admission controller is installed, all traffic will be routing to yunikorn.
