@@ -22,10 +22,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/yunikorn-release/perf-tools/framework"
-	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"github.com/mitchellh/mapstructure"
 	"go.uber.org/zap"
+
+	"github.com/apache/yunikorn-release/perf-tools/framework"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 )
 
 func LoadScenarioConf(conf *framework.Config, scenarioName string, scenarioConf interface{}) error {

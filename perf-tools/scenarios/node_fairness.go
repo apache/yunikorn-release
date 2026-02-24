@@ -23,13 +23,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/yunikorn-release/perf-tools/constants"
-	"github.com/apache/yunikorn-release/perf-tools/utils"
-	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
+	"go.uber.org/zap"
 	v1 "k8s.io/api/core/v1"
 
+	"github.com/apache/yunikorn-release/perf-tools/constants"
 	"github.com/apache/yunikorn-release/perf-tools/framework"
-	"go.uber.org/zap"
+	"github.com/apache/yunikorn-release/perf-tools/utils"
+	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
 )
 
 const NodeFairnessScenarioName = "node_fairness"
@@ -125,6 +125,7 @@ func (nfs *NodeFairnessScenario) Run(results *utils.Results) {
 			zap.Any("requestResources", requestResources))
 
 		// init app info & app manager
+		// #nosec G115 - This is a false positive, the input is controlled and safe
 		requestInfo := framework.NewRequestInfo(int32(expectedNumPods), "", requestResources, nil)
 		appInfo = framework.NewAppInfo(nfs.commonConf.Namespace, NodeFairnessScenarioName, nfs.commonConf.Queue,
 			[]*framework.RequestInfo{requestInfo}, nfs.commonConf.PodTemplateSpec, nfs.commonConf.PodSpec)
@@ -164,7 +165,7 @@ func (nfs *NodeFairnessScenario) Run(results *utils.Results) {
 			tableOutputName := "output node distribution timeline table"
 			utils.Logger.Info(tableOutputName)
 			table.Print()
-			if err := table.Output(tableFilePath); err != nil {
+			if err = table.Output(tableFilePath); err != nil {
 				schedulerVerification.AddSubVerification(tableOutputName,
 					fmt.Sprintf("failed to output node distribution timeline table: %s", err.Error()),
 					utils.FAILED)

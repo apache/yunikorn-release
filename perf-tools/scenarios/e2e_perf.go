@@ -25,9 +25,10 @@ import (
 	"time"
 
 	"github.com/TaoYang526/goutils/pkg/profiling"
+	"go.uber.org/zap"
+
 	"github.com/apache/yunikorn-release/perf-tools/framework"
 	"github.com/apache/yunikorn-release/perf-tools/utils"
-	"go.uber.org/zap"
 )
 
 const E2EPerfScenarioName = "e2e_perf"
@@ -158,7 +159,7 @@ func (eps *E2EPerfScenario) Run(results *utils.Results) {
 			statsOutputName := "time statistics"
 			stats := prof.GetTimeStatistics()
 			statsTable := ParseTableFromStatistic(stats)
-			if err := statsTable.Output(statsTableFilePath); err != nil {
+			if err = statsTable.Output(statsTableFilePath); err != nil {
 				caseVerification.AddSubVerification(statsOutputName,
 					fmt.Sprintf("failed to output %s: %s", statsOutputName, err.Error()),
 					utils.FAILED)
@@ -170,14 +171,15 @@ func (eps *E2EPerfScenario) Run(results *utils.Results) {
 			qpsStatsTableFilePath := fmt.Sprintf("%s/%s-case%d-qps-stat.txt",
 				eps.commonConf.OutputPath, eps.GetName(), caseIndex)
 			qpsStatsOutputName := "QPS statistics"
-			qpsStat, err := prof.GetQPSStatistics()
+			var qpsStat *profiling.QPSStatistics
+			qpsStat, err = prof.GetQPSStatistics()
 			if err != nil {
 				caseVerification.AddSubVerification(qpsStatsOutputName,
 					fmt.Sprintf("failed to output %s: %s", qpsStatsOutputName, err.Error()),
 					utils.FAILED)
 			}
 			qpsStatsTable := ParseTableFromQPSStatistics(qpsStat, framework.GetOrderedTaskConditionTypes())
-			if err := qpsStatsTable.Output(qpsStatsTableFilePath); err != nil {
+			if err = qpsStatsTable.Output(qpsStatsTableFilePath); err != nil {
 				caseVerification.AddSubVerification(qpsStatsOutputName,
 					fmt.Sprintf("failed to output %s: %s", qpsStatsOutputName, err.Error()),
 					utils.FAILED)

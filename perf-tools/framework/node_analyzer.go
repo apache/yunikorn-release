@@ -21,12 +21,14 @@ package framework
 import (
 	"fmt"
 
-	"github.com/apache/yunikorn-core/pkg/common/resources"
-	"github.com/apache/yunikorn-release/perf-tools/utils"
-	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
 	"go.uber.org/zap"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/apache/yunikorn-core/pkg/common/resources"
+	siCommon "github.com/apache/yunikorn-scheduler-interface/lib/go/common"
+
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 )
 
 type NodeAnalyzer struct {
@@ -145,6 +147,7 @@ func (na *NodeAnalyzer) GetNodeResourceDistribution(tasksDistribution [][]*TaskS
 		// calculate current distribution
 		bucketsInThisSecond := calculateResourceDistribution(nodeResources)
 		for level, num := range bucketsInThisSecond {
+			// #nosec G602 -- level is guaranteed to be in [0,9] by calculateResourceDistribution function
 			buckets[level] = append(buckets[level], num)
 		}
 	}
@@ -162,7 +165,7 @@ func calculateResourceDistribution(resources map[string][]int64) [10]int {
 			}
 			buckets[bucketIndex] += 1
 		} else {
-			panic(fmt.Errorf("Error resources: %+v ", resourceValues))
+			panic(fmt.Errorf("error resources: %+v ", resourceValues))
 		}
 	}
 	return buckets

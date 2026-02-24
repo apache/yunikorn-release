@@ -48,12 +48,12 @@ type CommonConfig struct {
 func InitConfig(configFile string) (*Config, error) {
 	yamlContent, err := os.ReadFile(configFile)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read config file: %s ", err.Error())
+		return nil, fmt.Errorf("failed to read config file: %s ", err.Error())
 	}
 	conf := Config{}
 	err = yaml.Unmarshal(yamlContent, &conf)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse config file: %s ", err.Error())
+		return nil, fmt.Errorf("failed to parse config file: %s ", err.Error())
 	}
 	return &conf, nil
 }

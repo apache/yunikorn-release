@@ -22,10 +22,11 @@ import (
 	"fmt"
 	"time"
 
+	"go.uber.org/zap"
+
 	"github.com/apache/yunikorn-release/perf-tools/constants"
 	"github.com/apache/yunikorn-release/perf-tools/framework"
 	"github.com/apache/yunikorn-release/perf-tools/utils"
-	"go.uber.org/zap"
 )
 
 const ThroughputScenarioName = "throughput"

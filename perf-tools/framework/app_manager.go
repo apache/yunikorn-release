@@ -109,7 +109,7 @@ func (dam *DeploymentsAppManager) Create(schedulerName string, appInfo *AppInfo)
 							constants.LabelAppID: appInfo.AppID,
 							constants.LabelQueue: appInfo.Queue,
 						},
-						Annotations: appInfo.PodTemplateSpec.ObjectMeta.Annotations,
+						Annotations: appInfo.PodTemplateSpec.Annotations,
 					},
 					Spec: apiv1.PodSpec{
 						SchedulerName: schedulerName,

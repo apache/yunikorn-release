@@ -23,8 +23,9 @@ import (
 	"sort"
 
 	"github.com/TaoYang526/goutils/pkg/profiling"
-	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"go.uber.org/zap"
+
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 )
 
 type AppAnalyzer struct {
@@ -122,7 +123,7 @@ func (aa *AppAnalyzer) GetTasksProfiling() profiling.Profiling {
 		for _, cond := range ts.Conditions {
 			prof.AddCheckpointWithTime(string(cond.CondType), cond.TransitionTime)
 		}
-		//lastCondTime := ts.Conditions[len(ts.Conditions)-1].TransitionTime
+		// lastCondTime := ts.Conditions[len(ts.Conditions)-1].TransitionTime
 		prof.FinishExecutionWithTime(true, endTime)
 	}
 	return prof
