@@ -41,9 +41,9 @@ type KubeClient struct {
 	configs   *rest.Config
 }
 
-func NewKubeClient(KubeConfigFile string) (*KubeClient, error) {
-	kubeConfigFile := os.ExpandEnv(KubeConfigFile)
-	fmt.Println(KubeConfigFile)
+func NewKubeClient(kubeConfigFilePath string) (*KubeClient, error) {
+	fmt.Println(kubeConfigFilePath)
+	kubeConfigFile := os.ExpandEnv(kubeConfigFilePath)
 	if kubeConfigFile == "" {
 		return nil, fmt.Errorf("specified kubeconfig file %s not found", kubeConfigFile)
 	}

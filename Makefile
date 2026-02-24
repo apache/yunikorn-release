@@ -98,7 +98,7 @@ endif
 endif
 
 # golangci-lint
-GOLANGCI_LINT_VERSION=1.63.4
+GOLANGCI_LINT_VERSION=2.10.1
 GOLANGCI_LINT_PATH=$(TOOLS_DIR)/golangci-lint-v$(GOLANGCI_LINT_VERSION)
 GOLANGCI_LINT_BIN=$(GOLANGCI_LINT_PATH)/golangci-lint
 GOLANGCI_LINT_ARCHIVE=golangci-lint-$(GOLANGCI_LINT_VERSION)-$(OS)-$(EXEC_ARCH).tar.gz
@@ -124,6 +124,14 @@ $(GOLANGCI_LINT_BIN):
 	@mkdir -p "$(GOLANGCI_LINT_PATH)"
 	@curl -sSfL "https://github.com/golangci/golangci-lint/releases/download/v$(GOLANGCI_LINT_VERSION)/$(GOLANGCI_LINT_ARCHIVE)" \
 		| tar -x -z --strip-components=1 -C "$(GOLANGCI_LINT_PATH)" "$(GOLANGCI_LINT_ARCHIVEBASE)/golangci-lint"
+
+.PHONY: format
+# Run go fmt and goimports
+format:
+	@echo "running go fmt"
+	@"$(GO)" fmt ./...
+	go install golang.org/x/tools/cmd/goimports@latest
+	goimports -local "github.com/apache/yunikorn-core,github.com/apache/yunikorn-scheduler,github.com/apache/yunikorn-release" -w .
 
 .PHONY: lint
 # Run lint against the previous commit for PR and branch build

@@ -21,8 +21,9 @@ package utils
 import (
 	"strconv"
 
-	"github.com/apache/yunikorn-core/pkg/log"
 	"go.uber.org/zap"
+
+	"github.com/apache/yunikorn-core/pkg/log"
 )
 
 var Logger *zap.Logger = log.Log(log.Test)

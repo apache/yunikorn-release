@@ -19,8 +19,9 @@
 package framework
 
 import (
-	"github.com/apache/yunikorn-release/perf-tools/utils"
 	"go.uber.org/zap"
+
+	"github.com/apache/yunikorn-release/perf-tools/utils"
 )
 
 type TestScenarios struct {

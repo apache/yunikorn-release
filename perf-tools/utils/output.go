@@ -144,7 +144,7 @@ func (vg *Verification) AddSubVerification(name, description string, status Veri
 			parentVer = parentVer.Parent
 		}
 	}
-	//Logger.Info(getVerificationStatusInfo(subVerification))
+	// Logger.Info(getVerificationStatusInfo(subVerification))
 	return subVerification
 }
 
