@@ -57,7 +57,7 @@ admissionController:
     limits:
       cpu: 500m
       memory: 500Mi
-  goMemoryLimit: 200MiB
+  goMemoryLimitPercentage: 60
   goGC: 100
   nodeSelector: {}
   tolerations: []
@@ -83,7 +83,7 @@ web:
     limits:
       cpu: 200m
       memory: 500Mi
-  goMemoryLimit: 200MiB
+  goMemoryLimitPercentage: 60
   goGC: 100
 
 service:
@@ -109,9 +109,9 @@ resources:
     cpu: 4
     memory: 2Gi
 
-# Go memory limit (GOMEMLIMIT) for the scheduler. This should be updated in tandem with
-# resources.limits.memory to avoid OOMKilled scenarios.
-goMemoryLimit: 1536MiB
+# Percentage of the real memory limit of the container to which the GOMEMLIMIT variable is set
+# GOMEMLIMIT variable sets a soft memory limit for the runtime to use in GC runs.
+goMemoryLimitPercentage: 80
 
 # Go garbage-collection threshold (GOGC) as a percentage of freshly allocated data to
 # live data remaining after the previous GC.
