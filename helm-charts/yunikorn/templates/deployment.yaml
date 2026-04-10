@@ -98,7 +98,13 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: GOMEMLIMIT
+              {{- if .Values.goMemoryLimitPercentage }}
+              {{- with include "yunikorn.goMemLimit" .Values }}
+              value: {{ quote . }}
+              {{- end }}
+              {{- else }}
               value: "{{ .Values.goMemoryLimit }}"
+              {{- end }}
             - name: GOGC
               value: "{{ .Values.goGC }}"
           resources:
@@ -117,7 +123,13 @@ spec:
               protocol: TCP
           env:
             - name: GOMEMLIMIT
+              {{- if .Values.web.goMemoryLimitPercentage }}
+              {{- with include "yunikorn.goMemLimit" .Values.web }}
+              value: {{ quote . }}
+              {{- end }}
+              {{- else }}
               value: "{{ .Values.web.goMemoryLimit }}"
+              {{- end }}
             - name: GOGC
               value: "{{ .Values.web.goGC }}"
           resources:

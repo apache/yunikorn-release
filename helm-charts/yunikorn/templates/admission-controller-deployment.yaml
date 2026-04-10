@@ -106,7 +106,13 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: GOMEMLIMIT
+            {{- if .Values.admissionController.goMemoryLimitPercentage }}
+            {{- with include "yunikorn.goMemLimit" .Values.admissionController }}
+              value: {{ quote . }}
+            {{- end }}
+            {{- else }}
               value: "{{ .Values.admissionController.goMemoryLimit }}"
+            {{- end }}
             - name: GOGC
               value: "{{ .Values.admissionController.goGC }}"
           ports:
