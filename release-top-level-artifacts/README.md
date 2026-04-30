@@ -53,7 +53,6 @@ For details on how to change the architectures see the processing of `HOST_ARCH`
 
 The command will generate the following four docker images in the local docker repository:
 * apache/yunikorn:scheduler-_amd64_-latest
-* apache/yunikorn:scheduler-plugin-_amd64_-latest
 * apache/yunikorn:admission-_amd64_-latest
 * apache/yunikorn:web-_amd64_-latest
 
