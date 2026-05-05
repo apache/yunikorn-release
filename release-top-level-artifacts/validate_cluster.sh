@@ -203,8 +203,7 @@ helm install yunikorn "${HELMCHART}" --namespace yunikorn \
     --set admissionController.image.pullPolicy=IfNotPresent \
     --set web.image.repository="${REGISTRY}"/yunikorn \
     --set web.image.tag="${WEB_IMAGE}" \
-    --set web.image.pullPolicy=IfNotPresent \
-    --set enableSchedulerPlugin="false"
+    --set web.image.pullPolicy=IfNotPresent
 echo
 echo "Waiting for helm deployment to finish..."
 kubectl wait --for=condition=available --timeout=150s deployment/yunikorn-scheduler -n yunikorn

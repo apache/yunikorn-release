@@ -72,9 +72,6 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `image.repository`                              | Scheduler image repository                                                                            | `apache/yunikorn`               |
 | `image.tag`                                     | Scheduler image tag                                                                                   | `scheduler-latest`              |
 | `image.pullPolicy`                              | Scheduler image pull policy                                                                           | `Always`                        |
-| `pluginImage.repository`                        | Scheduler plugin image repository                                                                     | `apache/yunikorn`               |
-| `pluginImage.tag`                               | Scheduler plugin image tag                                                                            | `scheduler-plugin-latest`       |
-| `pluginImage.pullPolicy`                        | Scheduler plugin image pull policy                                                                    | `Always`                        |
 | `podLabels`                                     | Scheduler pod labels                                                                                  | `{}`                            |
 | `podAnnotations`                                | Scheduler pod annotations                                                                             | `{}`                            |
 | `admissionController.podLabels`                 | Admission controller pod labels                                                                       | `{}`                            |
@@ -116,7 +113,6 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `web.goMemoryLimitPercentage`                   | Percentage to calculate the GOMEMLIMIT value with based on the container's `resources.limits.memory`  | `60`                            |
 | `web.goGC`                                      | Web app GC threshold (GOGC)                                                                           | `100`                           |
 | `embedAdmissionController`                      | Flag for enabling/disabling the admission controller                                                  | `true`                          |
-| `enableSchedulerPlugin`                         | Flag for enabling/disabling scheduler plugin mode                                                     | `false`                         |
 | `enableWebService`                              | Flag for enabling/disabling web service                                                               | `true`                          |
 | `nodeSelector`                                  | Scheduler deployment nodeSelector(s)                                                                  | `{}`                            |
 | `tolerations`                                   | Scheduler deployment tolerations                                                                      | `[]`                            |

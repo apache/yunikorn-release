@@ -28,11 +28,6 @@ image:
   tag: scheduler-latest
   pullPolicy: Always
 
-pluginImage:
-  repository: apache/yunikorn
-  tag: scheduler-plugin-latest
-  pullPolicy: Always
-
 nodeSelector: {}
 tolerations: []
 affinity: {}
@@ -130,10 +125,6 @@ yunikornDefaults: {}
 # When this flag is false, the admission controller will not be installed.
 # Once the admission controller is installed, all traffic will be routing to yunikorn.
 embedAdmissionController: true
-
-# When this flag is true, the scheduler will be deployed as Kubernetes scheduler plugin.
-# When this flag is false, the scheduler will be deployed as a standalone scheduler.
-enableSchedulerPlugin: false
 
 # When this flag is true, the web service will be deployed.
 # When this flag is false, the web service will not be deployed.
