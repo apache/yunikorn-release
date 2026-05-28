@@ -37,13 +37,12 @@ github:
     projects: false
 
   rulesets:
-    - name: "Default Branch Protection"
+    - name: "Branch Protection"
       type: branch
       branches:
         includes:
           - "~DEFAULT_BRANCH"
-          - "release/*"
-          - "rel/*"
+          - "branch-*"
         excludes: []
       bypass_teams:
         - root
