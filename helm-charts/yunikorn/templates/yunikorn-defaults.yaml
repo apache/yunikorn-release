@@ -26,43 +26,8 @@ metadata:
   annotations:
     "helm.sh/resource-policy": keep
 data:
-{{- if .Values.operatorPlugins }}
-{{- if not (get .Values.yunikornDefaults "operatorPlugins") }}
-  service.operatorPlugins: "{{.Values.operatorPlugins}}"
-{{- end }}
-{{- end }}
-{{- if .Values.placeHolderImage }}
-{{- if not (get .Values.yunikornDefaults "service.placeholderImage") }}
-  service.placeholderImage: "{{ .Values.placeHolderImage }}"
-{{- end }}
-{{- end }}
-{{- if .Values.admissionController.processNamespaces }}
-{{- if not (get .Values.yunikornDefaults "admissionController.filtering.processNamespaces") }}
-  admissionController.filtering.processNamespaces: "{{ .Values.admissionController.processNamespaces }}"
-{{- end }}
-{{- end }}
-{{- if .Values.admissionController.bypassNamespaces }}
-{{- if not (get .Values.yunikornDefaults "admissionController.filtering.bypassNamespaces") }}
-  admissionController.filtering.bypassNamespaces: "{{ .Values.admissionController.bypassNamespaces }}"
-{{- end }}
-{{- end }}
-{{- if .Values.admissionController.labelNamespaces }}
-{{- if not (get .Values.yunikornDefaults "admissionController.filtering.labelNamespaces") }}
-  admissionController.filtering.labelNamespaces: "{{ .Values.admissionController.labelNamespaces }}"
-{{- end }}
-{{- end }}
-{{- if .Values.admissionController.noLabelNamespaces }}
-{{- if not (get .Values.yunikornDefaults "admissionController.filtering.noLabelNamespaces") }}
-  admissionController.filtering.noLabelNamespaces: "{{ .Values.admissionController.noLabelNamespaces }}"
-{{- end }}
-{{- end }}
-{{- if .Values.configuration }}
-{{- if not (get .Values.yunikornDefaults "queues.yaml") }}
-  queues.yaml: {{quote .Values.configuration}}
-{{- end }}
-{{- end }}
 {{- if .Values.yunikornDefaults }}
 {{- range $key, $val := .Values.yunikornDefaults }}
-  "{{ $key }}": {{quote $val }}
+  "{{ $key }}": {{ quote $val }}
 {{- end }}
 {{- end }}

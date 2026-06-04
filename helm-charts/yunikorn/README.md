@@ -54,6 +54,7 @@ YuniKorn can be deployed with [helm-charts](https://artifacthub.io/packages/helm
 | 1.32.x              |    √     |
 | 1.33.x              |    √     |
 | 1.34.x              |    √     |
+| 1.35.x              |    √     |
 
 ## Installing the chart
 ```
@@ -125,20 +126,6 @@ These parameters can be passed in via helm's `--set` and `--values (-f)` options
 In addition to these parameters, YuniKorn supports reading most of its runtime configuration directly from two ConfigMaps in the installed namespace: `yunikorn-defaults` and `yunikorn-configs`. The `yunikorn-defaults` ConfigMap is rendered by Helm based on the contents of the `yunikornDefaults` parameter. The `yunikorn-configs` ConfigMap is entirely ignored by Helm, and can be populated (or not) using external mechanisms. At runtime, YuniKorn will evaluate both ConfigMaps, using the contents of `yunikorn-configs` as an override to `yunikorn-defaults`.
 
 ## Deprecated Configuration
-The following configuration parameters are deprecated and will be ignored in a future release of YuniKorn:
-
-| Parameter                               | Description                                         | Replacement                                                       |
-|-----------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------|
-| `operatorPlugins`                       | Scheduler operator plugins                          | `service.operatorPlugins` ConfigMap entry                         |
-| `placeholderImage`                      | Docker image of the placeholder pods                | `service.placeholderImage` ConfigMap entry                        |
-| `admissionController.processNamespaces` | List of namespace regexes to process (empty=ALL)    | `admissionController.filtering.processNamespaces` ConfigMap entry |
-| `admissionController.bypassNamespaces`  | List of namespace regexes to bypass (empty=NONE)    | `admissionController.filtering.bypassNamespaces` ConfigMap entry  |
-| `admissionController.labelNamespaces`   | List of namespace regexes to label (empty=ALL)      | `admissionController.filtering.labelNamespaces` ConfigMap entry   |
-| `admissionController.noLabelNamespaces` | List of namespace regexes not to label (empty=NONE) | `admissionController.filtering.noLabelNamespaces` ConfigMap entry |
-| `configuration`                         | YAML-formatted queue configuration                  | `queues.yaml` ConfigMap entry                                     |
-
-Currently, if both the deprecated parameter and the replacement ConfigMap entry are specified, the ConfigMap entry will take precedence.
-
 The following settings have been deprecated. The new percentage based settings have precedence over the deprecated settings.
 The deprecated settings will only be used as a fallback if the new percentage based settings are not present.
 

@@ -32,10 +32,6 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
-configuration: null    # deprecated; use queues.yaml in yunikornDefaults
-operatorPlugins: null  # deprecated; use service.operatorPlugins in yunikornDefaults
-placeHolderImage: null # deprecated; use service.placeholderImage in yunikornDefaults
-
 admissionController:
   priorityClassName: ""
   image:
@@ -59,10 +55,6 @@ admissionController:
   affinity: {}
   service:
     type: ClusterIP
-  processNamespaces: null # deprecated; use admissionController.filtering.processNamespaces in yunikornDefaults
-  bypassNamespaces: null  # deprecated; use admissionController.filtering.bypassNamespaces in yunikornDefaults
-  labelNamespaces: null   # deprecated; use admissionController.filtering.labelNamespaces in yunikornDefaults
-  noLabelNamespaces: null # deprecated; use admissionController.filtering.noLabelNamespaces in yunikornDefaults
   podLabels: {}
   podAnnotations: {}
 
@@ -120,7 +112,12 @@ goGC: 100
 #   service.placeholderRunAsUser: 65534
 #   service.placeholderRunAsGroup: 65534
 #   service.placeholderFsGroup: 65534
+#   admissionController.filtering.processNamespaces: "example"
+#   admissionController.filtering.bypassNamespaces: "kube-system"
+#   admissionController.filtering.labelNamespaces
+#   admissionController.filtering.noLabelNamespaces
 yunikornDefaults: {}
+
 # When this flag is true, the admission controller will be installed along with the scheduler.
 # When this flag is false, the admission controller will not be installed.
 # Once the admission controller is installed, all traffic will be routing to yunikorn.
