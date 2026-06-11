@@ -75,7 +75,7 @@ def load_config():
         fail("load config: repository list not found")
     repo_list = data["repositories"]
 
-    staging_dir = os.path.join(os.path.dirname(tools_dir), "staging")
+    staging_dir = os.path.join(os.path.dirname(tools_dir), "build", "staging")
     release_base = os.path.join(staging_dir, release_package_name)
 
     print("release meta info:")
