@@ -77,7 +77,11 @@ func (na *NodeAnalyzer) InitNodeInfosBeforeTesting() error {
 // so this should be called only if necessary!
 func (na *NodeAnalyzer) CalculateAllocatedResource() {
 	utils.Logger.Info("start loading all pods for calculating allocated resource")
-	podList, _ := na.kubeClient.GetPods("", utils.GetEverythingListOptions())
+	podList, err := na.kubeClient.GetPods("", utils.GetEverythingListOptions())
+	if err != nil {
+		utils.Logger.Error("GetPods error", zap.Error(err))
+		return
+	}
 	utils.Logger.Info(fmt.Sprintf("loaded %d pods", len(podList.Items)))
 	for _, pod := range podList.Items {
 		if pod.Spec.NodeName == "" {

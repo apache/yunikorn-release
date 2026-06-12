@@ -66,7 +66,7 @@ function leave() {
 }
 
 # prompt for a continue response
-function continue() {
+function continueFn() {
   PS3=$1
   echo "$2"
   select _ in "yes" "no"; do
@@ -81,7 +81,7 @@ function continue() {
 
 # check the jira reference
 function check_jira() {
-  if ! grep -q '^\[YUNIKORN-[0-9]\+]' <<< $(echo $1)
+  if ! grep -q '^\[YUNIKORN-[0-9]\+]' <<< "$1"
   then
     echo "Subject does not contain a jira reference."
     echo "The subject line of the commit must follow the pattern:"
@@ -93,7 +93,7 @@ function check_jira() {
     echo "$1"
     echo "---"
     echo "Please fix the subject during the commit, press any key to continue"
-    read -n 1
+    read -r -n 1
   fi
 }
 
@@ -177,12 +177,12 @@ fi
 # merge the PR
 if ! git merge --squash "${PRBRANCH}"
 then
-  if ! continue "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
+  if ! continueFn "manually fix merge conflicts? " "Merge failed, conflict must be resolved before continuing"
   then
     echo "aborting"
     abort
   fi
-  if ! continue "continue? " "Please fix any conflicts and 'git add' conflicting files..."
+  if ! continueFn "continue? " "Please fix any conflicts and 'git add' conflicting files..."
   then
     echo "aborting"
     abort
@@ -228,7 +228,7 @@ if [ -n "${CONFLICT}" ]; then
 fi
 echo " committer:"$'\t'"${SIGNED}"
 
-if ! continue "Commit changes? " ""
+if ! continueFn "Commit changes? " ""
 then
   echo "aborting before commit"
   abort
@@ -241,7 +241,7 @@ then
   abort
 fi
 
-if continue "push change to ${COMMITBRANCH}? " "Merge completed local ref: ${MERGEBRANCH}"
+if continueFn "push change to ${COMMITBRANCH}? " "Merge completed local ref: ${MERGEBRANCH}"
 then
   if ! git push "${REMOTE}" "${MERGEBRANCH}":"${COMMITBRANCH}"
   then

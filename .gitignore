@@ -1,12 +1,7 @@
 .idea
 .DS_Store
-staging/
-staging/*
-staging/**
-target
 *.tmp
-.build
 *.swp
 *.a
-/tools/
-/build/
+tools/
+build/

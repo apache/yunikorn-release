@@ -53,10 +53,10 @@ type DeploymentsAppManager struct {
 }
 
 func NewDeploymentsAppManager(kubeClient *utils.KubeClient) AppManager {
-	regexp, _ := regexp.Compile(`[_\W]`)
+	regex := regexp.MustCompile(`[_\W]`)
 	return &DeploymentsAppManager{
 		kubeClient: kubeClient,
-		nameRegexp: regexp,
+		nameRegexp: regex,
 	}
 }
 

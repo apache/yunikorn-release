@@ -66,6 +66,7 @@ func (ts *E2EPerfScenario) Init(kubeClient *utils.KubeClient, conf *framework.Co
 	return LoadScenarioConf(conf, ts.GetName(), ts.scenarioConf)
 }
 
+//nolint:funlen
 func (eps *E2EPerfScenario) Run(results *utils.Results) {
 	scenarioResults := results.CreateScenarioResults(eps.GetName())
 	maxWaitTime := time.Duration(eps.commonConf.MaxWaitSeconds) * time.Second

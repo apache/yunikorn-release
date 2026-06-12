@@ -15,6 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+.PHONY: lint check_scripts license-check helm_lint
+.PHONY: perf-tools tools clean distclean
+
 # Check if this GO tools version used is at least the version of go specified in
 # the go.mod file. The version in go.mod should be in sync with other repos.
 
@@ -41,7 +44,8 @@ endif
 
 # Make sure we are in the same directory as the Makefile
 BASE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-TOOLS_DIR=tools
+TOOLS_DIR := tools
+BUILD_DIR := build
 
 # Force Go modules even when checked out inside GOPATH
 GO111MODULE := on
@@ -101,15 +105,23 @@ endif
 GOLANGCI_LINT_VERSION=2.10.1
 GOLANGCI_LINT_PATH=$(TOOLS_DIR)/golangci-lint-v$(GOLANGCI_LINT_VERSION)
 GOLANGCI_LINT_BIN=$(GOLANGCI_LINT_PATH)/golangci-lint
-GOLANGCI_LINT_ARCHIVE=golangci-lint-$(GOLANGCI_LINT_VERSION)-$(OS)-$(EXEC_ARCH).tar.gz
 GOLANGCI_LINT_ARCHIVEBASE=golangci-lint-$(GOLANGCI_LINT_VERSION)-$(OS)-$(EXEC_ARCH)
+GOLANGCI_LINT_ARCHIVE=$(GOLANGCI_LINT_ARCHIVEBASE).tar.gz
+
+# helm
+HELM_VERSION=v3.12.1
+HELM_PATH=$(TOOLS_DIR)/helm-$(HELM_VERSION)
+HELM_BIN=$(HELM_PATH)/helm
+HELM_ARCHIVE=helm-$(HELM_VERSION)-$(OS)-$(EXEC_ARCH).tar.gz
+HELM_ARCHIVE_BASE=$(OS)-$(EXEC_ARCH)
 
 all:
-	$(MAKE) -C $(dir $(BASE_DIR)) build
+	$(MAKE) -C $(dir $(BASE_DIR)) test_all
+
+test_all: license-check check_scripts lint helm_lint
 
 # Install tools
-.PHONY: tools
-tools: $(SHELLCHECK_BIN) $(GOLANGCI_LINT_BIN)
+tools: $(SHELLCHECK_BIN) $(GOLANGCI_LINT_BIN) $(HELM_BIN)
 
 # Install shellcheck
 $(SHELLCHECK_BIN):
@@ -118,6 +130,13 @@ $(SHELLCHECK_BIN):
 	@curl -sSfL "https://github.com/koalaman/shellcheck/releases/download/$(SHELLCHECK_VERSION)/$(SHELLCHECK_ARCHIVE)" \
 		| tar -x -J --strip-components=1 -C "$(SHELLCHECK_PATH)" "shellcheck-$(SHELLCHECK_VERSION)/shellcheck"
 
+# Install helm
+$(HELM_BIN):
+	@echo "installing helm $(HELM_VERSION)"
+	@mkdir -p "$(HELM_PATH)"
+	@curl -sSfL "https://get.helm.sh/$(HELM_ARCHIVE)" \
+		| tar -x -z --strip-components=1 -C "$(HELM_PATH)" "$(HELM_ARCHIVE_BASE)/helm"
+
 # Install golangci-lint
 $(GOLANGCI_LINT_BIN):
 	@echo "installing golangci-lint v$(GOLANGCI_LINT_VERSION)"
@@ -125,88 +144,55 @@ $(GOLANGCI_LINT_BIN):
 	@curl -sSfL "https://github.com/golangci/golangci-lint/releases/download/v$(GOLANGCI_LINT_VERSION)/$(GOLANGCI_LINT_ARCHIVE)" \
 		| tar -x -z --strip-components=1 -C "$(GOLANGCI_LINT_PATH)" "$(GOLANGCI_LINT_ARCHIVEBASE)/golangci-lint"
 
-.PHONY: format
-# Run go fmt and goimports
-format:
-	@echo "running go fmt"
-	@"$(GO)" fmt ./...
-	go install golang.org/x/tools/cmd/goimports@latest
-	goimports -local "github.com/apache/yunikorn-core,github.com/apache/yunikorn-scheduler,github.com/apache/yunikorn-release" -w .
-
-.PHONY: lint
 # Run lint against the previous commit for PR and branch build
 # In dev setup look at all changes on top of master
 lint: $(GOLANGCI_LINT_BIN)
 	@echo "running golangci-lint"
 	@"${GOLANGCI_LINT_BIN}" run
 
+CHART_DIR := helm-charts/yunikorn
+helm_lint: $(HELM_BIN)
+	@echo "running helm lint"
+	@"$(HELM_BIN)" lint "${CHART_DIR}" -f "${CHART_DIR}/values.yaml"
+
 # Check scripts
-.PHONY: check_scripts
-ALLSCRIPTS := $(shell find . -not \( -path ./tools -prune \) -not \( -path ./build -prune \) -name '*.sh')
+ALLSCRIPTS := $(shell find . -not \( -path ./"${TOOLS_DIR}" -prune \) -not \( -path ./"${BUILD_DIR}" -prune \) -name '*.sh')
 check_scripts: $(SHELLCHECK_BIN)
 	@echo "running shellcheck"
 	@"$(SHELLCHECK_BIN)" ${ALLSCRIPTS}
 
-.PHONY: license-check
 # This is a bit convoluted but using a recursive grep on linux fails to write anything when run
 # from the Makefile. That caused the pull-request license check run from the github action to
 # always pass. The syntax for find is slightly different too but that at least works in a similar
 # way on both Mac and Linux. Excluding all .git* files from the checks.
+LICENSE_CHECK_OUT := $(BUILD_DIR)/license-check.txt
 license-check:
 	@echo "checking license headers:"
 ifeq (darwin,$(OS))
-	$(shell mkdir -p build && find -E . -not \( -path './.git*' -prune \) -not \( -path ./build -prune \) -not \( -path ./tools -prune \) -regex ".*\.(go|sh|md|yaml|yml|mod)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > build/license-check.txt)
+	$(shell mkdir -p "${BUILD_DIR}" && find -E . -not \( -path './.git*' -prune \) -not \( -path ./"${BUILD_DIR}" -prune \) -not \( -path ./"${TOOLS_DIR}" -prune \) -regex ".*\.(go|sh|md|yaml|yml|mod)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > "${LICENSE_CHECK_OUT}")
 else
-	$(shell mkdir -p build && find . -not \( -path './.git*' -prune \) -not \( -path ./build -prune \) -not \( -path ./tools -prune \) -regex ".*\.\(go\|sh\|md\|yaml\|yml\|mod\)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > build/license-check.txt)
+	$(shell mkdir -p "${BUILD_DIR}" && find . -not \( -path './.git*' -prune \) -not \( -path ./"${BUILD_DIR}" -prune \) -not \( -path ./"${TOOLS_DIR}" -prune \) -regex ".*\.\(go\|sh\|md\|yaml\|yml\|mod\)" -exec grep -L "Licensed to the Apache Software Foundation" {} \; > "${LICENSE_CHECK_OUT}")
 endif
-	@if [ -s "build/license-check.txt" ]; then \
+	@if [ -s "${LICENSE_CHECK_OUT}" ]; then \
 		echo "following files are missing license header:" ; \
-		cat build/license-check.txt ; \
+		cat "${LICENSE_CHECK_OUT}" ; \
 		exit 1; \
 	fi
 	@echo "  all OK"
 
-.PHONY: perf-tools
 perf-tools:
 	@echo "Running perf-tools"
 	@cd perf-tools && make build
 	@cd ../
 
-# Check that we use pseudo versions in master
-.PHONY: pseudo
-BRANCH := $(shell git branch --show-current)
-SI_REF   := $(shell "$(GO)" list -m -f '{{ .Version }}' github.com/apache/yunikorn-scheduler-interface)
-CORE_REF := $(shell "$(GO)" list -m -f '{{ .Version }}' github.com/apache/yunikorn-core)
-
-SI_MATCH   := $(shell expr "${SI_REF}"   : "v0.0.0-")
-CORE_MATCH := $(shell expr "${CORE_REF}" : "v0.0.0-")
-
-
-pseudo:
-	@echo "pseudo version check"
-	@if [ "${BRANCH}" = "master" ]; then \
-		if [ $(SI_MATCH) -ne 7 ] || [ $(CORE_MATCH) -ne 7 ]; then \
-			echo "YuniKorn references MUST all be pseudo versions:" ; \
-			echo "  SI  ref: ${SI_REF}" ; \
-			echo "  Core ref: ${CORE_REF}" ; \
-			exit 1 ; \
-		fi ; \
-	fi
-	@echo "  all OK"
-
-# Build the example binaries for dev and test
-
-
 # Remove generated build artifacts
-.PHONY: clean
 clean:
 	@echo "cleaning up caches and output"
 	"$(GO)" clean -cache -testcache -r
 	@echo "removing generated files"
-	@rm -rf build
+	@rm -rf "${BUILD_DIR}"
 
 # Remove all generated content
-.PHONY: distclean
 distclean: clean
 	@echo "removing tools"
 	@rm -rf "${TOOLS_DIR}"
