@@ -121,10 +121,10 @@ func (aa *AppAnalyzer) GetTasksProfiling() profiling.Profiling {
 	for _, ts := range aa.appInfo.TasksStatus {
 		prof.StartExecutionWithTime(ts.CreateTime)
 		for _, cond := range ts.Conditions {
-			prof.AddCheckpointWithTime(string(cond.CondType), cond.TransitionTime)
+			_ = prof.AddCheckpointWithTime(string(cond.CondType), cond.TransitionTime) //nolint:errcheck
 		}
 		// lastCondTime := ts.Conditions[len(ts.Conditions)-1].TransitionTime
-		prof.FinishExecutionWithTime(true, endTime)
+		_ = prof.FinishExecutionWithTime(true, endTime) //nolint:errcheck
 	}
 	return prof
 }

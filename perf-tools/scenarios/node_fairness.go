@@ -66,6 +66,7 @@ func (nfs *NodeFairnessScenario) Init(kubeClient *utils.KubeClient, conf *framew
 	return LoadScenarioConf(conf, nfs.GetName(), nfs.scenarioConf)
 }
 
+//nolint:funlen
 func (nfs *NodeFairnessScenario) Run(results *utils.Results) {
 	scenarioResults := results.CreateScenarioResults(nfs.GetName())
 	maxWaitTime := time.Duration(nfs.commonConf.MaxWaitSeconds) * time.Second
