@@ -416,6 +416,6 @@ entries:
         - https://github.com/apache/yunikorn-web
       name: yunikorn
       urls:
-        - https://github.com/apache/yunikorn-release/releases/download/v1.9.0-beta/yunikorn-1.9.0-beta.tgz
+        - https://github.com/apache/yunikorn-release/releases/download/v1.9.0-0/yunikorn-1.9.0-beta.tgz
       version: 1.9.0-beta
 generated: "2026-06-23T13:00:00.000000+11:00"
