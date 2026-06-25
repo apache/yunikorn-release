@@ -15,6 +15,103 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.9.0
+
+** Sub-task
+    * [YUNIKORN-3063] - Refactor simple_preemptor E2E test suite structure
+    * [YUNIKORN-3189] - Fix release build for the k8shim
+    * [YUNIKORN-3191] - Remove plugin binary build from release tool
+    * [YUNIKORN-3201] - Handle delay consecutive increase and decrease in any order
+    * [YUNIKORN-3204] - E2E test coverage for Quota preemption
+    * [YUNIKORN-3208] - quota.preemption.delay inheritance
+    * [YUNIKORN-3213] - Check queue current usage while configuring delay
+    * [YUNIKORN-3219] - Assess the reservation interplay with this preemption
+    * [YUNIKORN-3228] - Assess the impact of restart on scheduled preemption and propose a solution
+    * [YUNIKORN-3233] - Improve victim selection algorithm
+    * [YUNIKORN-3240] - Ensure leaf queues doesn't violate parent queue's guaranteed settings
+    * [YUNIKORN-3244] - Document improved victim selection process
+    * [YUNIKORN-3246] - Summarize the preemption results
+    * [YUNIKORN-3255] - Plugin removal doc
+    * [YUNIKORN-3256] - Stop weekly e2e tests runs
+    * [YUNIKORN-3257] - Stop and clean up e2e tests variables
+    * [YUNIKORN-3258] - Stop generating builds from make command
+    * [YUNIKORN-3259] - Clean up all plugin related variables in release repo
+    * [YUNIKORN-3260] - Remove code: deployment in shim repo
+    * [YUNIKORN-3261] - Remove code: scripts in shim repo
+    * [YUNIKORN-3263] - Remove code: statedumps in core repo
+    * [YUNIKORN-3264] - Remove code: statedumps and dashboard in web repo
+    * [YUNIKORN-3265] - Doc cleanup in yunikorn-site repo
+    * [YUNIKORN-3272] - Remove code: Clean up cmd directory in shim repo
+    * [YUNIKORN-3273] - Remove code: clean up scheduler_plugin.go
+    * [YUNIKORN-3274] - Remove code: Clean up task directory in shim repo
+    * [YUNIKORN-3275] - Remove code: clean up shim scheduler bootstrap code in pkg/shim/scheduler.go
+    * [YUNIKORN-3276] - Remove code: Clean up context in shim repo
+    * [YUNIKORN-3278] - Remove code: clean up scheduler_cache.go
+    * [YUNIKORN-3279] - Remove code: clean up utils.go
+    * [YUNIKORN-3280] - Add K8s 1.35 too the e2e tests in CI
+    * [YUNIKORN-3286] - K8s 1.35 API changes in Shim
+    * [YUNIKORN-3290] - Add K8s 1.36 to the e2e tests in CI
+    * [YUNIKORN-3306] - Release notes for 1.9.0
+    * [YUNIKORN-3307] - Update website for 1.9.0
+
+** Bug
+    * [YUNIKORN-3130] - Role and RoleBinding are missing namespace tag
+    * [YUNIKORN-3180] - Align Ginkgo version with go.mod in e2e tests
+    * [YUNIKORN-3197] - update pnpm in the webapp to 10.x
+    * [YUNIKORN-3206] - Pod resource calculation incorrect with native sidecars
+    * [YUNIKORN-3226] - Remove event creation for succeeded / deleted pods
+    * [YUNIKORN-3232] - Preemption latency regression
+    * [YUNIKORN-3239] - Lag in processing register node event in yunikorn core
+    * [YUNIKORN-3241] - Fence root search bug when queue is at max capacity
+    * [YUNIKORN-3249] - Quota Preemption does not work in case of no Pending pods
+    * [YUNIKORN-3250] - UserGroupCache servers stale data
+    * [YUNIKORN-3269] - Kubernetes shim should respect node cordon state
+    * [YUNIKORN-3281] - Install correct angular cli version
+    * [YUNIKORN-3288] - move to pnpm 11 for website build
+    * [YUNIKORN-3292] - move to pnpm 11 for web UI build
+
+** Improvement
+    * [YUNIKORN-2249] - Add compression option to queue applications API
+    * [YUNIKORN-2826] - Prune zero-values from node capacity
+    * [YUNIKORN-3132] - Pod & Container Security Context for placeholder pods to be hardened
+    * [YUNIKORN-3205] - Upgrade to node.js to 24 (LTS)
+    * [YUNIKORN-3207] - Update dependencies for CVE fixes
+    * [YUNIKORN-3209] - Improve mobile responsiveness of YuniKorn website homepage
+    * [YUNIKORN-3215] - Improve performance of Limit checking
+    * [YUNIKORN-3254] - Migrate unit tests from Karma to Vitest
+    * [YUNIKORN-3268] - WEB UI: Update dependencies for CVE fixes
+
+** Test
+    * [YUNIKORN-3296] - Race condition detected in TestSchedulerRecoveryQuotaPreemption
+
+** Task
+    * [YUNIKORN-3105] - move release staging out of the tools directory
+    * [YUNIKORN-3136] - TaskGroup POD security context modification
+    * [YUNIKORN-3173] - upgrade kind for our testing to v0.30
+    * [YUNIKORN-3174] - Read go mod to get the correct kubectl version
+    * [YUNIKORN-3194] - Update PR template to ask about AI contribution
+    * [YUNIKORN-3199] - Update the copyright years in NOTICE files to 2026
+    * [YUNIKORN-3200] - webapp: puppeteer missing chrome for testing
+    * [YUNIKORN-3210] - [Umbrella] Remove plugin code
+    * [YUNIKORN-3211] - [Umbrella] Kubernetes 1.35 support
+    * [YUNIKORN-3212] - GOMEMLIMIT setting auto update
+    * [YUNIKORN-3223] - update pnpm for CVE in site build
+    * [YUNIKORN-3224] - update webapp build dependencies for CVEs
+    * [YUNIKORN-3225] - update github action versions
+    * [YUNIKORN-3227] - modelcontextprotocol/sdk high CVE
+    * [YUNIKORN-3229] - Upgrade go compiler to 1.26
+    * [YUNIKORN-3234] - Remove node-utilization redirect from routes
+    * [YUNIKORN-3235] - Upgrade go compiler to 1.26.1
+    * [YUNIKORN-3238] - Update otel sdk dependency for CVE fix
+    * [YUNIKORN-3242] - Update yunikorn dependencies
+    * [YUNIKORN-3252] - Fix dependabot warnings in yunikorn-web
+    * [YUNIKORN-3253] - remove deprecated settings from helm chart
+    * [YUNIKORN-3267] - fix web site dependencies for CVEs
+    * [YUNIKORN-3270] - Update go-ntlmssp dependency across repos
+    * [YUNIKORN-3271] - Update go repro version for image builds to 1.26
+    * [YUNIKORN-3285] - Quota Preemption - child is not inheriting delay correctly
+    * [YUNIKORN-3291] - Remove redundant copying of parent properties in mergeProperties
+    * [YUNIKORN-3297] - Add pnpm-workspace.yaml to license exclude
+    * [YUNIKORN-3298] - e2e test flaky: TestPredicates
+    * [YUNIKORN-3302] - turn off web UI v2
+    * [YUNIKORN-3305] - [UMBRELLA] YuniKorn 1.9.0 release efforts
