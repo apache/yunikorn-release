@@ -1,11 +1,9 @@
 .idea
 .DS_Store
-docs/*
-tools/*
-release-top-level-artifacts/*
-helm-charts/*
-helm-charts/**
-staging/*
-staging/**
-perf-tools/*
-perf-tools/**
+# fixed dirs from other branches
+release-top-level-artifacts/
+helm-charts/
+perf-tools/
+# generated dirs from the build processes
+build/
+tools/
