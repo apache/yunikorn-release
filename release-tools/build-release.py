@@ -23,11 +23,11 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 from tempfile import mkstemp
 
 import git
-import sys
 
 
 # fail the execution
@@ -230,6 +230,7 @@ def download_sourcecode(base_path, repo_meta):
     update_dep_ref(name, os.path.join(base_path, alias))
     return sha
 
+
 # Run distclean on the source code path
 def clean_release(local_repo_path):
     print("ensuring local source repo is clean")
@@ -239,6 +240,7 @@ def clean_release(local_repo_path):
     if retcode:
         fail("failed to clean staging repo")
     os.chdir(path)
+
 
 # Unpack tarball into tmp dir 
 def unpack_staging_tarball(staging_dir, dest_dir, release_name):
@@ -255,6 +257,7 @@ def unpack_staging_tarball(staging_dir, dest_dir, release_name):
     if retcode:
         fail("failed to unpack tarball")
     os.chdir(path)
+
 
 # Generate binaries for yunikorn-web and compute checksums
 def build_web_and_generate_hashes(staging_dir, release_name, arch):
@@ -275,6 +278,7 @@ def build_web_and_generate_hashes(staging_dir, release_name, arch):
         fail("failed to clean temp dir")
     os.chdir(path)
     return hash
+
 
 # Generate binaries for yunikorn-k8shim and compute checksums
 def build_shim_and_generate_hashes(staging_dir, release_name, arch):
@@ -298,6 +302,7 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     os.chdir(path)
     return hash
 
+
 # K8shim depends on yunikorn-core and scheduler-interface
 def update_dep_ref_k8shim(local_repo_path):
     print("updating dependency for k8shim")
@@ -312,7 +317,12 @@ def update_dep_ref_k8shim(local_repo_path):
     retcode = subprocess.call(command)
     if retcode:
         fail("failed to update k8shim go.mod references")
+    command = ['go', 'mod', 'tidy']
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("failed to update k8shim go.sum references (tidy)")
     os.chdir(path)
+
 
 # core depends on scheduler-interface
 def update_dep_ref_core(local_repo_path):
@@ -327,6 +337,10 @@ def update_dep_ref_core(local_repo_path):
     retcode = subprocess.call(command)
     if retcode:
         fail("failed to update core go.mod references")
+    command = ['go', 'mod', 'tidy']
+    retcode = subprocess.call(command)
+    if retcode:
+        fail("failed to update core go.sum references (tidy)")
     os.chdir(path)
 
 
@@ -395,6 +409,7 @@ def update_required_go_version(base_path, local_repo_path):
     print(f" - go version:  {go_version}")
     replace(os.path.join(base_path, "README.md"), 'Go 1.16', 'Go ' + go_version)
 
+
 # update reproducible build information in README
 def update_reproducible_build_info(base_path, go_version, hashes_amd64, hashes_arm64):
     print("recording go compiler used for reproducible builds")
@@ -403,6 +418,7 @@ def update_reproducible_build_info(base_path, go_version, hashes_amd64, hashes_a
     replace(os.path.join(base_path, "README.md"), '@AMD64_BINARIES@', hashes_amd64)
     print("recording build artifact hashes (arm64)")
     replace(os.path.join(base_path, "README.md"), '@ARM64_BINARIES@', hashes_arm64)
+
 
 # update required Node.js and angular versions in the README.md
 def update_required_node_and_angular_versions(base_path, local_repo_path):
@@ -466,6 +482,7 @@ def write_checksum(tarball_file, tarball_name):
     sha_file.close()
     print("sha512 checksum: %s" % sha)
 
+
 # Generate a checksum for a file
 def get_checksum(file_path, file_name):
     print("generating sha512 checksum for %s" % file_name)
@@ -479,6 +496,7 @@ def get_checksum(file_path, file_name):
             h.update(data)
     sha = h.hexdigest()
     return "%s  %s" % (sha, file_name)
+
 
 # Sign the source archive if an email is provided
 def call_gpg(tarball_file, email_address):
@@ -494,6 +512,7 @@ def call_gpg(tarball_file, email_address):
     if retcode:
         fail("failed to create gpg signature")
 
+
 # Determine the specific go compiler in use
 def get_go_version():
     command = ['go', 'env', 'GOVERSION']
@@ -502,6 +521,7 @@ def get_go_version():
         fail("failed to get go version")
     output = re.sub(r'^go', r'', result.stdout.strip())
     return output
+
 
 # Package the helm chart and sign if an email is provided
 def call_helm(staging_dir, base_path, version, email_address):
