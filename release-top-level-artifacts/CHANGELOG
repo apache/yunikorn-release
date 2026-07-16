@@ -55,6 +55,7 @@ Release Notes - Apache YuniKorn - Version 1.9.0
     * [YUNIKORN-3307] - Update website for 1.9.0
 
 ** Bug
+    * [YUNIKORN-2634] - Remove deprecated usergroup resolution handling via the label
     * [YUNIKORN-3130] - Role and RoleBinding are missing namespace tag
     * [YUNIKORN-3180] - Align Ginkgo version with go.mod in e2e tests
     * [YUNIKORN-3197] - update pnpm in the webapp to 10.x
@@ -69,9 +70,17 @@ Release Notes - Apache YuniKorn - Version 1.9.0
     * [YUNIKORN-3281] - Install correct angular cli version
     * [YUNIKORN-3288] - move to pnpm 11 for website build
     * [YUNIKORN-3292] - move to pnpm 11 for web UI build
+    * [YUNIKORN-3309] - run go mod tidy as part of release build
+    * [YUNIKORN-3312] - fix logger setup in core
+    * [YUNIKORN-3317] - Foreign allocations not tracked in core
+    * [YUNIKORN-3318] - Deadlock in preemption init caused by app reservations
+
+** New Feature
+    * [YUNIKORN-3203] - [Umbrella] Quota change enforcement via preemption - Phase 2
 
 ** Improvement
     * [YUNIKORN-2249] - Add compression option to queue applications API
+    * [YUNIKORN-2781] - Document recovery placement rule
     * [YUNIKORN-2826] - Prune zero-values from node capacity
     * [YUNIKORN-3132] - Pod & Container Security Context for placeholder pods to be hardened
     * [YUNIKORN-3205] - Upgrade to node.js to 24 (LTS)
@@ -80,12 +89,14 @@ Release Notes - Apache YuniKorn - Version 1.9.0
     * [YUNIKORN-3215] - Improve performance of Limit checking
     * [YUNIKORN-3254] - Migrate unit tests from Karma to Vitest
     * [YUNIKORN-3268] - WEB UI: Update dependencies for CVE fixes
+    * [YUNIKORN-3322] - Upgrade go repro compiler to 1.26.5
 
 ** Test
     * [YUNIKORN-3296] - Race condition detected in TestSchedulerRecoveryQuotaPreemption
 
 ** Task
     * [YUNIKORN-3105] - move release staging out of the tools directory
+    * [YUNIKORN-3124] - Update REST API documentation about foreign pod output
     * [YUNIKORN-3136] - TaskGroup POD security context modification
     * [YUNIKORN-3173] - upgrade kind for our testing to v0.30
     * [YUNIKORN-3174] - Read go mod to get the correct kubectl version
@@ -115,3 +126,4 @@ Release Notes - Apache YuniKorn - Version 1.9.0
     * [YUNIKORN-3298] - e2e test flaky: TestPredicates
     * [YUNIKORN-3302] - turn off web UI v2
     * [YUNIKORN-3305] - [UMBRELLA] YuniKorn 1.9.0 release efforts
+    * [YUNIKORN-3314] - Update logging subsystem values
