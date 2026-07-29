@@ -196,10 +196,11 @@ def build_manifest(manifest, version):
 def build_image(base_dir, image, arch, version):
     cmd = get_cmd("make")
     my_env = os.environ.copy()
-    my_env["QUIET"] = "--quiet"      # stop image build from being chatty
-    my_env["VERSION"] = version      # force version, just be safe
-    my_env["HOST_ARCH"] = arch       # the architecture override
-    my_env["REGISTRY"] = repository  # repository override (test only)
+    my_env["QUIET"] = "--quiet"          # stop image build from being chatty
+    my_env["VERSION"] = version          # force version, just be safe
+    my_env["HOST_ARCH"] = arch           # the architecture override
+    my_env["REPRODUCIBLE_BUILDS"] = "1"  # always use reproducible builds
+    my_env["REGISTRY"] = repository      # repository override (test only)
     command = [cmd, "clean", image]
     # build the image using make
     retcode = subprocess.call(command, cwd=base_dir, env=my_env, stdout=subprocess.DEVNULL)
