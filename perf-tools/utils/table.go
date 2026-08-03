@@ -22,6 +22,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
+	"go.uber.org/zap"
 )
 
 type Table struct {
@@ -46,9 +47,13 @@ func (t *Table) Output(file string) error {
 }
 
 func (t *Table) render(writer *tablewriter.Table) {
-	writer.SetHeader(t.Headers)
+	writer.Header(t.Headers)
 	for _, v := range t.Data {
-		writer.Append(v)
+		if err := writer.Append(v); err != nil {
+			Logger.Warn("table append error", zap.Error(err))
+		}
 	}
-	writer.Render()
+	if err := writer.Render(); err != nil {
+		Logger.Warn("table render error", zap.Error(err))
+	}
 }
