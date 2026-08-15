@@ -150,6 +150,13 @@ embedAdmissionController: true
 # When this flag is false, the web service will not be deployed.
 enableWebService: true
 
+# Deadlock detection configuration
+deadlockDetection:
+  enabled: false
+  timeoutSeconds: 10
+  exit: true
+  disableLockOrder: false
+
 podLabels: {}
 podAnnotations: {}
 podSecurityContext: {}

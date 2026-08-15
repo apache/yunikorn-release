@@ -115,6 +115,10 @@ The following table lists the configurable parameters of the YuniKorn chart and 
 | `web.goGC`                                      | Web app GC threshold (GOGC)                                                                           | `100`                           |
 | `embedAdmissionController`                      | Flag for enabling/disabling the admission controller                                                  | `true`                          |
 | `enableWebService`                              | Flag for enabling/disabling web service                                                               | `true`                          |
+| `deadlockDetection.enabled`                     | Flag for enabling/disabling deadlock detection                                                         | `false`                         |
+| `deadlockDetection.timeoutSeconds`              | Deadlock detection timeout in seconds                                                                 | `10`                            |
+| `deadlockDetection.exit`                        | Flag for exiting the process upon deadlock detection                                                  | `true`                          |
+| `deadlockDetection.disableLockOrder`            | Flag for disabling lock order detection                                                               | `false`                         |
 | `httpRoute.enabled`                             | Flag for enabling/disabling HTTPRoute resource for Gateway API                                        | `false`                         |
 | `httpRoute.annotations`                         | Annotations for the HTTPRoute resource                                                                | `{}`                            |
 | `httpRoute.parentRefs`                          | Parent Gateway references for the HTTPRoute                                                           | `[]`                            |

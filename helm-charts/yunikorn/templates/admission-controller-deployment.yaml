@@ -115,6 +115,16 @@ spec:
             {{- end }}
             - name: GOGC
               value: "{{ .Values.admissionController.goGC }}"
+            {{- if .Values.deadlockDetection.enabled }}
+            - name: DEADLOCK_DETECTION_ENABLED
+              value: "{{ .Values.deadlockDetection.enabled }}"
+            - name: DEADLOCK_TIMEOUT_SECONDS
+              value: "{{ .Values.deadlockDetection.timeoutSeconds }}"
+            - name: DEADLOCK_EXIT
+              value: "{{ .Values.deadlockDetection.exit }}"
+            - name: DEADLOCK_DISABLE_LOCK_ORDER
+              value: "{{ .Values.deadlockDetection.disableLockOrder }}"
+            {{- end }}
           ports:
             - containerPort: 9089
               name: webhook-api
