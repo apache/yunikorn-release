@@ -33,7 +33,9 @@ type Table struct {
 // https://pkg.go.dev/github.com/olekukonko/tablewriter
 func (t *Table) Print() {
 	writer := tablewriter.NewWriter(os.Stdout)
-	t.render(writer)
+	if err := t.render(writer); err != nil {
+		Logger.Error("failed to render table to stdout", zap.Error(err))
+	}
 }
 
 func (t *Table) Output(file string) error {
@@ -41,19 +43,16 @@ func (t *Table) Output(file string) error {
 	if err != nil {
 		return err
 	}
-	writer := tablewriter.NewWriter(f)
-	t.render(writer)
-	return nil
+	defer f.Close()
+	return t.render(tablewriter.NewWriter(f))
 }
 
-func (t *Table) render(writer *tablewriter.Table) {
+func (t *Table) render(writer *tablewriter.Table) error {
 	writer.Header(t.Headers)
 	for _, v := range t.Data {
 		if err := writer.Append(v); err != nil {
-			Logger.Warn("table append error", zap.Error(err))
+			return err
 		}
 	}
-	if err := writer.Render(); err != nil {
-		Logger.Warn("table render error", zap.Error(err))
-	}
+	return writer.Render()
 }
