@@ -150,7 +150,7 @@ embedAdmissionController: true
 # When this flag is false, the web service will not be deployed.
 enableWebService: true
 
-# Deadlock detection configuration
+# Deadlock detection configuration. Do not use in production unless you have specific circumstances.
 deadlockDetection:
   enabled: false
   timeoutSeconds: 10
