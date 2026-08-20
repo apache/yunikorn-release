@@ -22,6 +22,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
+	"go.uber.org/zap"
 )
 
 type Table struct {
@@ -32,7 +33,9 @@ type Table struct {
 // https://pkg.go.dev/github.com/olekukonko/tablewriter
 func (t *Table) Print() {
 	writer := tablewriter.NewWriter(os.Stdout)
-	t.render(writer)
+	if err := t.render(writer); err != nil {
+		Logger.Error("failed to render table to stdout", zap.Error(err))
+	}
 }
 
 func (t *Table) Output(file string) error {
@@ -40,15 +43,16 @@ func (t *Table) Output(file string) error {
 	if err != nil {
 		return err
 	}
-	writer := tablewriter.NewWriter(f)
-	t.render(writer)
-	return nil
+	defer f.Close()
+	return t.render(tablewriter.NewWriter(f))
 }
 
-func (t *Table) render(writer *tablewriter.Table) {
-	writer.SetHeader(t.Headers)
+func (t *Table) render(writer *tablewriter.Table) error {
+	writer.Header(t.Headers)
 	for _, v := range t.Data {
-		writer.Append(v)
+		if err := writer.Append(v); err != nil {
+			return err
+		}
 	}
-	writer.Render()
+	return writer.Render()
 }
