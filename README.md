@@ -22,7 +22,7 @@ limitations under the License.
 This project provides the instructions and tools needed to generate Apache YuniKorn release artifacts.
 Reference:
  - [ASF Release Creation Process](https://infra.apache.org/release-publishing.html)
- - [ASF Release Policy](http://www.apache.org/legal/release-policy.html).
+ - [ASF Release Policy](https://www.apache.org/legal/release-policy.html).
 
 # Release Procedure
 A simplified procedure: 
