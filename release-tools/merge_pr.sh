@@ -112,7 +112,7 @@ function create_body() {
   for i in $(git rev-list HEAD.."${PRBRANCH}" --reverse); do
     git log -1 --pretty=format:"%s%n%b" "$i" >> "${BODYFILE}"
   done
-  BODY=$(tail +2 "${BODYFILE}")
+  BODY=$(tail -n +2 "${BODYFILE}")
   rm "${BODYFILE}"
 }
 
