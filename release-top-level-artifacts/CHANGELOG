@@ -15,6 +15,106 @@
 # limitations under the License.
 #
 
-****
-Replace this with the jira release notes
-****
+Release Notes - Apache YuniKorn - Version 1.10.0
+
+** Sub-task
+    * [YUNIKORN-2884] - Task fail with post allocated but the pod will keep pending
+    * [YUNIKORN-3316] - Retry pod scheduling in case of failure during AssumePod 
+    * [YUNIKORN-3351] - Hoist the per-ask backoff getter out of tryAllocate
+    * [YUNIKORN-3395] - Release notes for 1.10.0
+    * [YUNIKORN-3396] - Update website for 1.10.0
+    * [YUNIKORN-3397] - release artifact push 
+    * [YUNIKORN-3409] - AddRejectedApplication writes the rejected-application map without the partition lock
+    * [YUNIKORN-3416] - UserGroupCache cleanup locks the singleton instead of the receiver; nil dereference after Stop()
+
+** Bug
+    * [YUNIKORN-3137] - Fails to preempt more than 2 victims for a larger ask.
+    * [YUNIKORN-3239] - Lag in processing register node event in yunikorn core
+    * [YUNIKORN-3245] - Queue properties has old values even after passing empty properties map
+    * [YUNIKORN-3294] - K8s 1.36: e2e test InPlacePodVerticalScaling fails
+    * [YUNIKORN-3310] - queue removal resets terminal app state metrics to zero
+    * [YUNIKORN-3319] - Reservations released by preemption not tracked
+    * [YUNIKORN-3320] - tryReservedAllocate can release required node reservations
+    * [YUNIKORN-3321] - removeAsksInternal return ignored
+    * [YUNIKORN-3323] - Replace google btree for node structures
+    * [YUNIKORN-3326] - BackoffDeadline field in rest should not use time
+    * [YUNIKORN-3327] - Update release python script to 3.12
+    * [YUNIKORN-3328] - release-configs.json repo order incorrect
+    * [YUNIKORN-3329] - Task-group placeholder ask can overflow to a negative value from an unvalidated task-groups annotation
+    * [YUNIKORN-3333] - flaky unit test TestQuotaChangeTryPreemption
+    * [YUNIKORN-3334] - flaky unit test TestQuotaChangeTryPreemptionWithDifferentResTypes
+    * [YUNIKORN-3335] - flaky test TestQuotaChangeTryPreemptionForParentQueue
+    * [YUNIKORN-3336] - event system shutdown leaks go routine or panics
+    * [YUNIKORN-3337] - Fix connection refused error in webservice unit tests 
+    * [YUNIKORN-3341] - gzip middleware double-compresses responses that handlers already encoded
+    * [YUNIKORN-3347] - Improve scheduler config checksum generation and checks
+    * [YUNIKORN-3354] - Recovery pod ordering is not reproducible despite intending to be
+    * [YUNIKORN-3355] - Failed bind leaves a stale node assignment in the shim cache
+    * [YUNIKORN-3358] - Remove the unreachable replace-existing-ask branch from Application.AddAllocationAsk
+    * [YUNIKORN-3364] - Event stream history replay blocks forever if the client disconnects before the stream opens with a non-zero history request
+    * [YUNIKORN-3365] - Shutdown ordering: scheduler allocation notify can block on an RM reply the proxy never drains
+    * [YUNIKORN-3367] - KubernetesShim.Stop() sends to the unbuffered stopChan instead of closing it, leaving one doScheduling loop running after stop
+    * [YUNIKORN-3368] - KubernetesShim.Stop() after a failed Run() is a no-op, leaking the dispatcher and placeholder-manager goroutines
+    * [YUNIKORN-3369] - AsyncRMCallback.UpdateAllocation's AssumePod retry blocks the RM proxy event loop and cannot be interrupted by shutdown
+    * [YUNIKORN-3371] - DRA resource-slice tracker goroutine leaks in tests: created with an uncancellable context and no shutdown handle
+    * [YUNIKORN-3372] - Event-stream tests create a stream via CreateEventStream and never call RemoveStream, leaking the forwarder goroutine
+    * [YUNIKORN-3376] -  Data race on Task.pod: checkPodMetadataBeforeScheduling reads without the task lock
+    * [YUNIKORN-3379] -  Scheduler panics on a malformed PLACEHOLDER_REPLACED release with no linked replacement allocation
+    * [YUNIKORN-3380] - RemoveAllAllocations leaks user/group tracked usage when a release-all arrives with pending asks
+    * [YUNIKORN-3381] - Foreign pod that terminates while orphaned is later adopted as a live allocation
+    * [YUNIKORN-3399] - Align RollbackAllocation tests with the ask-presence guard from YUNIKORN-3360
+    * [YUNIKORN-3400] - Cleanup outdated quota.preemption.delay inheritance note in docs
+    * [YUNIKORN-3401] - Fix nonamedreturns lint error in application_property_test.go
+    * [YUNIKORN-3432] - Cleanup LDAP resolver
+    * [YUNIKORN-3436] - Event stream forwarder leaks on slow-consumer eviction: in-loop consumer send is not selectable
+    * [YUNIKORN-3444] - merge_pr.sh: tail +2 fails on GNU tail
+
+** New Feature
+    * [YUNIKORN-3287] - Add HTTPRoute / Gateway API support to YuniKorn Helm chart
+    * [YUNIKORN-3295] - K8s 1.36 API changes in Shim
+
+** Improvement
+    * [YUNIKORN-3216] - Document unschedulable backoff settings
+    * [YUNIKORN-3220] - Test setpreemptiontime with different resource types
+    * [YUNIKORN-3266] - Document remote container debugging steps for scheduler
+    * [YUNIKORN-3293] - Update perf-tools dependencies for yunikorn-release
+    * [YUNIKORN-3300] - Use feasible nodes returned from K8s PreFilter plugin in core itself
+    * [YUNIKORN-3324] - Remove pod "ignore-application" annotation
+    * [YUNIKORN-3325] - Deduplicate cancel reservations code flow
+    * [YUNIKORN-3331] - Run preemption preconditions before instantiating preemptor
+    * [YUNIKORN-3343] - Flaky Event publisher test
+    * [YUNIKORN-3348] - Develop doc fixups
+    * [YUNIKORN-3349] - Enhance Developer concurrency documentation
+    * [YUNIKORN-3361] - Improve performance tests in yunikorn-core
+    * [YUNIKORN-3378] - TestSchedulerRecoveryQuotaPreemption is flaky
+    * [YUNIKORN-3434] - upgrade protoc in SI Makefile
+    * [YUNIKORN-3435] - upgrade go dependencies for CVEs
+    * [YUNIKORN-3440] - Use `https` instead of `http` in the README files
+    * [YUNIKORN-3441] - Support podman for building images and running e2e tests
+    * [YUNIKORN-3447] - Drop managed fields in the informers
+
+** Test
+    * [YUNIKORN-3296] - Race condition detected in TestSchedulerRecoveryQuotaPreemption
+    * [YUNIKORN-3338] - Golden test trace generation and validation
+    * [YUNIKORN-3431] - Add regression test coverage for KubernetesShim scheduling loop shutdown
+
+** Task
+    * [YUNIKORN-3194] - Update PR template to ask about AI contribution
+    * [YUNIKORN-3247] - DOC: Update troubleshooting statedump collection
+    * [YUNIKORN-3277] - expose ask backoff and quota preemption in REST
+    * [YUNIKORN-3298] - e2e test flaky: TestPredicates
+    * [YUNIKORN-3301] - fix imports for e2e tests
+    * [YUNIKORN-3302] - turn off web UI v2
+    * [YUNIKORN-3304] - core: update e2e test in pre-commit to K8s 1.36
+    * [YUNIKORN-3311] - Remove user label processing code
+    * [YUNIKORN-3313] - expose UserGroupResolver type in REST
+    * [YUNIKORN-3315] - Remove old placeholder flags and processing
+    * [YUNIKORN-3332] - Prevent timed out Placeholder creation
+    * [YUNIKORN-3339] - web UI: upgrade pnpm for cve fixes
+    * [YUNIKORN-3340] - alway use go repro in release image builds
+    * [YUNIKORN-3345] - Turn on nonamedreturns linter
+    * [YUNIKORN-3359] - run e2e tests with deadlock detection enabled
+    * [YUNIKORN-3360] - RollbackAllocation should safety check request existence 
+    * [YUNIKORN-3393] - Update go_repro_vesion for CVE fixes
+    * [YUNIKORN-3394] - [UMBRELLA] YuniKorn 1.10.0 release efforts
+
