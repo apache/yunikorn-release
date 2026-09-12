@@ -25,8 +25,10 @@ import subprocess
 import sys
 import tarfile
 from tempfile import mkstemp
+from typing import AnyStr
 
 import git
+import yaml
 
 
 # fail the execution
@@ -35,11 +37,19 @@ def fail(message):
     sys.exit(1)
 
 
+def ensure_str(val: AnyStr, encoding: str = "utf-8") -> str:
+    if isinstance(val, bytes):
+        return val.decode(encoding)
+    return val
+
+
 # Main build routine
 def build_release(email_address):
-    tools_dir = os.path.dirname(os.path.realpath(__file__))
+    tools_dir = ensure_str(os.path.dirname(os.path.realpath(__file__)))
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
+    if not os.path.isfile(config_file):
+        fail("release-configs.json file is missing")
     with open(config_file) as configs:
         try:
             data = json.load(configs)
@@ -98,13 +108,6 @@ def build_release(email_address):
     # Ensure release dirs are clean (and generate build.date files)
     clean_release(release_base)
 
-    # generate staging source code tarball
-    tarball_name = release_package_name + "-staging.tar.gz"
-    tarball_path = os.path.join(staging_dir, tarball_name)
-    print("creating tarball %s" % tarball_path)
-    with tarfile.open(tarball_path, "w:gz") as tar:
-        tar.add(release_base, arcname=release_package_name, filter=exclude_files)
-
     # generate yunikorn-web reproducible binaries
     web_hashes_amd64 = build_web_and_generate_hashes(staging_dir, release_package_name, "x86_64")
     web_hashes_arm64 = build_web_and_generate_hashes(staging_dir, release_package_name, "aarch64")
@@ -117,12 +120,11 @@ def build_release(email_address):
     hashes_amd64 = "\n".join([shim_hashes_amd64, web_hashes_amd64])
     hashes_arm64 = "\n".join([shim_hashes_arm64, web_hashes_arm64])
 
-    # remove staging tarball
-    os.remove(tarball_path)
+    # ensure all is clean again as we have just build everything to get the repro SHA
+    clean_release(release_base)
 
     # update reproducible build information in README
-    go_version = get_go_version()
-    update_reproducible_build_info(release_base, go_version, hashes_amd64, hashes_arm64)
+    update_reproducible_build_info(release_base, hashes_amd64, hashes_arm64)
 
     # generate final source code tarball
     tarball_name = release_package_name + ".tar.gz"
@@ -233,73 +235,61 @@ def download_sourcecode(base_path, repo_meta):
 # Run distclean on the source code path
 def clean_release(local_repo_path):
     print("ensuring local source repo is clean")
-    path = os.getcwd()
-    os.chdir(local_repo_path)
-    retcode = subprocess.call(['make', 'distclean'])
-    if retcode:
+    result = subprocess.run(['make', 'distclean'], cwd=local_repo_path, capture_output=True)
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to clean staging repo")
-    os.chdir(path)
-
-
-# Unpack tarball into tmp dir 
-def unpack_staging_tarball(staging_dir, dest_dir, release_name):
-    path = os.getcwd()
-    os.chdir(staging_dir)
-    retcode = subprocess.call(['rm', '-rf', dest_dir])
-    if retcode:
-        fail("failed to clean dest dir")
-    retcode = subprocess.call(['mkdir', dest_dir])
-    if retcode:
-        fail("failed to create dest dir")
-    os.chdir(dest_dir)
-    retcode = subprocess.call(['tar', 'xf', os.path.join(staging_dir, "%s-staging.tar.gz" % release_name)])
-    if retcode:
-        fail("failed to unpack tarball")
-    os.chdir(path)
 
 
 # Generate binaries for yunikorn-web and compute checksums
 def build_web_and_generate_hashes(staging_dir, release_name, arch):
     print("generating reproducible build artifacts for yunikorn-web (%s)" % arch)
-    path = os.getcwd()
-    tmp_dir = os.path.join(staging_dir, "tmp")
-    release_dir = os.path.join(tmp_dir, release_name)
-    unpack_staging_tarball(staging_dir, tmp_dir, release_name)
-    web_dir = os.path.join(release_dir, "web")
-    os.chdir(web_dir)
-    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'build_server_prod'])
-    if retcode:
+    web_dir = os.path.join(staging_dir, release_name, "web")
+    git_ignore = os.path.join(web_dir, ".gitignore")
+    shutil.move(git_ignore, git_ignore+".tmp")
+    result = subprocess.run(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'build_server_prod'], cwd=web_dir, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to build yunikorn-web (%s)" % arch)
-    hash = get_checksum("build/prod/yunikorn-web", "yunikorn-web")
-    os.chdir(staging_dir)
-    retcode = subprocess.call(['rm', '-rf', 'tmp'])
-    if retcode:
-        fail("failed to clean temp dir")
-    os.chdir(path)
-    return hash
+    hashes = get_checksum(os.path.join(web_dir, "build/prod/yunikorn-web"), "yunikorn-web")
+    # clean up otherwise build does not generate new artifacts
+    result = subprocess.run(['make', 'clean'], cwd=web_dir, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("failed to build yunikorn-web (%s)" % arch)
+    shutil.move(git_ignore+".tmp", git_ignore)
+    return hashes
 
 
 # Generate binaries for yunikorn-k8shim and compute checksums
 def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     print("generating reproducible build artifacts for yunikorn-k8shim (%s)" % arch)
-    path = os.getcwd()
-    tmp_dir = os.path.join(staging_dir, "tmp")
-    release_dir = os.path.join(tmp_dir, release_name)
-    unpack_staging_tarball(staging_dir, tmp_dir, release_name)
-    shim_dir = os.path.join(release_dir, "k8shim")
-    os.chdir(shim_dir)
-    retcode = subprocess.call(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'scheduler', 'admission'])
-    if retcode:
+    shim_dir = os.path.join(staging_dir, release_name, "k8shim")
+    git_ignore = os.path.join(shim_dir, ".gitignore")
+    shutil.move(git_ignore, git_ignore+".tmp")
+    result = subprocess.run(['make', 'REPRODUCIBLE_BUILDS=1', 'HOST_ARCH=' + arch, 'scheduler', 'admission'], cwd=shim_dir, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to build yunikorn-k8shim (%s)" % arch)
-    adm_hash = get_checksum("build/bin/yunikorn-admission-controller", "yunikorn-admission-controller")
-    scheduler_hash = get_checksum("build/bin/yunikorn-scheduler", "yunikorn-scheduler")
-    hash = "\n".join([adm_hash, scheduler_hash])
-    os.chdir(staging_dir)
-    retcode = subprocess.call(['rm', '-rf', 'tmp'])
-    if retcode:
-        fail("failed to clean temp dir")
-    os.chdir(path)
-    return hash
+    adm_hash = get_checksum(os.path.join(shim_dir, "build/bin/yunikorn-admission-controller"), "yunikorn-admission-controller")
+    scheduler_hash = get_checksum(os.path.join(shim_dir, "build/bin/yunikorn-scheduler"), "yunikorn-scheduler")
+    hashes = "\n".join([adm_hash, scheduler_hash])
+    # clean up otherwise build does not generate new artifacts
+    result = subprocess.run(['make', 'clean'], cwd=shim_dir, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("failed to build yunikorn-web (%s)" % arch)
+    shutil.move(git_ignore+".tmp", git_ignore)
+    return hashes
 
 
 # K8shim depends on yunikorn-core and scheduler-interface
@@ -308,19 +298,22 @@ def update_dep_ref_k8shim(local_repo_path):
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
         fail("k8shim go.mod does not exist")
-    path = os.getcwd()
-    os.chdir(local_repo_path)
     command = ['go', 'mod', 'edit']
     command.extend(['-replace', 'github.com/apache/yunikorn-core=../core'])
     command.extend(['-replace', 'github.com/apache/yunikorn-scheduler-interface=../scheduler-interface'])
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to update k8shim go.mod references")
     command = ['go', 'mod', 'tidy']
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to update k8shim go.sum references (tidy)")
-    os.chdir(path)
 
 
 # core depends on scheduler-interface
@@ -329,18 +322,21 @@ def update_dep_ref_core(local_repo_path):
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
         fail("core go.mod does not exist")
-    path = os.getcwd()
-    os.chdir(local_repo_path)
     command = ['go', 'mod', 'edit']
     command.extend(['-replace', 'github.com/apache/yunikorn-scheduler-interface=../scheduler-interface'])
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to update core go.mod references")
     command = ['go', 'mod', 'tidy']
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to update core go.sum references (tidy)")
-    os.chdir(path)
 
 
 # update go mod in the repos
@@ -395,24 +391,33 @@ def update_sha(release_base, repo_list, sha):
             switcher.get(repo_name)(repo_name, os.path.join(release_base, repo_meta["alias"]), sha)
 
 
-# update required Golang version in the README.md
-def update_required_go_version(base_path, local_repo_path):
+# update required Golang versions in the README.md
+def update_required_go_versions(base_path, local_repo_path):
     print("updating required go version")
-    go_version_file = os.path.join(local_repo_path, ".go_version")
-    if not os.path.isfile(go_version_file):
-        fail("k8shim repo .go_version does not exist")
-    with open(go_version_file) as f:
-        go_version = f.readline().strip()
-    if not go_version:
-        fail("k8shim repo .go_version is empty")
-    print(f" - go version:  {go_version}")
-    replace(os.path.join(base_path, "README.md"), 'Go 1.16', 'Go ' + go_version)
+    command = ['go', 'list', '-m', '-f', '{{.GoVersion}}']
+    result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("failed to update core go.mod references")
+    go_version = str(result.stdout.strip(), 'utf-8')
+    print(" - go version:  %s" % go_version)
+    replace(os.path.join(base_path, "README.md"), '@GO_VERSION@', 'v' + go_version)
+
+    print("updating go repro version")
+    repro = os.path.join(local_repo_path, '.go_repro_version')
+    if not os.path.isfile(repro):
+        fail("go_repro_version file is missing")
+    with open(repro, 'r') as file:
+        go_repro_version = file.readline().strip()
+    print(" - go repro version:  %s" % go_repro_version)
+    replace(os.path.join(base_path, "README.md"), '@GO_REPRO_VERSION@', 'v' + go_repro_version)
+
 
 
 # update reproducible build information in README
-def update_reproducible_build_info(base_path, go_version, hashes_amd64, hashes_arm64):
-    print("recording go compiler used for reproducible builds")
-    replace(os.path.join(base_path, "README.md"), '@GO_VERSION@', go_version)
+def update_reproducible_build_info(base_path, hashes_amd64, hashes_arm64):
     print("recording build artifact hashes (amd64)")
     replace(os.path.join(base_path, "README.md"), '@AMD64_BINARIES@', hashes_amd64)
     print("recording build artifact hashes (arm64)")
@@ -425,12 +430,12 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
     nvmrc_file = os.path.join(local_repo_path, ".nvmrc")
     if not os.path.isfile(nvmrc_file):
         fail("web repo .nvmrc does not exist")
-    with open(nvmrc_file) as f:
-        node_version = f.readline().strip()
+    with open(nvmrc_file) as file:
+        node_version = file.readline().strip()
     if not node_version:
         fail("web repo .nvmrc is empty")
-    print(f" - node version:  {node_version}")
-    replace(os.path.join(base_path, "README.md"), 'Node.js 16.14.2', 'Node ' + node_version)
+    print(" - node version:  %s" % node_version)
+    replace(os.path.join(base_path, "README.md"), '@NODE_VERSION@', 'Node ' + node_version)
 
     print("updating required Angular version")
     package_json_file = os.path.join(local_repo_path, "package.json")
@@ -441,18 +446,40 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
             data = json.load(f)
         except json.JSONDecodeError:
             fail("load web package.json: unexpected json decode failure")
-    angular_version_match = re.search("\d+\.\d+\.\d+", data.get("dependencies", {}).get("@angular/core", ""))
+    angular_version_match = data.get("devDependencies", {}).get("@angular/cli", "")
     if not angular_version_match:
-        fail("web repo package.json: unexpected @angular/core version")
-    angular_version = angular_version_match.group()
-    print(f" - angular version:  {angular_version}")
-    replace(os.path.join(base_path, "README.md"), 'Angular CLI 13.3.0', 'Angular CLI ' + angular_version)
+        fail("web repo package.json: unexpected @angular/cli version")
+    angular_version = re.sub('^[^0-9]+', '', angular_version_match)
+    print(" - angular version: %s" % angular_version)
+    replace(os.path.join(base_path, "README.md"), '@ANGULAR_VERSION@', 'Angular CLI ' + angular_version)
+
+    print("updating required pnpm version")
+    pnpm_lock_yaml = os.path.join(local_repo_path, "pnpm-lock.yaml")
+    if not os.path.isfile(pnpm_lock_yaml):
+        fail("web repo pnpm-lock.yaml does not exist")
+    with open(pnpm_lock_yaml) as file:
+        try:
+            # this needs to handle multiple docs (pnpm 11+) and the pnpm version should only exist in one
+            # rely on truthiness for the early break of the loop
+            docs = list(yaml.safe_load_all(file))
+            for doc in docs:
+                if not doc or not isinstance(doc, dict):
+                    continue
+                pnpm_version = doc.get("importers", {}).get(".", {}).get("packageManagerDependencies", {}).get("pnpm", {}).get("version", "")
+                if pnpm_version:
+                    break
+        except yaml.YAMLError:
+            fail("load web pnpm-lock.yaml: unexpected yaml decode failure")
+    if not pnpm_version:
+        fail("pnpm version not found in pnpm-lock.yaml")
+    print(" - pnpm version: %s" % pnpm_version)
+    replace(os.path.join(base_path, "README.md"), '@PNPM_VERSION@', 'pnpm %s' % pnpm_version)
 
 
 # update required versions in the README.md
 def update_required_versions(release_base, repo_list):
     switcher = {
-        "yunikorn-k8shim": update_required_go_version,
+        "yunikorn-k8shim": update_required_go_versions,
         "yunikorn-web": update_required_node_and_angular_versions,
     }
     for repo_meta in repo_list:
@@ -466,6 +493,8 @@ def write_checksum(tarball_file, tarball_name):
     print("generating sha512 checksum file for tar")
     h = hashlib.sha512()
     # read the file and generate the sha
+    if not os.path.isfile(tarball_file):
+        fail("%s file is missing" % tarball_file)
     with open(tarball_file, 'rb') as file:
         while True:
             data = file.read(65536)
@@ -487,6 +516,8 @@ def get_checksum(file_path, file_name):
     print("generating sha512 checksum for %s" % file_name)
     h = hashlib.sha512()
     # read the file and generate the sha
+    if not os.path.isfile(file_path):
+        fail("%s file is missing" % file_path)
     with open(file_path, 'rb') as file:
         while True:
             data = file.read(65536)
@@ -494,6 +525,7 @@ def get_checksum(file_path, file_name):
                 break
             h.update(data)
     sha = h.hexdigest()
+    print("sha512 checksum: %s" % sha)
     return "%s  %s" % (sha, file_name)
 
 
@@ -507,19 +539,22 @@ def call_gpg(tarball_file, email_address):
     command = [cmd, '--armor', '--detach-sig']
     command.extend(['--local-user', email_address])
     command.extend(['--output', tarball_file + ".asc", tarball_file])
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("failed to create gpg signature")
 
 
-# Determine the specific go compiler in use
-def get_go_version():
-    command = ['go', 'env', 'GOVERSION']
-    result = subprocess.run(command, capture_output=True, text=True)
-    if result.returncode:
-        fail("failed to get go version")
-    output = re.sub(r'^go', r'', result.stdout.strip())
-    return output
+# Determine the go repro compiler version
+def get_repro_version(base):
+    repro = os.path.join(base, '.go_repro_version')
+    if not os.path.isfile(repro):
+        fail("go_repro_version file is missing")
+    with open(repro, 'r') as file:
+        content = file.readline().strip()
+    return content
 
 
 # Package the helm chart and sign if an email is provided
@@ -541,14 +576,19 @@ def call_helm(staging_dir, base_path, version, email_address):
     else:
         print("Packaging helm chart (unsigned)")
     command.extend([release_helm_path, '--destination', staging_dir])
-    retcode = subprocess.call(command)
-    if retcode:
+    result = subprocess.run(command, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("helm chart creation failed")
     if not email_address:
         helm_package = "yunikorn-" + version + ".tgz"
         helm_pack_path = os.path.join(staging_dir, helm_package)
         h = hashlib.sha256()
         # read the file and generate the sha
+        if not os.path.isfile(helm_pack_path):
+            fail("helm package is missing")
         with open(helm_pack_path, 'rb') as file:
             while True:
                 data = file.read(65536)

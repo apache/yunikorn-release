@@ -31,7 +31,7 @@ General requirement for building YuniKorn images from this release:
 
 ### Yunikorn Scheduler
 The scheduler and shim are build as one set of artifacts and have one requirement:
-* Go 1.24.0 or later
+* @GO_VERSION@ or later
 
 ### Yunikorn web UI
 The YuniKorn web UI uses a two stage docker build with predefined images.
@@ -51,7 +51,7 @@ The default for the architecture is the local processor type that is retrieved v
 The architecture can be overridden by setting the shell variable `HOST_ARCH`.
 For details on how to change the architectures see the processing of `HOST_ARCH` in the `Makefile` included in the `k8shim` directory.
 
-The command will generate the following four docker images in the local docker repository:
+The command will generate the following three docker images in the local docker repository:
 * apache/yunikorn:scheduler-_amd64_-latest
 * apache/yunikorn:admission-_amd64_-latest
 * apache/yunikorn:web-_amd64_-latest
@@ -112,7 +112,7 @@ The convenience build images are multi-architecture images. Supported architectu
 Building YuniKorn from source generates reproducible build artifacts which
 depend only on the version of YuniKorn built and the go compiler version used.
 
-This release was compiled by the official release manager using Go version `@GO_VERSION@`
+This release was compiled by the official release manager using Go version `@GO_REPRO_VERSION@`
 and generated binary artifacts with the following SHA-512 checksums:
 
 ### linux/amd64
@@ -146,13 +146,11 @@ Unit testing for the scheduler has no additional pre-requisites.
 ### Yunikorn web UI
 The project requires a number of external tools to be installed for test and development.
 A non image build requires the following tools to be installed:
-* Node.js 16.14.2
-* Angular CLI 13.3.0
-* yarn 1.22
+* @NODE_VERSION@
+* @ANGULAR_VERSION@
+* @PNPM_VERSION@
 
-Running unit tests adds the following requirements:
-* Karma
-* json-server
+`Node.js` must be installed to build locally without using a docker image to build in.
+After node.js is installed the make targets will install the required angular and pnpm binaries.
 
 Please check the [documentation](https://yunikorn.apache.org/docs/) for further details.
-
