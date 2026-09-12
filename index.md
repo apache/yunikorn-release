@@ -80,6 +80,7 @@ YuniKorn has a builtin web UI for queue hierarchies applications and nodes. See 
 | 1.33.x              |         1.8.0          |       -       |
 | 1.34.x              |         1.8.0          |       -       |
 | 1.35.x              |         1.9.0          |       -       |
+| 1.36.x              |         1.10.0         |       -       |
 
 ## Useful links
 
