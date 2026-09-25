@@ -33,10 +33,31 @@ targets = {"adm_image": "admission",
            "sched_image": "scheduler"}
 # registry setting passed to Makefile to allow testing of the script
 repository = "apache"
+# Docker Hub host - images are always tagged/pushed fully-qualified under this host so
+# podman doesn't rewrite an unqualified name to "localhost/..." in its local store.
+REGISTRY_HOST = "docker.io"
 # authentication info for docker hub
 docker_user = ""
 docker_pass = ""
 docker_token = ""
+# container engine to use (docker or podman)
+engine = ""
+
+
+def get_engine():
+    global engine
+    if engine:
+        return engine
+    if "DOCKER" in os.environ and os.environ["DOCKER"]:
+        engine = os.environ["DOCKER"]
+        return engine
+    if shutil.which("docker"):
+        engine = "docker"
+    elif shutil.which("podman"):
+        engine = "podman"
+    else:
+        fail("neither docker nor podman found on the path")
+    return engine
 
 
 # fail the execution
@@ -90,7 +111,11 @@ def load_config():
 
 # Cleanup image tag
 def remove_tag(image_name):
-    splits = image_name.split(":")
+    # the Docker Hub API path is namespace/repo, not a host-qualified reference
+    name = image_name
+    if name.startswith(REGISTRY_HOST + "/"):
+        name = name[len(REGISTRY_HOST) + 1:]
+    splits = name.split(":")
     if len(splits) != 2:
         fail("Image name is not in the required format")
     cmd = get_cmd("curl")
@@ -139,21 +164,21 @@ def get_auth():
         fail("username and password required")
 
 
-# Login to docker
+# Login to docker registry
 def login():
-    cmd = get_cmd("docker")
-    # login to docker
+    cmd = get_cmd(get_engine())
+    # login to docker hub
     print("Login to docker hub")
-    log_in = [cmd, "login", "--username", docker_user, "--password", docker_pass]
+    log_in = [cmd, "login", "docker.io", "--username", docker_user, "--password", docker_pass]
     retcode = subprocess.call(log_in, stdout=subprocess.DEVNULL)
     if retcode:
-        fail("docker login failed")
+        fail(f"{get_engine()} login failed")
     get_token()
 
 
 # Create an image name based on passed in details
 def create_image_name(image, version, arch):
-    image_name = repository + "/yunikorn:" + image
+    image_name = REGISTRY_HOST + "/" + repository + "/yunikorn:" + image
     if arch != "":
         image_name += "-" + arch
     image_name += "-" + version
@@ -166,7 +191,7 @@ def build_manifest(manifest, version):
     print(" - manifest: %s" % manifest)
     print(" - version:  %s" % version)
     multi_image = create_image_name(manifest, version, "")
-    cmd = get_cmd("docker")
+    cmd = get_cmd(get_engine())
     command = [cmd, "manifest", "create", multi_image]
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -179,13 +204,15 @@ def build_manifest(manifest, version):
         command.extend(["--amend", image_name])
     retcode = subprocess.call(command, stdout=subprocess.DEVNULL)
     if retcode:
-        fail("docker manifest creation failed")
+        fail(f"{get_engine()} manifest creation failed")
     # push the manifest
-    # purge option is needed: https://github.com/docker/cli/issues/954
-    command = [cmd, "manifest", "push", "--purge", multi_image]
+    # purge option is needed for docker: https://github.com/docker/cli/issues/954
+    # podman uses --rm to remove local manifest list after push
+    purge_flag = "--rm" if get_engine() == "podman" else "--purge"
+    command = [cmd, "manifest", "push", purge_flag, multi_image]
     retcode = subprocess.call(command, stdout=subprocess.DEVNULL)
     if retcode:
-        fail("docker manifest push failed")
+        fail(f"{get_engine()} manifest push failed")
     # remove temporary tags that allowed manifest build
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -200,7 +227,8 @@ def build_image(base_dir, image, arch, version):
     my_env["VERSION"] = version          # force version, just be safe
     my_env["HOST_ARCH"] = arch           # the architecture override
     my_env["REPRODUCIBLE_BUILDS"] = "1"  # always use reproducible builds
-    my_env["REGISTRY"] = repository      # repository override (test only)
+    my_env["REGISTRY"] = REGISTRY_HOST + "/" + repository  # fully-qualified, avoids podman's localhost/ rewrite
+    my_env["DOCKER"] = get_engine()      # pass container engine to make
     command = [cmd, "clean", image]
     # build the image using make
     retcode = subprocess.call(command, cwd=base_dir, env=my_env, stdout=subprocess.DEVNULL)
@@ -233,6 +261,7 @@ def scheduler_images(base_dir, version):
 
 # Build the combined architecture images
 def build_images():
+    print("Using container engine: %s" % get_engine())
     get_auth()
     login()
     version, repo_list, release_base = load_config()
@@ -253,25 +282,30 @@ def build_images():
 
 # Print the usage info
 def usage(script):
-    print("%s [--repository <name>]" % script)
+    print("%s [--repository <name>] [--engine <name>]" % script)
     print("repository override should only be used for testing")
+    print("engine: container engine to use (default: auto-detected, docker preferred)")
     sys.exit(2)
 
 
 def main(argv):
     script = argv[0]
     try:
-        opts, args = getopt.getopt(argv[1:], "", ["repository="])
+        opts, args = getopt.getopt(argv[1:], "", ["repository=", "engine="])
     except getopt.GetoptError:
         usage(script)
     if args:
         usage(script)
-    global repository
+    global repository, engine
     for opt, arg in opts:
         if opt == "--repository":
             if not arg:
                 usage(script)
-        repository = arg
+            repository = arg
+        if opt == "--engine":
+            if not arg:
+                usage(script)
+            engine = arg
     build_images()
 
 
