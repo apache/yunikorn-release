@@ -31,11 +31,10 @@ function config_check() {
   return ${FAIL}
 }
 
-# docker check
+# docker/podman check
 function docker_check() {
-  DOCKER_UP=$(docker version | grep "^Server:")
-  if [ -z "${DOCKER_UP}" ]; then
-    echo "docker daemon must be running"
+  if ! "${DOCKER}" info &> /dev/null; then
+    echo "${DOCKER} is not available or not running"
     return 1
   fi
 }
@@ -58,9 +57,9 @@ function tool_check() {
     echo "  helm must be installed and on the path"
     FAIL=1
   fi
-  if ! command -v docker &> /dev/null
+  if ! command -v "${DOCKER}" &> /dev/null
   then
-    echo "  docker must be installed and on the path"
+    echo "  ${DOCKER} must be installed and on the path"
     FAIL=1
   fi
   if ! command -v make &> /dev/null
@@ -71,14 +70,36 @@ function tool_check() {
   return ${FAIL}
 }
 
+# load an image into the kind cluster
+function load_image() {
+  local image=$1
+  if [ "${DOCKER}" = "podman" ]; then
+    local archive
+    archive=$(mktemp -t yunikorn-image.XXXXXX)
+    if ! "${DOCKER}" save "${image}" -o "${archive}" >/dev/null 2>&1; then
+      echo "Failed to export image: ${image}"
+      rm -f "${archive}"
+      return 1
+    fi
+    kind load image-archive "${archive}" --name yk8s >/dev/null 2>&1
+    local rc=$?
+    rm -f "${archive}"
+    return ${rc}
+  else
+    kind load docker-image "${image}" --name yk8s >/dev/null 2>&1
+  fi
+}
+
 # show run details 
 function run_detail() {
   echo "Creating kind validation cluster"
   echo "  Apache YuniKorn version: ${VERSION}"
+  echo "  Container Engine:        ${DOCKER}"
   echo "  Helm chart directory:    ${HELMCHART}"
   echo "  Kind cluster config:     ${KIND_CONFIG}"
   echo "  Kubernetes image:        ${KIND_IMAGE}"
   echo "  Registry name:           ${REGISTRY}"
+  echo "  Image Registry:          ${IMAGE_REGISTRY}"
   echo "  Executable Architecture: ${EXEC_ARCH}"
   echo "  Image Architecture:      ${DOCKER_ARCH}"
 }
@@ -94,6 +115,7 @@ function usage() {
   echo "  REGISTRY=local ${NAME} 1.33.4"
   echo
   echo "variable names with default values:"
+  echo "  DOCKER,       default: auto-detected (docker or podman)"
   echo "  VERSION,      default: latest"
   echo "  REGISTRY,     default: 'apache'"
   echo "  KIND_CONFIG,  default: './kind.yaml'"
@@ -116,6 +138,21 @@ function cleanup() {
 	echo
 }
 
+DOCKER="${DOCKER:-}"
+if [ -z "${DOCKER}" ]; then
+  if command -v docker &> /dev/null; then
+    DOCKER="docker"
+  elif command -v podman &> /dev/null; then
+    DOCKER="podman"
+  else
+    DOCKER="docker"
+  fi
+fi
+
+if [ "${DOCKER}" = "podman" ]; then
+  export KIND_EXPERIMENTAL_PROVIDER=podman
+fi
+
 # tool check: run before input check to make sure all tools are available
 tool_check
 if [ $? -eq 1 ]; then
@@ -137,6 +174,15 @@ VERSION="${VERSION:-latest}"
 REGISTRY="${REGISTRY:-apache}"
 KIND_CONFIG="${KIND_CONFIG:-./kind.yaml}"
 HELMCHART="${HELMCHART:-./helm-charts/yunikorn}"
+
+# podman normalizes unqualified image names (no registry domain) to "localhost/<name>"
+# in its local store; images loaded into kind via load_image() end up tagged that way,
+# so helm must reference the same name or it will try to pull instead of using the local image
+IMAGE_REGISTRY="${REGISTRY}"
+if [ "${DOCKER}" = "podman" ]; then
+  IMAGE_REGISTRY="localhost/${REGISTRY}"
+fi
+
 # load the docker architecture via make
 eval "$(make -s arch)"
 
@@ -160,23 +206,20 @@ if [ $? -eq 1 ]; then
   exit 1
 fi
 echo
-echo "Pre-Loading docker images..."
+echo "Pre-Loading images..."
 echo
 ADM_IMAGE=admission-${DOCKER_ARCH}-${VERSION}
-kind load docker-image "${REGISTRY}"/yunikorn:"${ADM_IMAGE}" --name yk8s >/dev/null 2>&1
-if [ $? -eq 1 ]; then
+if ! load_image "${IMAGE_REGISTRY}"/yunikorn:"${ADM_IMAGE}"; then
 	echo "Pre-Loading ${ADM_IMAGE} image failed, aborting"
   remove_cluster
 fi
 SCHED_IMAGE=scheduler-${DOCKER_ARCH}-${VERSION}
-kind load docker-image "${REGISTRY}"/yunikorn:"${SCHED_IMAGE}" --name yk8s >/dev/null 2>&1
-if [ $? -eq 1 ]; then
+if ! load_image "${IMAGE_REGISTRY}"/yunikorn:"${SCHED_IMAGE}"; then
 	echo "Pre-Loading ${SCHED_IMAGE} image failed, aborting"
   remove_cluster
 fi
 WEB_IMAGE=web-${DOCKER_ARCH}-${VERSION}
-kind load docker-image "${REGISTRY}"/yunikorn:"${WEB_IMAGE}" --name yk8s >/dev/null 2>&1
-if [ $? -eq 1 ]; then
+if ! load_image "${IMAGE_REGISTRY}"/yunikorn:"${WEB_IMAGE}"; then
 	echo "Pre-Loading ${WEB_IMAGE} image failed, aborting"
   remove_cluster
 fi
@@ -195,13 +238,13 @@ fi
 echo
 echo "Deploying helm chart..."
 helm install yunikorn "${HELMCHART}" --namespace yunikorn \
-    --set image.repository="${REGISTRY}"/yunikorn \
+    --set image.repository="${IMAGE_REGISTRY}"/yunikorn \
     --set image.tag="${SCHED_IMAGE}" \
     --set image.pullPolicy=IfNotPresent \
-    --set admissionController.image.repository="${REGISTRY}"/yunikorn \
+    --set admissionController.image.repository="${IMAGE_REGISTRY}"/yunikorn \
     --set admissionController.image.tag="${ADM_IMAGE}" \
     --set admissionController.image.pullPolicy=IfNotPresent \
-    --set web.image.repository="${REGISTRY}"/yunikorn \
+    --set web.image.repository="${IMAGE_REGISTRY}"/yunikorn \
     --set web.image.tag="${WEB_IMAGE}" \
     --set web.image.pullPolicy=IfNotPresent
 echo
