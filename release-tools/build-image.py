@@ -250,8 +250,10 @@ def build_manifest(manifest, version):
         print("Errors:", result.stderr)
         fail("%s manifest creation failed" % engine)
     # push the manifest
-    # purge option is needed: https://github.com/docker/cli/issues/954
-    command = [cmd, "manifest", "push", "--purge", multi_image]
+    # purge option is needed for docker: https://github.com/docker/cli/issues/954
+    # podman uses --rm to remove local manifest list after push
+    purge_flag = "--rm" if engine == "podman" else "--purge"
+    command = [cmd, "manifest", "push", purge_flag, multi_image]
     result = subprocess.run(command, capture_output=True)
     # Access the standard output and standard error
     if result.returncode:
