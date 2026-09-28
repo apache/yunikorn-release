@@ -31,7 +31,7 @@ General requirement for building YuniKorn images from this release:
 
 ### Yunikorn Scheduler
 The scheduler and shim are build as one set of artifacts and have one requirement:
-* @GO_VERSION@ or later
+* Go version @GO_VERSION@ or later
 
 ### Yunikorn web UI
 The YuniKorn web UI uses a two stage docker build with predefined images.
@@ -40,8 +40,7 @@ All dependencies are included in the image.
 NOTE: the scheduler can be used without a web UI build or deployed.
 
 ## Building
-Run the `make` command to build docker images. To generate verifiable, reproducible binaries,
-run `make REPRODUCIBLE_BUILDS=1`
+Run the `make` command to build docker images. To generate verifiable, reproducible binaries, see [Reproducible builds](#reproducible-builds). 
 
 ```shell script
 make
@@ -127,7 +126,7 @@ and generated binary artifacts with the following SHA-512 checksums:
 
 To verify your own binaries, be sure to execute your build in reproducible mode:
 ```shell script
-make REPRODUCIBLE_BUILDS=1
+REPRODUCIBLE_BUILDS=1 make
 ```
 
 ## Testing the build
@@ -146,9 +145,9 @@ Unit testing for the scheduler has no additional pre-requisites.
 ### Yunikorn web UI
 The project requires a number of external tools to be installed for test and development.
 A non image build requires the following tools to be installed:
-* @NODE_VERSION@
-* @ANGULAR_VERSION@
-* @PNPM_VERSION@
+* Node.js @NODE_VERSION@
+* Angular CLI @ANGULAR_VERSION@
+* pnpm @PNPM_VERSION@
 
 `Node.js` must be installed to build locally without using a docker image to build in.
 After node.js is installed the make targets will install the required angular and pnpm binaries.

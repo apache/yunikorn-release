@@ -253,7 +253,7 @@ def build_web_and_generate_hashes(staging_dir, release_name, arch):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail("failed to build yunikorn-web (%s)" % arch)
+        fail("failed to build yunikorn-web architecture '%s'" % arch)
     hashes = get_checksum(os.path.join(web_dir, "build/prod/yunikorn-web"), "yunikorn-web")
     # clean up otherwise build does not generate new artifacts
     result = subprocess.run(['make', 'clean'], cwd=web_dir, capture_output=True)
@@ -261,7 +261,7 @@ def build_web_and_generate_hashes(staging_dir, release_name, arch):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail("failed to build yunikorn-web (%s)" % arch)
+        fail("failed to clean yunikorn-web after build for '%s'" % arch)
     shutil.move(git_ignore+".tmp", git_ignore)
     return hashes
 
@@ -277,7 +277,7 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail("failed to build yunikorn-k8shim (%s)" % arch)
+        fail("failed to build yunikorn-k8shim architecture: '%s'" % arch)
     adm_hash = get_checksum(os.path.join(shim_dir, "build/bin/yunikorn-admission-controller"), "yunikorn-admission-controller")
     scheduler_hash = get_checksum(os.path.join(shim_dir, "build/bin/yunikorn-scheduler"), "yunikorn-scheduler")
     hashes = "\n".join([adm_hash, scheduler_hash])
@@ -287,7 +287,7 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail("failed to build yunikorn-web (%s)" % arch)
+        fail("failed to clean yunikorn-k8shim after build for '%s'" % arch)
     shutil.move(git_ignore+".tmp", git_ignore)
     return hashes
 
@@ -400,10 +400,10 @@ def update_required_go_versions(base_path, local_repo_path):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail("failed to update core go.mod references")
+        fail("failed to retrieve minimum go version")
     go_version = str(result.stdout.strip(), 'utf-8')
     print(" - go version:  %s" % go_version)
-    replace(os.path.join(base_path, "README.md"), '@GO_VERSION@', 'v' + go_version)
+    replace(os.path.join(base_path, "README.md"), '@GO_VERSION@', go_version)
 
     print("updating go repro version")
     repro = os.path.join(local_repo_path, '.go_repro_version')
@@ -412,7 +412,7 @@ def update_required_go_versions(base_path, local_repo_path):
     with open(repro, 'r') as file:
         go_repro_version = file.readline().strip()
     print(" - go repro version:  %s" % go_repro_version)
-    replace(os.path.join(base_path, "README.md"), '@GO_REPRO_VERSION@', 'v' + go_repro_version)
+    replace(os.path.join(base_path, "README.md"), '@GO_REPRO_VERSION@', go_repro_version)
 
 
 
@@ -435,7 +435,7 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
     if not node_version:
         fail("web repo .nvmrc is empty")
     print(" - node version:  %s" % node_version)
-    replace(os.path.join(base_path, "README.md"), '@NODE_VERSION@', 'Node ' + node_version)
+    replace(os.path.join(base_path, "README.md"), '@NODE_VERSION@', node_version)
 
     print("updating required Angular version")
     package_json_file = os.path.join(local_repo_path, "package.json")
@@ -451,7 +451,7 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
         fail("web repo package.json: unexpected @angular/cli version")
     angular_version = re.sub('^[^0-9]+', '', angular_version_match)
     print(" - angular version: %s" % angular_version)
-    replace(os.path.join(base_path, "README.md"), '@ANGULAR_VERSION@', 'Angular CLI ' + angular_version)
+    replace(os.path.join(base_path, "README.md"), '@ANGULAR_VERSION@', angular_version)
 
     print("updating required pnpm version")
     pnpm_lock_yaml = os.path.join(local_repo_path, "pnpm-lock.yaml")
@@ -473,7 +473,7 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
     if not pnpm_version:
         fail("pnpm version not found in pnpm-lock.yaml")
     print(" - pnpm version: %s" % pnpm_version)
-    replace(os.path.join(base_path, "README.md"), '@PNPM_VERSION@', 'pnpm %s' % pnpm_version)
+    replace(os.path.join(base_path, "README.md"), '@PNPM_VERSION@', pnpm_version)
 
 
 # update required versions in the README.md

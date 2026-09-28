@@ -202,7 +202,8 @@ def get_auth():
 
 # Login to docker registry
 def login():
-    cmd = get_cmd(get_engine())
+    engine = get_engine()
+    cmd = get_cmd(engine)
     # login to docker hub
     print("Login to docker hub")
     log_in = [cmd, "login", "docker.io","--username", docker_user, "--password", docker_pass]
@@ -211,7 +212,7 @@ def login():
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail(f"{get_engine()} login failed")
+        fail("%s login failed" % engine)
     get_token()
 
 
@@ -230,7 +231,8 @@ def build_manifest(manifest, version):
     print(" - manifest: %s" % manifest)
     print(" - version:  %s" % version)
     multi_image = create_image_name(manifest, version, "")
-    cmd = get_cmd(get_engine())
+    engine = get_engine()
+    cmd = get_cmd(engine)
     command = [cmd, "manifest", "create", multi_image]
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -246,7 +248,7 @@ def build_manifest(manifest, version):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail(f"{get_engine()} manifest creation failed")
+        fail("%s manifest creation failed" % engine)
     # push the manifest
     # purge option is needed: https://github.com/docker/cli/issues/954
     command = [cmd, "manifest", "push", "--purge", multi_image]
@@ -255,7 +257,7 @@ def build_manifest(manifest, version):
     if result.returncode:
         print("Output:", result.stdout)
         print("Errors:", result.stderr)
-        fail(f"{get_engine()} manifest push failed")
+        fail("%s manifest push failed" % engine)
     # remove temporary tags that allowed manifest build
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -306,7 +308,7 @@ def scheduler_images(base_dir, version):
         # build all architectures
         for arch in architecture:
             print("Building image '%s' using: '%s', architecture: '%s'" % (image, target, arch))
-            print(" - go repro version: %s", get_repro_version(base_dir))
+            print(" - go repro version: %s" % get_repro_version(base_dir))
             build_image(base_dir, target, arch, version)
         # build the manifest
         build_manifest(image, version)
