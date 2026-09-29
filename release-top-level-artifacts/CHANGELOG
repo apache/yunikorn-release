@@ -26,6 +26,9 @@ Release Notes - Apache YuniKorn - Version 1.10.0
     * [YUNIKORN-3397] - release artifact push 
     * [YUNIKORN-3409] - AddRejectedApplication writes the rejected-application map without the partition lock
     * [YUNIKORN-3416] - UserGroupCache cleanup locks the singleton instead of the receiver; nil dereference after Stop()
+    * [YUNIKORN-3428] - Application.taskMap read without the lock from String() and AreAllTasksTerminated
+
+
 
 ** Bug
     * [YUNIKORN-3137] - Fails to preempt more than 2 victims for a larger ask.
@@ -68,6 +71,10 @@ Release Notes - Apache YuniKorn - Version 1.10.0
     * [YUNIKORN-3432] - Cleanup LDAP resolver
     * [YUNIKORN-3436] - Event stream forwarder leaks on slow-consumer eviction: in-loop consumer send is not selectable
     * [YUNIKORN-3444] - merge_pr.sh: tail +2 fails on GNU tail
+    * [YUNIKORN-3446] - [UGM] Race condition in ensureGroupTrackerForApp creates duplicate GroupTrackers and bypasses group quota
+    * [YUNIKORN-3472] - Consistent appid and user checking
+
+
 
 ** New Feature
     * [YUNIKORN-3287] - Add HTTPRoute / Gateway API support to YuniKorn Helm chart
@@ -87,20 +94,24 @@ Release Notes - Apache YuniKorn - Version 1.10.0
     * [YUNIKORN-3349] - Enhance Developer concurrency documentation
     * [YUNIKORN-3361] - Improve performance tests in yunikorn-core
     * [YUNIKORN-3378] - TestSchedulerRecoveryQuotaPreemption is flaky
+    * [YUNIKORN-3388] - Update quota_preemptor design doc to match current implementation
     * [YUNIKORN-3434] - upgrade protoc in SI Makefile
     * [YUNIKORN-3435] - upgrade go dependencies for CVEs
     * [YUNIKORN-3440] - Use `https` instead of `http` in the README files
     * [YUNIKORN-3441] - Support podman for building images and running e2e tests
     * [YUNIKORN-3447] - Drop managed fields in the informers
+    * [YUNIKORN-3473] - Support workload updates
 
 ** Test
     * [YUNIKORN-3296] - Race condition detected in TestSchedulerRecoveryQuotaPreemption
     * [YUNIKORN-3338] - Golden test trace generation and validation
     * [YUNIKORN-3431] - Add regression test coverage for KubernetesShim scheduling loop shutdown
 
+
 ** Task
     * [YUNIKORN-3194] - Update PR template to ask about AI contribution
     * [YUNIKORN-3247] - DOC: Update troubleshooting statedump collection
+    * [YUNIKORN-3248] - Improve Quota Preemption Documentation
     * [YUNIKORN-3277] - expose ask backoff and quota preemption in REST
     * [YUNIKORN-3298] - e2e test flaky: TestPredicates
     * [YUNIKORN-3301] - fix imports for e2e tests
