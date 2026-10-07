@@ -27,42 +27,42 @@ from typing import AnyStr
 
 # Supported host architectures for executables and docker images
 # Mapped to the correct settings in the Makefile
-architecture = {"x86_64": "amd64",
-                "aarch64": "arm64"}
+ARCHITECTURE: dict[str,str] = {"x86_64": "amd64",
+                               "aarch64": "arm64"}
 # Make targets for the shim repo to generate the images
-targets = {"adm_image": "admission",
-           "sched_image": "scheduler"}
+TARGETS: dict[str,str] = {"adm_image": "admission",
+                          "sched_image": "scheduler"}
 # registry setting passed to Makefile to allow testing of the script
-repository = "apache"
+_repository: str = "apache"
 # Docker Hub host - images are always tagged/pushed fully-qualified under this host so
 # podman doesn't rewrite an unqualified name to "localhost/..." in its local store.
-REGISTRY_HOST = "docker.io"
+DOCKER_HUB: str = "docker.io"
 # authentication info for docker hub
-docker_user = ""
-docker_pass = ""
-docker_token = ""
+docker_user: str  = ""
+docker_pass: str  = ""
+docker_token: str = ""
 # container engine to use (docker or podman)
-engine = ""
+_engine: str = ""
 
 
-def get_engine():
-    global engine
-    if engine:
-        return engine
+def get_engine() -> str:
+    global _engine
+    if _engine:
+        return _engine
     if "DOCKER" in os.environ and os.environ["DOCKER"]:
-        engine = os.environ["DOCKER"]
-        return engine
+        _engine = os.environ["DOCKER"]
+        return _engine
     if shutil.which("docker"):
-        engine = "docker"
+        _engine = "docker"
     elif shutil.which("podman"):
-        engine = "podman"
+        _engine = "podman"
     else:
         fail("neither docker nor podman found on the path")
-    return engine
+    return _engine
 
 
 # fail the execution
-def fail(message):
+def fail(message: str):
     print(message)
     sys.exit(1)
 
@@ -74,7 +74,7 @@ def ensure_str(val: AnyStr, encoding: str = "utf-8") -> str:
 
 
 # get the command from the path
-def get_cmd(name: str):
+def get_cmd(name: str) -> str:
     cmd = shutil.which(name)
     if not cmd:
         fail("command not found on the path: '%s'" % name)
@@ -82,7 +82,7 @@ def get_cmd(name: str):
 
 
 # Determine the specific go compiler installed (for logging to compare with repro version)
-def get_go_version():
+def get_go_version() -> str:
     command = ['go', 'env', 'GOVERSION']
     result = subprocess.run(command, capture_output=True)
     if result.returncode:
@@ -92,7 +92,7 @@ def get_go_version():
 
 
 # Determine the go repro compiler version
-def get_repro_version(base):
+def get_repro_version(base: str) -> str:
     repro = os.path.join(base, '.go_repro_version')
     if not os.path.isfile(repro):
         fail("go_repro_version file is missing")
@@ -102,7 +102,7 @@ def get_repro_version(base):
 
 
 # load the config, based on the build-release.py code.
-def load_config():
+def load_config() -> tuple[str, dict, str]:
     tools_dir = ensure_str(os.path.dirname(os.path.realpath(__file__)))
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
@@ -140,11 +140,11 @@ def load_config():
 
 
 # Cleanup image tag
-def remove_tag(image_name):
+def remove_tag(image_name: str):
     # the Docker Hub API path is namespace/repo, not a host-qualified reference
     name = image_name
-    if name.startswith(REGISTRY_HOST + "/"):
-        name = name[len(REGISTRY_HOST) + 1:]
+    if name.startswith(DOCKER_HUB + "/"):
+        name = name[len(DOCKER_HUB) + 1:]
     splits = name.split(":")
     if len(splits) != 2:
         fail("Image name is not in the required format")
@@ -160,7 +160,7 @@ def remove_tag(image_name):
 
 
 # Push an image or manifest
-def push_image(cmd, image_name):
+def push_image(cmd: str, image_name: str):
     push = [cmd, "push", image_name]
     result = subprocess.run(push, capture_output=True)
     # Access the standard output and standard error
@@ -217,8 +217,8 @@ def login():
 
 
 # Create an image name based on passed in details
-def create_image_name(image, version, arch):
-    image_name = REGISTRY_HOST + "/" + repository + "/yunikorn:" + image
+def create_image_name(image: str, version: str, arch: str) -> str:
+    image_name = DOCKER_HUB + "/" + _repository + "/yunikorn:" + image
     if arch != "":
         image_name += "-" + arch
     image_name += "-" + version
@@ -226,7 +226,7 @@ def create_image_name(image, version, arch):
 
 
 # Create the manifest
-def build_manifest(manifest, version):
+def build_manifest(manifest: str, version: str):
     print("Building manifest")
     print(" - manifest: %s" % manifest)
     print(" - version:  %s" % version)
@@ -234,8 +234,8 @@ def build_manifest(manifest, version):
     engine = get_engine()
     cmd = get_cmd(engine)
     command = [cmd, "manifest", "create", multi_image]
-    for arch in architecture:
-        image_name = create_image_name(manifest, version, architecture[arch])
+    for arch in ARCHITECTURE:
+        image_name = create_image_name(manifest, version, ARCHITECTURE[arch])
         print(" - image:    %s" % image_name)
         # image_manifest = create_image_name(manifest, version, manifestmap[arch])
         # print(" - image manifest:    %s" % image_manifest)
@@ -261,13 +261,13 @@ def build_manifest(manifest, version):
         print("Errors:", result.stderr)
         fail("%s manifest push failed" % engine)
     # remove temporary tags that allowed manifest build
-    for arch in architecture:
-        image_name = create_image_name(manifest, version, architecture[arch])
+    for arch in ARCHITECTURE:
+        image_name = create_image_name(manifest, version, ARCHITECTURE[arch])
         remove_tag(image_name)
 
 
 # Build a scheduler image
-def build_image(base_dir, image, arch, version):
+def build_image(base_dir: str, image: str, arch: str, version: str):
     # move .gitignore in the staging dirs so repro version builds work
     git_ignore = os.path.join(base_dir, ".gitignore")
     shutil.move(git_ignore, git_ignore+".tmp")
@@ -277,7 +277,7 @@ def build_image(base_dir, image, arch, version):
     my_env["VERSION"] = version          # force version, just be safe
     my_env["HOST_ARCH"] = arch           # the architecture override
     my_env["REPRODUCIBLE_BUILDS"] = "1"  # always use reproducible builds
-    my_env["REGISTRY"] = REGISTRY_HOST + "/" + repository  # fully-qualified, avoids podman's localhost/ rewrite
+    my_env["REGISTRY"] = DOCKER_HUB + "/" + _repository  # fully-qualified, avoids podman's localhost/ rewrite
     my_env["DOCKER"] = get_engine()      # pass container engine to make
     command = [cmd, "clean", image]
     # build the image using make
@@ -293,9 +293,9 @@ def build_image(base_dir, image, arch, version):
 
 
 # Build the web image
-def web_image(base_dir, version):
+def web_image(base_dir: str, version: str):
     # build the images
-    for arch in architecture:
+    for arch in ARCHITECTURE:
         print("Building image for 'web', using 'image', architecture: '%s'" % arch)
         build_image(base_dir, "image", arch, version)
     # build the manifest
@@ -303,12 +303,12 @@ def web_image(base_dir, version):
 
 
 # Build the scheduler images
-def scheduler_images(base_dir, version):
+def scheduler_images(base_dir: str, version: str):
     # build the images for each target
-    for target in targets:
-        image = targets[target]
+    for target in TARGETS:
+        image = TARGETS[target]
         # build all architectures
-        for arch in architecture:
+        for arch in ARCHITECTURE:
             print("Building image '%s' using: '%s', architecture: '%s'" % (image, target, arch))
             print(" - go repro version: %s" % get_repro_version(base_dir))
             build_image(base_dir, target, arch, version)
@@ -338,14 +338,14 @@ def build_images():
 
 
 # Print the usage info
-def usage(script):
+def usage(script: str):
     print("%s [--repository <name>] [--engine <name>]" % script)
     print("repository override should only be used for testing")
     print("engine: container engine to use (default: auto-detected, docker preferred)")
     sys.exit(2)
 
 
-def main(argv):
+def main(argv: list[str]):
     script = argv[0]
     try:
         opts, args = getopt.getopt(argv[1:], "", ["repository=", "engine="])
@@ -353,16 +353,16 @@ def main(argv):
         usage(script)
     if args:
         usage(script)
-    global repository, engine
+    global _repository, _engine
     for opt, arg in opts:
         if opt == "--repository":
             if not arg:
                 usage(script)
-            repository = arg
+            _repository = arg
         if opt == "--engine":
             if not arg:
                 usage(script)
-            engine = arg
+            _engine = arg
     build_images()
 
 
