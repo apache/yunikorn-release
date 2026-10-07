@@ -19,10 +19,11 @@ import getopt
 import getpass
 import json
 import os
+import re
 import shutil
 import subprocess
-
 import sys
+from typing import AnyStr
 
 # Supported host architectures for executables and docker images
 # Mapped to the correct settings in the Makefile
@@ -66,19 +67,47 @@ def fail(message):
     sys.exit(1)
 
 
+def ensure_str(val: AnyStr, encoding: str = "utf-8") -> str:
+    if isinstance(val, bytes):
+        return val.decode(encoding)
+    return val
+
+
 # get the command from the path
-def get_cmd(name):
+def get_cmd(name: str):
     cmd = shutil.which(name)
     if not cmd:
         fail("command not found on the path: '%s'" % name)
-    return cmd
+    return str(cmd)
+
+
+# Determine the specific go compiler installed (for logging to compare with repro version)
+def get_go_version():
+    command = ['go', 'env', 'GOVERSION']
+    result = subprocess.run(command, capture_output=True)
+    if result.returncode:
+        fail("failed to get go version")
+    output = re.sub('^go', '', str(result.stdout.strip(), 'utf-8'))
+    return output
+
+
+# Determine the go repro compiler version
+def get_repro_version(base):
+    repro = os.path.join(base, '.go_repro_version')
+    if not os.path.isfile(repro):
+        fail("go_repro_version file is missing")
+    with open(repro, 'r') as file:
+        content = file.readline().strip()
+    return content
 
 
 # load the config, based on the build-release.py code.
 def load_config():
-    tools_dir = os.path.dirname(os.path.realpath(__file__))
+    tools_dir = ensure_str(os.path.dirname(os.path.realpath(__file__)))
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
+    if not os.path.isfile(config_file):
+        fail("release-configs.json file is missing")
     with open(config_file) as configs:
         try:
             data = json.load(configs)
@@ -96,13 +125,14 @@ def load_config():
         fail("load config: repository list not found")
     repo_list = data["repositories"]
 
-    staging_dir = os.path.join(os.path.dirname(tools_dir), "build", "staging")
+    staging_dir = os.path.join((os.path.dirname(tools_dir)), "build", "staging")
     release_base = os.path.join(staging_dir, release_package_name)
 
     print("release meta info:")
     print(" - version:        %s" % version)
     print(" - base directory: %s" % release_base)
     print(" - package name:   %s" % release_package_name)
+    print(" - go version:     %s" % get_go_version())
 
     if not os.path.exists(release_base):
         fail("Staged release dir does not exist:\n\t%s" % release_base)
@@ -121,16 +151,22 @@ def remove_tag(image_name):
     cmd = get_cmd("curl")
     curl = [cmd, "-X", "DELETE", "-H", "Authorization: JWT " + docker_token]
     curl.extend(["https://hub.docker.com/v2/repositories/" + splits[0] + "/tags/" + splits[1] + "/"])
-    retcode = subprocess.call(curl)
-    if retcode:
+    result = subprocess.run(curl, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("docker tag cleanup failed")
 
 
 # Push an image or manifest
 def push_image(cmd, image_name):
     push = [cmd, "push", image_name]
-    retcode = subprocess.call(push, stdout=subprocess.DEVNULL)
-    if retcode:
+    result = subprocess.run(push, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("docker push failed")
 
 
@@ -166,13 +202,17 @@ def get_auth():
 
 # Login to docker registry
 def login():
-    cmd = get_cmd(get_engine())
+    engine = get_engine()
+    cmd = get_cmd(engine)
     # login to docker hub
     print("Login to docker hub")
-    log_in = [cmd, "login", "docker.io", "--username", docker_user, "--password", docker_pass]
-    retcode = subprocess.call(log_in, stdout=subprocess.DEVNULL)
-    if retcode:
-        fail(f"{get_engine()} login failed")
+    log_in = [cmd, "login", "docker.io","--username", docker_user, "--password", docker_pass]
+    result = subprocess.run(log_in, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("%s login failed" % engine)
     get_token()
 
 
@@ -191,7 +231,8 @@ def build_manifest(manifest, version):
     print(" - manifest: %s" % manifest)
     print(" - version:  %s" % version)
     multi_image = create_image_name(manifest, version, "")
-    cmd = get_cmd(get_engine())
+    engine = get_engine()
+    cmd = get_cmd(engine)
     command = [cmd, "manifest", "create", multi_image]
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -202,17 +243,23 @@ def build_manifest(manifest, version):
         # https://github.com/docker/cli/issues/3350
         push_image(cmd, image_name)
         command.extend(["--amend", image_name])
-    retcode = subprocess.call(command, stdout=subprocess.DEVNULL)
-    if retcode:
-        fail(f"{get_engine()} manifest creation failed")
+    result = subprocess.run(command, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("%s manifest creation failed" % engine)
     # push the manifest
     # purge option is needed for docker: https://github.com/docker/cli/issues/954
     # podman uses --rm to remove local manifest list after push
-    purge_flag = "--rm" if get_engine() == "podman" else "--purge"
+    purge_flag = "--rm" if engine == "podman" else "--purge"
     command = [cmd, "manifest", "push", purge_flag, multi_image]
-    retcode = subprocess.call(command, stdout=subprocess.DEVNULL)
-    if retcode:
-        fail(f"{get_engine()} manifest push failed")
+    result = subprocess.run(command, capture_output=True)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
+        fail("%s manifest push failed" % engine)
     # remove temporary tags that allowed manifest build
     for arch in architecture:
         image_name = create_image_name(manifest, version, architecture[arch])
@@ -221,6 +268,9 @@ def build_manifest(manifest, version):
 
 # Build a scheduler image
 def build_image(base_dir, image, arch, version):
+    # move .gitignore in the staging dirs so repro version builds work
+    git_ignore = os.path.join(base_dir, ".gitignore")
+    shutil.move(git_ignore, git_ignore+".tmp")
     cmd = get_cmd("make")
     my_env = os.environ.copy()
     my_env["QUIET"] = "--quiet"          # stop image build from being chatty
@@ -231,8 +281,14 @@ def build_image(base_dir, image, arch, version):
     my_env["DOCKER"] = get_engine()      # pass container engine to make
     command = [cmd, "clean", image]
     # build the image using make
-    retcode = subprocess.call(command, cwd=base_dir, env=my_env, stdout=subprocess.DEVNULL)
-    if retcode:
+    result = subprocess.run(command, cwd=base_dir, env=my_env, capture_output=True)
+
+    # move .gitignore back
+    shutil.move(git_ignore+".tmp", git_ignore)
+    # Access the standard output and standard error
+    if result.returncode:
+        print("Output:", result.stdout)
+        print("Errors:", result.stderr)
         fail("make image failed")
 
 
@@ -254,6 +310,7 @@ def scheduler_images(base_dir, version):
         # build all architectures
         for arch in architecture:
             print("Building image '%s' using: '%s', architecture: '%s'" % (image, target, arch))
+            print(" - go repro version: %s" % get_repro_version(base_dir))
             build_image(base_dir, target, arch, version)
         # build the manifest
         build_manifest(image, version)
