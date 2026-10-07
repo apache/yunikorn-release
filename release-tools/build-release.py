@@ -32,7 +32,7 @@ import yaml
 
 
 # fail the execution
-def fail(message):
+def fail(message: str):
     print(message)
     sys.exit(1)
 
@@ -44,7 +44,7 @@ def ensure_str(val: AnyStr, encoding: str = "utf-8") -> str:
 
 
 # Main build routine
-def build_release(email_address):
+def build_release(email_address: str):
     tools_dir = ensure_str(os.path.dirname(os.path.realpath(__file__)))
     # load configs
     config_file = os.path.join(tools_dir, "release-configs.json")
@@ -148,7 +148,7 @@ def exclude_files(tarinfo):
 
 
 # Setup base for the source code tar ball with release repo files
-def setup_base_dir(release_top_path, helm_path, base_path, version):
+def setup_base_dir(release_top_path: str, helm_path: str, base_path: str, version: str):
     print("setting up base dir for release artifacts, path: %s" % base_path)
     if os.path.exists(base_path):
         print("\nstaging dir already exist:\n%s\nplease remove it and retry\n" % base_path)
@@ -173,7 +173,7 @@ def setup_base_dir(release_top_path, helm_path, base_path, version):
 
 
 # copy the helm charts into the base path and replace the version to the one defined in config
-def copy_helm_charts(helm_path, base_path, version):
+def copy_helm_charts(helm_path: str, base_path: str, version: str):
     print("helm patch: %s, base path: %s" % (helm_path, base_path))
     release_helm_path = os.path.join(base_path, "helm-charts")
     shutil.copytree(helm_path, release_helm_path)
@@ -185,7 +185,7 @@ def copy_helm_charts(helm_path, base_path, version):
 
 
 # replaces the string that match to pattern to subst from the file_path
-def replace(file_path, pattern, subst):
+def replace(file_path: str, pattern: str, subst: str):
     # Create temp file
     fh, abs_path = mkstemp()
     with os.fdopen(fh, 'w') as new_file:
@@ -201,7 +201,7 @@ def replace(file_path, pattern, subst):
     shutil.move(abs_path, file_path)
 
 
-def download_sourcecode(base_path, repo_meta):
+def download_sourcecode(base_path: str, repo_meta: dict) -> str:
     # these two have been checked before we get here
     alias = repo_meta["alias"]
     name = repo_meta["name"]
@@ -233,7 +233,7 @@ def download_sourcecode(base_path, repo_meta):
 
 
 # Run distclean on the source code path
-def clean_release(local_repo_path):
+def clean_release(local_repo_path: str):
     print("ensuring local source repo is clean")
     result = subprocess.run(['make', 'distclean'], cwd=local_repo_path, capture_output=True)
     if result.returncode:
@@ -243,7 +243,7 @@ def clean_release(local_repo_path):
 
 
 # Generate binaries for yunikorn-web and compute checksums
-def build_web_and_generate_hashes(staging_dir, release_name, arch):
+def build_web_and_generate_hashes(staging_dir: str, release_name: str, arch: str) -> str:
     print("generating reproducible build artifacts for yunikorn-web (%s)" % arch)
     web_dir = os.path.join(staging_dir, release_name, "web")
     git_ignore = os.path.join(web_dir, ".gitignore")
@@ -267,7 +267,7 @@ def build_web_and_generate_hashes(staging_dir, release_name, arch):
 
 
 # Generate binaries for yunikorn-k8shim and compute checksums
-def build_shim_and_generate_hashes(staging_dir, release_name, arch):
+def build_shim_and_generate_hashes(staging_dir: str, release_name: str, arch: str) -> str:
     print("generating reproducible build artifacts for yunikorn-k8shim (%s)" % arch)
     shim_dir = os.path.join(staging_dir, release_name, "k8shim")
     git_ignore = os.path.join(shim_dir, ".gitignore")
@@ -293,7 +293,7 @@ def build_shim_and_generate_hashes(staging_dir, release_name, arch):
 
 
 # K8shim depends on yunikorn-core and scheduler-interface
-def update_dep_ref_k8shim(local_repo_path):
+def update_dep_ref_k8shim(local_repo_path: str):
     print("updating dependency for k8shim")
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
@@ -317,7 +317,7 @@ def update_dep_ref_k8shim(local_repo_path):
 
 
 # core depends on scheduler-interface
-def update_dep_ref_core(local_repo_path):
+def update_dep_ref_core(local_repo_path: str):
     print("updating dependency for core")
     mod_file = os.path.join(local_repo_path, "go.mod")
     if not os.path.isfile(mod_file):
@@ -340,7 +340,7 @@ def update_dep_ref_core(local_repo_path):
 
 
 # update go mod in the repos
-def update_dep_ref(repo_name, local_repo_path):
+def update_dep_ref(repo_name: str, local_repo_path: str):
     switcher = {
         "yunikorn-k8shim": update_dep_ref_k8shim,
         "yunikorn-core": update_dep_ref_core,
@@ -350,7 +350,7 @@ def update_dep_ref(repo_name, local_repo_path):
 
 
 # replace the default version to release version in the Makefile(s)
-def update_make_version(repo_name, local_repo_path, version):
+def update_make_version(repo_name: str, local_repo_path: str, version: str):
     switcher = {
         "yunikorn-k8shim": "update",
         "yunikorn-web": "update",
@@ -360,7 +360,7 @@ def update_make_version(repo_name, local_repo_path, version):
 
 
 # k8shim uses its own, yunikorn-core and scheduler-interface revisions
-def update_sha_shim(repo_name, local_repo_path, sha):
+def update_sha_shim(repo_name: str, local_repo_path: str, sha: dict):
     print("updating sha for k8shim")
     make_file = os.path.join(local_repo_path, "Makefile")
     if not os.path.isfile(make_file):
@@ -371,7 +371,7 @@ def update_sha_shim(repo_name, local_repo_path, sha):
 
 
 # web only uses its own revision
-def update_sha_web(repo_name, local_repo_path, sha):
+def update_sha_web(repo_name: str, local_repo_path: str, sha: dict):
     print("updating sha for web")
     make_file = os.path.join(local_repo_path, "Makefile")
     if not os.path.isfile(make_file):
@@ -380,7 +380,7 @@ def update_sha_web(repo_name, local_repo_path, sha):
 
 
 # update git revision in the makefiles
-def update_sha(release_base, repo_list, sha):
+def update_sha(release_base: str, repo_list: dict, sha: dict):
     for repo_meta in repo_list:
         repo_name = repo_meta["name"]
         switcher = {
@@ -392,7 +392,7 @@ def update_sha(release_base, repo_list, sha):
 
 
 # update required Golang versions in the README.md
-def update_required_go_versions(base_path, local_repo_path):
+def update_required_go_versions(base_path: str, local_repo_path: str):
     print("updating required go version")
     command = ['go', 'list', '-m', '-f', '{{.GoVersion}}']
     result = subprocess.run(command, cwd=local_repo_path, capture_output=True)
@@ -415,9 +415,8 @@ def update_required_go_versions(base_path, local_repo_path):
     replace(os.path.join(base_path, "README.md"), '@GO_REPRO_VERSION@', go_repro_version)
 
 
-
 # update reproducible build information in README
-def update_reproducible_build_info(base_path, hashes_amd64, hashes_arm64):
+def update_reproducible_build_info(base_path: str, hashes_amd64: str, hashes_arm64: str):
     print("recording build artifact hashes (amd64)")
     replace(os.path.join(base_path, "README.md"), '@AMD64_BINARIES@', hashes_amd64)
     print("recording build artifact hashes (arm64)")
@@ -425,7 +424,7 @@ def update_reproducible_build_info(base_path, hashes_amd64, hashes_arm64):
 
 
 # update required Node.js and angular versions in the README.md
-def update_required_node_and_angular_versions(base_path, local_repo_path):
+def update_required_node_and_angular_versions(base_path: str, local_repo_path: str):
     print("updating required Node.js version")
     nvmrc_file = os.path.join(local_repo_path, ".nvmrc")
     if not os.path.isfile(nvmrc_file):
@@ -477,7 +476,7 @@ def update_required_node_and_angular_versions(base_path, local_repo_path):
 
 
 # update required versions in the README.md
-def update_required_versions(release_base, repo_list):
+def update_required_versions(release_base: str, repo_list: dict):
     switcher = {
         "yunikorn-k8shim": update_required_go_versions,
         "yunikorn-web": update_required_node_and_angular_versions,
@@ -489,7 +488,7 @@ def update_required_versions(release_base, repo_list):
 
 
 # Write the checksum for the source code tarball to file
-def write_checksum(tarball_file, tarball_name):
+def write_checksum(tarball_file: str, tarball_name: str):
     print("generating sha512 checksum file for tar")
     h = hashlib.sha512()
     # read the file and generate the sha
@@ -512,7 +511,7 @@ def write_checksum(tarball_file, tarball_name):
 
 
 # Generate a checksum for a file
-def get_checksum(file_path, file_name):
+def get_checksum(file_path: str, file_name: str) -> str:
     print("generating sha512 checksum for %s" % file_name)
     h = hashlib.sha512()
     # read the file and generate the sha
@@ -530,7 +529,7 @@ def get_checksum(file_path, file_name):
 
 
 # Sign the source archive if an email is provided
-def call_gpg(tarball_file, email_address):
+def call_gpg(tarball_file: str, email_address: str):
     cmd = shutil.which("gpg")
     if not cmd:
         print("gpg not found on the path, not signing package")
@@ -548,7 +547,7 @@ def call_gpg(tarball_file, email_address):
 
 
 # Determine the go repro compiler version
-def get_repro_version(base):
+def get_repro_version(base: str) -> str:
     repro = os.path.join(base, '.go_repro_version')
     if not os.path.isfile(repro):
         fail("go_repro_version file is missing")
@@ -558,7 +557,7 @@ def get_repro_version(base):
 
 
 # Package the helm chart and sign if an email is provided
-def call_helm(staging_dir, base_path, version, email_address):
+def call_helm(staging_dir: str, base_path: str, version: str, email_address: str):
     cmd = shutil.which("helm")
     if not cmd:
         print("helm not found on the path, not creating package")
@@ -599,7 +598,7 @@ def call_helm(staging_dir, base_path, version, email_address):
 
 
 # Merge the added lines from the license files
-def merge_licenses(base_dir, repo_list):
+def merge_licenses(base_dir: str, repo_list: dict):
     start = 202  # Apache License is 202 lines
     lic = os.path.join(base_dir, "LICENSE")
     if not os.path.isfile(lic):
@@ -622,12 +621,12 @@ def merge_licenses(base_dir, repo_list):
 
 
 # Print the usage info
-def usage(script):
+def usage(script: str):
     print("%s [--sign=<email>]" % script)
     sys.exit(2)
 
 
-def main(argv):
+def main(argv: list[str]):
     script = sys.argv[0]
     email_address = ''
     try:
