@@ -32,7 +32,7 @@ type Chart struct {
 	YLabel     string
 	Width      vg.Length
 	Height     vg.Length
-	LinePoints []interface{}
+	LinePoints []any
 	SvgFile    string
 }
 
@@ -62,8 +62,8 @@ func GetPointsFromSlice(slice []int) plotter.XYs {
 	return pts
 }
 
-func GetLinePoints(dataMap map[string][]int) []interface{} {
-	var linePoints []interface{}
+func GetLinePoints(dataMap map[string][]int) []any {
+	var linePoints []any
 	for k, v := range dataMap {
 		linePoints = append(linePoints, k, GetPointsFromSlice(v))
 	}

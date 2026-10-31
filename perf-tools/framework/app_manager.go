@@ -92,10 +92,8 @@ func (dam *DeploymentsAppManager) Create(schedulerName string, appInfo *AppInfo)
 		}
 		// init and create deployment
 		deployment := &appsv1.Deployment{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: appInfo.Namespace,
-				Name:      dam.getDeploymentName(appInfo, reqIndex),
-			},
+			Namespace: appInfo.Namespace,
+			Name:      dam.getDeploymentName(appInfo, reqIndex),
 			Spec: appsv1.DeploymentSpec{
 				Replicas: &requestInfo.Number,
 				Selector: &metav1.LabelSelector{

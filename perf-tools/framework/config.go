@@ -29,7 +29,7 @@ import (
 
 type Config struct {
 	Common    *CommonConfig
-	Scenarios map[string]interface{}
+	Scenarios map[string]any
 }
 
 type CommonConfig struct {
