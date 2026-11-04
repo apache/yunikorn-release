@@ -131,7 +131,7 @@ goGC: 100
 # Any valid options for YuniKorn may be specified here.
 # Example:
 # yunikornDefaults:
-#   service.placeholderImage: registry.k8s.io/pause:3.7
+#   service.placeholderImage: registry.k8s.io/pause:3.10.2
 #   service.placeholderRunAsUser: 65534
 #   service.placeholderRunAsGroup: 65534
 #   service.placeholderFsGroup: 65534
