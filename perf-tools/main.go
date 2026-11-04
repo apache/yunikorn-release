@@ -99,7 +99,7 @@ func main() {
 	// set to all registered test scenarios if not configured.
 	expectedTestScenarios := make([]framework.TestScenario, 0)
 	if commandLineConfig.ScenarioNames != "" {
-		for _, scenarioName := range strings.Split(commandLineConfig.ScenarioNames, ",") {
+		for scenarioName := range strings.SplitSeq(commandLineConfig.ScenarioNames, ",") {
 			if ts := framework.GetRegisteredTestScenarios()[scenarioName]; ts != nil {
 				expectedTestScenarios = append(expectedTestScenarios, ts)
 			} else {

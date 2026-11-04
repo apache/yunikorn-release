@@ -179,24 +179,25 @@ func (v *Verification) RefreshStatus() {
 }
 
 func (r *Results) String() string {
-	outputInfo := ""
+	var outputInfo strings.Builder
 	for _, scenarioResult := range r.ScenarioResults {
-		outputInfo += fmt.Sprintf("%s\n", getStatusInfo("Scenario: "+scenarioResult.Name, scenarioResult.Status))
+		fmt.Fprintf(&outputInfo, "%s\n", getStatusInfo("Scenario: "+scenarioResult.Name, scenarioResult.Status))
 		for _, v := range scenarioResult.Verifications {
-			outputInfo += v.String()
+			outputInfo.WriteString(v.String())
 		}
 	}
-	return outputInfo
+	return outputInfo.String()
 }
 
 func (v *Verification) String() string {
-	outputInfo := fmt.Sprintf("%s%s\n", getDeepPrefix(v.Deep), getVerificationStatusInfo(v))
+	var outputInfo strings.Builder
+	fmt.Fprintf(&outputInfo, "%s%s\n", getDeepPrefix(v.Deep), getVerificationStatusInfo(v))
 	if len(v.SubVerifications) > 0 {
 		for _, subV := range v.SubVerifications {
-			outputInfo += subV.String()
+			outputInfo.WriteString(subV.String())
 		}
 	}
-	return outputInfo
+	return outputInfo.String()
 }
 
 func getStatusInfo(name string, status VerificationStatus) string {
