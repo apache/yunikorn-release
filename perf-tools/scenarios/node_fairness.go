@@ -175,7 +175,7 @@ func (nfs *NodeFairnessScenario) Run(results *utils.Results) {
 			schedulerVerification.AddSubVerification(tableOutputName, tableFilePath, utils.SUCCEEDED)
 
 			// prepare line points
-			var linePoints []interface{}
+			var linePoints []any
 			for i, v := range nodeDistribution {
 				typeName := "bucket-" + strconv.Itoa(i)
 				linePoints = append(linePoints, typeName, utils.GetPointsFromSlice(v))

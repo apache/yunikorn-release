@@ -29,7 +29,7 @@ import (
 	"github.com/apache/yunikorn-release/perf-tools/utils"
 )
 
-func LoadScenarioConf(conf *framework.Config, scenarioName string, scenarioConf interface{}) error {
+func LoadScenarioConf(conf *framework.Config, scenarioName string, scenarioConf any) error {
 	rawScenarioConf := conf.Scenarios[scenarioName]
 	if rawScenarioConf == nil {
 		return fmt.Errorf("failed to load %s scenario config", scenarioName)
