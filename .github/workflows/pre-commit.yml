@@ -38,3 +38,5 @@ jobs:
           go-version-file: .go_version
       - name: Check license
         run: make test_all
+      - name: Build perf-tools
+        run: make perf-tools
